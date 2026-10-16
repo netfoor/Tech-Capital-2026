@@ -86,7 +86,7 @@ Parámetros (todos opcionales):
 | `limit` | 1–500, por omisión 50 | |
 | `offset` | ≥ 0, por omisión 0 | |
 
-Respuesta `200`: `{"items": POIResumen[], "total": int}`. Orden: `nombre`, luego `poi_id`.
+Respuesta `200`: `{"items": POIResumen[], "total": int}`. Orden: primero los lugares con algún atributo de accesibilidad registrado; luego por categoría (museo, zona arqueológica, sitio histórico, templo, centro cultural, mirador, mercado, artesanías, parque, café, restaurante, baño, alojamiento, otro); los nombres que empiezan con un número van al final de su grupo; después `nombre` y `poi_id`.
 
 ### `GET /pois/{poi_id}`
 
