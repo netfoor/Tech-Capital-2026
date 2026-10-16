@@ -1,20 +1,7 @@
-// Vista Radar: resumen por cuadrante, mapa por brecha y gráfica; la tabla completa va plegada al final.
+// Vista Radar: mapa por brecha y gráfica de cuadrantes con selección compartida.
 import { axisBottom, axisLeft, scaleLinear, select } from 'd3';
 import { ajustarEtiquetas, cargarBase, colocarEtiquetas, lienzoBase } from './mapa.js';
 import { CUADRANTES, ESCALAS, alSeleccionar, colorDe, formato, necesitaBorde, seleccionado, seleccionar } from './comun.js';
-
-const COLUMNAS = [
-  { id: 'nombre', titulo: 'Destino', valor: (d) => d.nombre, texto: true },
-  { id: 'cuadrante', titulo: 'Cuadrante', valor: (d) => CUADRANTES[d.cuadrante]?.nombre ?? 'Sin clasificar', texto: true },
-  { id: 'indice_atencion', titulo: 'Atención', valor: (d) => d.indice_atencion, formato: formato.decimal },
-  { id: 'indice_desempeno', titulo: 'Desempeño', valor: (d) => d.indice_desempeno, formato: formato.decimal },
-  { id: 'brecha', titulo: 'Brecha', valor: (d) => d.brecha, formato: formato.decimal },
-  { id: 'ocupacion_12m', titulo: 'Ocupación 12 m', valor: (d) => d.ocupacion_12m, formato: formato.porcentaje },
-  { id: 'llegadas_12m', titulo: 'Llegadas 12 m', valor: (d) => d.llegadas_12m, formato: formato.entero },
-];
-
-// Orden de lectura: primero lo que pide acción.
-const ORDEN_CUADRANTES = ['atencion_sin_estancia', 'demanda_poco_visible', 'por_posicionar', 'consolidado'];
 
 const NOMBRES_COMPONENTES = { busqueda: 'búsqueda', video: 'video', panel: 'panel', asistentes: 'asistentes' };
 
@@ -31,46 +18,15 @@ export async function montarRadar(contenedor) {
   const disponibles = enlistar(radar.componentes_disponibles.map((c) => NOMBRES_COMPONENTES[c] ?? c));
 
   contenedor.innerHTML = `
-    <p class="nota-radar">Brecha = atención − desempeño. Toca un destino para abrir su ficha.</p>
-    <div class="resumen-cuadrantes" id="radar-resumen"></div>
+    <p class="nota-radar">
+      Índice de atención con ${disponibles}; periodo de referencia ${radar.periodo_ref.desde} a ${radar.periodo_ref.hasta}.
+      Brecha = atención − desempeño: positiva si el destino recibe más atención que desempeño.
+    </p>
     <div class="rejilla-radar">
       <figure class="mapa-brecha" id="radar-mapa" aria-label="Mapa de brecha por destino"></figure>
       <figure class="cuadrantes" id="radar-cuadrantes" aria-label="Gráfica de cuadrantes"></figure>
     </div>
-    <details class="detalle-radar">
-      <summary>Ver la tabla completa de los 12 destinos</summary>
-      <p class="nota-radar">
-        Índice de atención con ${disponibles}; periodo de referencia ${radar.periodo_ref.desde} a ${radar.periodo_ref.hasta}.
-        Los índices son percentiles entre los 12 Pueblos Mágicos (0 a 100).
-      </p>
-      <div class="tabla-radar-caja"><table class="tabla-radar" id="radar-tabla"></table></div>
-    </details>
   `;
-
-  // --- resumen por cuadrante ---
-  const resumen = select(contenedor.querySelector('#radar-resumen'));
-  ORDEN_CUADRANTES.forEach((id) => {
-    const miembros = destinos.filter((d) => d.cuadrante === id).sort((a, b) => b.brecha - a.brecha);
-    const q = CUADRANTES[id];
-    const tarjeta = resumen.append('section').attr('class', 'tarjeta-cuadrante').style('border-top-color', q.color);
-    const cabeza = tarjeta.append('header');
-    cabeza.append('h2').style('color', q.color).text(q.nombre);
-    cabeza.append('span').attr('class', 'cuenta').text(miembros.length === 1 ? '1 destino' : `${miembros.length} destinos`);
-    tarjeta.append('p').attr('class', 'accion').text(q.accion);
-    const lista = tarjeta.append('ul').attr('class', 'fichas-destino');
-    if (!miembros.length) lista.append('li').attr('class', 'sin-miembros').text('Ninguno por ahora');
-    lista
-      .selectAll('li.destino')
-      .data(miembros)
-      .join('li')
-      .attr('class', 'destino')
-      .append('button')
-      .attr('type', 'button')
-      .attr('data-destino', (d) => d.destino_id)
-      .attr('aria-label', (d) => `${d.nombre}, brecha ${formato.decimal(d.brecha)}`)
-      .on('click', (_, d) => seleccionar(d.destino_id, 'resumen'))
-      .html((d) => `${d.nombre} <span class="brecha">${d.brecha > 0 ? '+' : ''}${formato.decimal(d.brecha)}</span>`);
-  });
 
   // --- mapa por brecha ---
   const figura = contenedor.querySelector('#radar-mapa');
@@ -130,56 +86,6 @@ export async function montarRadar(contenedor) {
   leyenda.append('p').attr('class', 'leyenda-texto').text('La capital (círculo punteado) es referencia y no entra en los índices.');
   raiz.append('figcaption').attr('class', 'fuente-mapa').text('Límites: INEGI, Marco Geoestadístico 2025.');
 
-  // --- tabla ---
-  let orden = { id: 'brecha', descendente: true };
-  const tabla = select(contenedor.querySelector('#radar-tabla'));
-  function pintarTabla() {
-    const col = COLUMNAS.find((c) => c.id === orden.id);
-    const datos = [...destinos].sort((a, b) => {
-      const va = col.valor(a);
-      const vb = col.valor(b);
-      if (va === null || va === undefined) return 1;
-      if (vb === null || vb === undefined) return -1;
-      const r = col.texto ? String(va).localeCompare(String(vb), 'es') : va - vb;
-      return orden.descendente ? -r : r;
-    });
-    tabla.selectAll('*').remove();
-    tabla
-      .append('thead')
-      .append('tr')
-      .selectAll('th')
-      .data(COLUMNAS)
-      .join('th')
-      .attr('scope', 'col')
-      .attr('class', (c) => (c.texto ? '' : 'num'))
-      .attr('aria-sort', (c) => (c.id === orden.id ? (orden.descendente ? 'descending' : 'ascending') : 'none'))
-      .append('button')
-      .attr('type', 'button')
-      .text((c) => c.titulo)
-      .on('click', (_, c) => {
-        orden = { id: c.id, descendente: orden.id === c.id ? !orden.descendente : !c.texto };
-        pintarTabla();
-        marcar(seleccionado());
-      });
-    tabla
-      .append('tbody')
-      .selectAll('tr')
-      .data(datos)
-      .join('tr')
-      .attr('data-destino', (d) => d.destino_id)
-      .attr('tabindex', 0)
-      .on('click', (_, d) => seleccionar(d.destino_id, 'tabla'))
-      .on('keydown', (ev, d) => {
-        if (ev.key === 'Enter') seleccionar(d.destino_id, 'tabla');
-      })
-      .selectAll('td')
-      .data((d) => COLUMNAS.map((c) => ({ c, d })))
-      .join('td')
-      .attr('class', ({ c }) => (c.texto ? '' : 'num'))
-      .text(({ c, d }) => (c.formato ? c.formato(c.valor(d)) : c.valor(d)));
-  }
-  pintarTabla();
-
   // --- cuadrantes ---
   const caja = contenedor.querySelector('#radar-cuadrantes');
   function pintarCuadrantes() {
@@ -231,7 +137,6 @@ export async function montarRadar(contenedor) {
     contenedor.querySelectorAll('[data-destino]').forEach((el) => {
       const activo = el.dataset.destino === id;
       el.classList.toggle('seleccionado', activo);
-      if (el.tagName === 'TR') el.setAttribute('aria-selected', String(activo));
     });
   }
   alSeleccionar((id) => marcar(id));

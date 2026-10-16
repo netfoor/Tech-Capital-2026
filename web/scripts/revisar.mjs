@@ -66,7 +66,7 @@ for (const v of VISTAS) {
     });
     await p.goto(url + ruta);
     if (ruta === '/') await p.waitForSelector('#mapa-portada .punto', { timeout: 15000 });
-    else await p.waitForSelector('.tarjeta-cuadrante button[data-destino]', { timeout: 15000 });
+    else await p.waitForSelector('.punto-cuadrante', { timeout: 15000 });
     await p.waitForTimeout(1500);
     const donde = `${ruta} a ${v.ancho}px`;
     externas.forEach((u) => falla(`${ruta} a ${v.ancho}px: pide un recurso externo: ${u}`));

@@ -1,5 +1,5 @@
 ---
-// T009-06: resumen por cuadrante, mapa por brecha y gráfica; tabla completa plegada. Desde radar.json.
+// T009-06: mapa por brecha y gráfica de cuadrantes, desde radar.json.
 import MarcoVista from './MarcoVista.astro';
 import PanelFicha from './PanelFicha.astro';
 import { VISTAS } from '../../vistas';
@@ -35,139 +35,18 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
     color: var(--color-gris);
   }
 
-  .resumen-cuadrantes {
-    display: grid;
-    gap: 16px;
-    margin-top: 16px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .con-panel .resumen-cuadrantes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 1079px) {
-    .resumen-cuadrantes {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 560px) {
-    .resumen-cuadrantes,
-    .con-panel .resumen-cuadrantes {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .tarjeta-cuadrante {
-    background: #fff;
-    border: 1px solid var(--color-linea);
-    border-top: 4px solid;
-    padding: 14px 16px 16px;
-  }
-
-  .tarjeta-cuadrante header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .tarjeta-cuadrante h2 {
-    font-size: 17px;
-    font-weight: 800;
-    line-height: 1.2;
-  }
-
-  .tarjeta-cuadrante .cuenta {
-    font-size: 13px;
-    color: var(--color-gris);
-    white-space: nowrap;
-  }
-
-  .tarjeta-cuadrante .accion {
-    margin-top: 4px;
-    font-size: 14px;
-    line-height: 1.35;
-    color: var(--color-tinta);
-  }
-
-  .fichas-destino {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .fichas-destino button {
-    min-height: 32px;
-    padding: 4px 10px;
-    border: 1px solid var(--color-linea);
-    background: var(--color-banda, #f6f7f9);
-    font-size: 14px;
-    color: var(--color-tinta);
-    cursor: pointer;
-  }
-
-  .fichas-destino button:hover {
-    border-color: var(--color-gris);
-  }
-
-  .fichas-destino button.seleccionado {
-    background: var(--color-fila-sel);
-    border-color: var(--color-sel);
-    box-shadow: inset 0 0 0 1px var(--color-sel);
-  }
-
-  .fichas-destino .brecha {
-    margin-left: 4px;
-    font-size: 12.5px;
-    color: var(--color-gris);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .fichas-destino .sin-miembros {
-    font-size: 13px;
-    color: var(--color-gris);
-  }
-
   .rejilla-radar {
     display: grid;
-    gap: 32px;
-    margin-top: 32px;
-    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
     align-items: start;
-  }
-
-  .con-panel .rejilla-radar {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   @media (max-width: 1079px) {
     .rejilla-radar {
       grid-template-columns: minmax(0, 1fr);
     }
-  }
-
-  .detalle-radar {
-    margin-top: 32px;
-    border-top: 1px solid var(--color-linea);
-    padding-top: 12px;
-  }
-
-  .detalle-radar summary {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    font-weight: 700;
-    cursor: pointer;
-    color: var(--color-sel);
-  }
-
-  .detalle-radar .nota-radar {
-    margin: 4px 0 12px;
   }
 
   .mapa-brecha .lienzo-mapa {
@@ -213,60 +92,6 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
     display: inline-block;
     width: 14px;
     height: 14px;
-  }
-
-  .tabla-radar-caja {
-    overflow-x: auto;
-  }
-
-  .tabla-radar {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
-  }
-
-  .tabla-radar th {
-    background: #fff;
-    border-bottom: 1.5px solid var(--color-tinta);
-    text-align: left;
-    white-space: nowrap;
-  }
-
-  .tabla-radar th button {
-    min-height: 44px;
-    padding: 0 8px;
-    font-weight: 700;
-    color: var(--color-tinta);
-  }
-
-  .tabla-radar th[aria-sort='ascending'] button::after {
-    content: ' ▲';
-    font-size: 11px;
-  }
-
-  .tabla-radar th[aria-sort='descending'] button::after {
-    content: ' ▼';
-    font-size: 11px;
-  }
-
-  .tabla-radar td {
-    padding: 8px 6px;
-    border-bottom: 1px solid var(--color-linea);
-    white-space: nowrap;
-  }
-
-  .tabla-radar .num {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .tabla-radar tbody tr {
-    cursor: pointer;
-  }
-
-  .tabla-radar tbody tr.seleccionado {
-    background: var(--color-fila-sel);
-    box-shadow: inset 3px 0 0 var(--color-sel);
   }
 
   .cuadrantes {

@@ -12,7 +12,7 @@ export const VISTAS: Vista[] = [
     id: 'radar',
     titulo: 'Radar',
     descripcion:
-      'Qué Pueblos Mágicos reciben más atención de la que su ocupación refleja, y al revés.',
+      'Los 12 Pueblos Mágicos según su atención digital y su desempeño real, con su cuadrante y la recomendación.',
     vacio: 'Todavía no hay datos del radar. Aparecen al exportar el desempeño oficial y los componentes de atención.',
   },
   {

@@ -16,10 +16,10 @@ export const ESCALAS = {
 };
 
 export const CUADRANTES = {
-  consolidado: { nombre: 'Consolidado', color: '#374151', accion: 'Mantener; medir la saturación' },
-  atencion_sin_estancia: { nombre: 'Atención sin estancia', color: '#0058F8', accion: 'Convertir la atención en pernocta' },
-  demanda_poco_visible: { nombre: 'Demanda poco visible', color: '#B45309', accion: 'Crecer con contenido; la demanda existe' },
-  por_posicionar: { nombre: 'Por posicionar', color: '#00796B', accion: 'Promover si la experiencia es buena' },
+  consolidado: { nombre: 'Consolidado', color: '#374151' },
+  atencion_sin_estancia: { nombre: 'Atención sin estancia', color: '#0058F8' },
+  demanda_poco_visible: { nombre: 'Demanda poco visible', color: '#B45309' },
+  por_posicionar: { nombre: 'Por posicionar', color: '#00796B' },
 };
 
 export const IDIOMAS = {
