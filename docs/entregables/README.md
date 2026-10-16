@@ -7,7 +7,7 @@
 | §9.1 | Descripción ejecutiva del proyecto | `01-descripcion-ejecutiva.md` | Listo |
 | §9.2 | Definición del problema y usuarios o beneficiarios | `02-problema-y-usuarios.md` | Listo; base en [`../producto/`](../producto/) |
 | §9.3 | Descripción de la solución | `03-solucion.md` | Pendiente (T011-09) |
-| §9.4 | Inventario y documentación de las fuentes de datos | `04-inventario-fuentes.md` | Pendiente (T011-08); base en [`../../data/fuentes/fuentes.csv`](../../data/fuentes/fuentes.csv) |
+| §9.4 | Inventario y documentación de las fuentes de datos | `04-inventario-fuentes.md` | Generado con `radar entregables`; base en [`../../data/fuentes/fuentes.csv`](../../data/fuentes/fuentes.csv) |
 | §9.5 | Justificación de la selección de los datos | `05-justificacion-datos.md` | Listo |
 | §9.6 | Procesos de obtención, limpieza, integración, transformación y análisis | `06-procesos-de-datos.md` | Listo |
 | §9.7 | Arquitectura o metodología | `07-arquitectura.md` | Listo; base en [`../arquitectura.md`](../arquitectura.md) |

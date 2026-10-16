@@ -9,6 +9,7 @@ import pandas as pd
 import typer
 
 from radar import catalogo, config, fuentes
+from radar.entregables import generar
 from radar.exportar import paquete
 from radar.indicadores import resumen, sectur_ot
 from radar.radar import atencion, desempeno, indices
@@ -277,6 +278,13 @@ def exportar(
         return
     destino = paquete.escribir(armado)
     typer.echo(f"Paquete escrito en {destino} ({len(armado)} archivos de datos)")
+
+
+@app.command("entregables")
+def entregables() -> None:
+    """Genera el inventario de fuentes y las tablas de resultados de `docs/entregables/`."""
+    cambiados = generar.generar()
+    typer.echo("Actualizados: " + ", ".join(cambiados) if cambiados else "Sin cambios")
 
 
 def main() -> None:  # pragma: no cover

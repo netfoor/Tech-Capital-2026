@@ -2,6 +2,46 @@
 
 Notas de resultados que alimentan los documentos de entrega. Cada cifra sale de `data/curado/`; si cambia la tabla, se regenera la nota.
 
+## Tablas generadas
+
+<!-- generado:inicio -->
+Periodo de referencia: 2025-07 a 2026-06.
+
+**Radar por destino** (ordenado por brecha)
+
+| Destino | Cuadrante | Atención | Desempeño | Brecha | Ocupación 12 m (%) |
+|---|---|---|---|---|---|
+| Cuetzalan | Atención sin estancia | 70.5 | 27.3 | 43.2 | 42.7 |
+| Tlatlauquitepec | Por posicionar | 36.4 | 18.2 | 18.2 | 36.8 |
+| Tetela de Ocampo | Por posicionar | 22.7 | 9.1 | 13.6 | 33.8 |
+| Pahuatlán | Por posicionar | 13.6 | 0.0 | 13.6 | 32.2 |
+| Chignahuapan | Consolidado | 72.7 | 63.6 | 9.1 | 44.5 |
+| Huejotzingo | Atención sin estancia | 40.9 | 36.4 | 4.5 | 43.6 |
+| Atlixco | Consolidado | 84.1 | 81.8 | 2.3 | 44.8 |
+| Cholula | Consolidado | 100.0 | 100.0 | 0.0 | 57.8 |
+| Xicotepec | Por posicionar | 36.4 | 45.5 | -9.1 | 43.8 |
+| Huauchinango | Consolidado | 40.9 | 54.5 | -13.6 | 44.4 |
+| Zacatlán | Consolidado | 59.1 | 90.9 | -31.8 | 53.0 |
+| Teziutlán | Demanda poco visible | 22.7 | 72.7 | -50.0 | 44.5 |
+
+**Visibilidad promedio de los Pueblos Mágicos en asistentes, por idioma**
+
+| Idioma | Corridas por destino | Visibilidad promedio (%) |
+|---|---|---|
+| Español | 180 | 39.0 |
+| Inglés | 80 | 29.5 |
+| Francés | 41 | 35.4 |
+| Coreano | 39 | 26.7 |
+| Chino | 40 | 33.8 |
+
+**Corridas de asistentes**
+
+| Proveedor | Modelo | Corridas | Buscó en la web (%) | Tokens de entrada | Tokens de salida |
+|---|---|---|---|---|---|
+| gemini | gemini-3.8-flash | 220 | 0.9 | 7,190 | 307,059 |
+| openai | gpt-5-mini-2025-08-07 | 160 | 94.4 | 3,751,668 | 537,029 |
+<!-- generado:fin -->
+
 ## Interés de búsqueda frente a afluencia oficial (T003-05)
 
 Datos: `interes_busqueda_mensual.csv` (Google Trends, MX, 2017-01 a 2026-09, reescalado contra Cholula) y `indicadores_oficiales_mensual.csv` (afluencia derivada del Observatorio Turístico).

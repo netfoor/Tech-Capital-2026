@@ -1,0 +1,17 @@
+fuente_id,por_que,como,calidad,preparacion
+sectur-ot-2026-06,Es la medición oficial de desempeño turístico por destino y mes,Descarga del PDF y extracción de tablas con pdfplumber,Oficial; afluencia y derrama son estimaciones derivadas de las llegadas a hotel,indicadores_oficiales_mensual.csv e indicadores_oficiales_anual.csv
+sectur-obs-verano-2024,Muestra que las redes sociales son un medio principal de información del visitante,Lectura del informe y transcripción de la cifra,Oficial; encuesta del Observatorio,data/referencia/evidencia_externa.csv
+sectur-obs-2024-buap,Contrasta la importancia de la TV y las redes en otro levantamiento,Lectura del informe,Oficial; levantamiento distinto al de verano,Se cita en docs/producto/evidencia.md
+sectur-mercado-2020,Antecedente de cómo se entera el visitante de los sitios de interés,Lectura del informe,Oficial; de 2020,Se cita en docs/producto/evidencia.md
+inegi-mg-2025-12,Une todas las tablas por clave municipal y dibuja el mapa,Descarga del Marco Geoestadístico y simplificación al 4 %,Oficial,data/referencia/geo/ y geo/*.json del sitio
+inegi-cabeceras,Ubica cada destino en el mapa,Coordenadas de la cabecera de cada destino,Oficial,data/referencia/destinos.csv
+gob-pue-balance-2025,Muestra que la promoción se reporta por impresiones,Lectura del comunicado,Oficial; comunicado de prensa,Se cita en docs/producto/evidencia.md
+gob-pue-mundial-2026,Muestra que la promoción con creadores no reporta resultados,Lectura del comunicado,Oficial; comunicado de prensa,Se cita en docs/producto/evidencia.md
+tianguis-2027,Fecha y escala del escaparate al que apunta el proyecto,Lectura de la nota,Prensa; cifras de expectativa,data/referencia/evidencia_externa.csv
+tc-2026-turismo-digital,Contexto del tema central del evento,Lectura de la nota,Prensa,Se cita en docs/producto/evidencia.md
+sparktoro-2026,Fundamenta medir la visibilidad como porcentaje sobre corridas repetidas,Lectura del estudio,Estudio privado; muestra de voluntarios,Diseño de la auditoría de asistentes
+peec-2026,Contexto de las fuentes que citan los asistentes con búsqueda,Lectura del estudio,Estudio privado,Se cita en docs/producto/evidencia.md
+booking-2025-mx,Contexto de uso de IA en la planeación de viajes,Lectura del estudio,Estudio privado; encuesta,Se cita en docs/producto/evidencia.md
+tiktok-research-api,Justifica el panel con consentimiento en lugar de extracción,Lectura de los términos de la API,Términos de la plataforma,docs/decisiones/0004-panel-con-consentimiento.md
+google-trends,Señal pública de intención de viaje por destino,Consultas a Google Trends en tandas con un destino ancla desde una red residencial,Muestreo de Google; escala relativa,interes_busqueda_mensual.csv
+asistentes-auditoria,Mide la visibilidad de cada destino en asistentes conversacionales,Corridas repetidas con semilla fija en OpenAI y Gemini,Generada por el equipo; varía con la versión del modelo,asistentes_corridas.csv; asistentes_menciones.csv; asistentes_citas.csv; asistentes_visibilidad.csv

@@ -22,6 +22,7 @@ uv run ruff check .              # estilo
 | `radar senales trends [--geo MX] [--desde 2017-01-01] [--pausa 60] [--desde-crudo]` | Consulta Google Trends desde una red residencial (requiere `uv sync --extra senales`) y escribe `interes_busqueda_mensual.csv` | 003 |
 | `radar radar calcular` | Escribe `data/curado/radar_destinos.csv` con los componentes disponibles | 008 |
 | `radar exportar [--validar]` | Arma `web/public/datos/` y `descargas/`, los valida contra `contracts/` y escribe el manifiesto con SHA-256 | 009 |
+| `radar entregables` | Genera `04-inventario-fuentes.md` y las tablas de `09-resultados.md` | 011 |
 
 Cada spec que agrega una etapa nueva añade su comando en esta tabla.
 
