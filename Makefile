@@ -7,7 +7,7 @@ UV := cd pipelines && uv run
 TF := cd infra && terraform
 PATRON_LLAVES := AIza[0-9A-Za-z_-]{35}|(^|[^A-Za-z0-9])sk-(proj-)?[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----
 
-.PHONY: ayuda instalar datos exportar verificar secretos dev web infra-plan infra-aplicar desplegar
+.PHONY: ayuda instalar datos exportar verificar secretos dev web web-config infra-plan infra-aplicar desplegar
 
 ayuda: ## Muestra esta lista
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-14s %s\n", $$1, $$2}'
@@ -41,6 +41,10 @@ dev: ## Sirve el sitio en local con recarga
 
 web: ## Compila el sitio en web/dist/
 	cd web && npm run build
+
+web-config: ## Escribe web/.env con el dominio y el cliente de Cognito (salidas de Terraform)
+	cd infra && printf 'PUBLIC_COGNITO_DOMINIO=%s\nPUBLIC_COGNITO_CLIENTE_ID=%s\n' "$$(terraform output -raw cognito_dominio)" "$$(terraform output -raw cognito_cliente_id)" > ../web/.env
+	@echo "web/.env listo. Compila con: make web"
 
 infra-plan: ## Muestra el plan de Terraform
 	$(TF) init -input=false && terraform plan -var="perfil_aws=$(PERFIL)"

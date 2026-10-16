@@ -4,10 +4,12 @@ import '../styles/global.css';
 interface Props {
   titulo?: string;
   descripcion?: string;
+  indexar?: boolean;
 }
 const {
   titulo = 'Radar de Atención Turística de Puebla',
   descripcion = 'Atención digital y desempeño turístico de los Pueblos Mágicos de Puebla, con datos verificables.',
+  indexar = true,
 } = Astro.props;
 ---
 
@@ -18,6 +20,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titulo}</title>
     <meta name="description" content={descripcion} />
+    {!indexar && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>

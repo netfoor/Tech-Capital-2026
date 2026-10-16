@@ -1,0 +1,8 @@
+---
+// T009-07: las 12 fichas con «Descargar para la cita», desde fichas/<destino_id>.json.
+import MarcoVista from './MarcoVista.astro';
+import { VISTAS } from '../../vistas';
+const vista = VISTAS.find((v) => v.id === 'fichas')!;
+---
+
+<MarcoVista vista={vista} />

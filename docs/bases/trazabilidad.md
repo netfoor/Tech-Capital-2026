@@ -39,7 +39,7 @@ Cada requisito tiene un identificador que las specs citan en su sección «Bases
 
 | ID | Requisito | Cómo se atiende | Spec | Estado |
 |---|---|---|---|---|
-| FIN-01 | Versión funcional o demostrable | Sitio desplegado en un subdominio de foor.dev con datos reales | 009, 010 | En curso |
+| FIN-01 | Versión funcional o demostrable | Plataforma con cuentas de usuario (Cognito) y página pública, desplegadas en un subdominio de foor.dev con datos reales (ADR-0009) | 009, 010 | En curso |
 | FIN-02 | Pitch ejecutivo | `docs/entregables/10-pitch.md`: guion por tiempos | 011 | Planeado |
 | FIN-03 | Demostración | Recorrido guiado del sitio, con una versión de respaldo sin conexión | 009, 011 | Planeado |
 | FIN-04 | Ronda de preguntas | `docs/entregables/preguntas-del-jurado.md` | 011 | Planeado |

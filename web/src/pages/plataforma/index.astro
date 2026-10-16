@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Barra from '../../components/plataforma/Barra.astro';
+import VistaRadar from '../../components/plataforma/VistaRadar.astro';
+import VistaFichas from '../../components/plataforma/VistaFichas.astro';
+import VistaAsistentes from '../../components/plataforma/VistaAsistentes.astro';
+import VistaRedes from '../../components/plataforma/VistaRedes.astro';
+---
+
+<Base titulo="Plataforma del Radar de Atención Turística de Puebla" indexar={false}>
+  <div id="estado-acceso" class="mx-auto max-w-[62ch] px-4 py-24 text-center" aria-live="polite">
+    <p id="estado-acceso-mensaje" class="text-tinta-2">Verificando acceso…</p>
+    <button id="estado-acceso-reintentar" type="button" class="boton boton-primario mt-6" hidden>
+      Iniciar sesión
+    </button>
+  </div>
+
+  <div id="app" hidden>
+    <p id="banda-modo-local" class="bg-banda px-4 py-2 text-center text-[14px] text-tinta-2" hidden>
+      Modo local: acceso sin cuenta. La versión publicada pide iniciar sesión.
+    </p>
+    <Barra />
+    <main id="contenido" class="mx-auto max-w-[1440px] px-4 py-8 sm:px-6">
+      <VistaRadar />
+      <VistaFichas />
+      <VistaAsistentes />
+      <VistaRedes />
+    </main>
+    <footer class="mx-auto max-w-[1440px] border-t border-linea px-4 py-6 text-[14px] text-gris sm:px-6">
+      <a href="/#metodo">Cómo se hizo</a>
+      <span class="mx-2" aria-hidden="true">|</span>
+      <a href="/#datos">Datos y código</a>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  import '../../scripts/plataforma.js';
+</script>

@@ -4,6 +4,8 @@
 - [ ] T010-02 `terraform init` y `apply` del certificado con el perfil `Fortino-IAM-Admin`. Verificación: salida con el CNAME de validación.
 - [ ] T010-03 Registro de validación en Cloudflare y certificado emitido. Verificación: `aws acm describe-certificate` con `Status: ISSUED`.
 - [ ] T010-04 `terraform apply` completo y CNAME del subdominio en Cloudflare. Verificación: `curl -I https://techcapital.foor.dev` responde 200 con HSTS después del primer despliegue.
+- [x] T010-08 Cognito en Terraform (`cognito.tf`): grupo de usuarios, dominio con Hosted UI y cliente con PKCE; CSP con el dominio de Cognito y `make web-config`. Verificación: `terraform validate`.
+- [ ] T010-09 Aplicar Cognito y dar de alta las cuentas del equipo (y la de demostración el día de la presentación). Depende de T010-04. Verificación: inicio de sesión real en `https://techcapital.foor.dev/plataforma/`.
 - [ ] T010-05 Prueba de seguridad: acceso directo a un objeto de S3 rechazado y cabeceras presentes. Verificación: `curl` a la URL de S3 da 403.
 - [ ] T010-06 [P] Estimación de costos mensuales (sitio, más APIs por corrida desde T006-12) en `modelo-de-operacion.md`. Verificación: tabla de costos con fuente y fecha.
 - [ ] T010-07 [P] (P2) Bucket de datos, Lambda, Scheduler y SSM según el plan. Verificación: ejecución manual de la Lambda con un tope de 5 corridas.

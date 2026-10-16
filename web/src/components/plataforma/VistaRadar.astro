@@ -1,0 +1,11 @@
+---
+// T009-06: mapa por brecha, tabla de los 12 y gráfica de cuadrantes, desde radar.json.
+import MarcoVista from './MarcoVista.astro';
+import PanelFicha from './PanelFicha.astro';
+import { VISTAS } from '../../vistas';
+const vista = VISTAS.find((v) => v.id === 'radar')!;
+---
+
+<MarcoVista vista={vista}>
+  <PanelFicha slot="lateral" />
+</MarcoVista>

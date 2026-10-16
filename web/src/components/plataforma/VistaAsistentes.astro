@@ -1,0 +1,8 @@
+---
+// T009-08: visibilidad por idioma y proveedor, dominios citados y un ejemplo, desde asistentes.json.
+import MarcoVista from './MarcoVista.astro';
+import { VISTAS } from '../../vistas';
+const vista = VISTAS.find((v) => v.id === 'asistentes')!;
+---
+
+<MarcoVista vista={vista} />

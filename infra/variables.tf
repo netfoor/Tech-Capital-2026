@@ -27,3 +27,9 @@ variable "proyecto" {
   type        = string
   default     = "radar-atencion-turistica"
 }
+
+variable "cognito_prefijo" {
+  description = "Prefijo del dominio de la Hosted UI de Cognito (<prefijo>.auth.<region>.amazoncognito.com). Debe ser único en la región"
+  type        = string
+  default     = "radar-turistico-puebla"
+}

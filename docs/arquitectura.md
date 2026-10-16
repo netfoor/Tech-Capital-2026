@@ -40,6 +40,7 @@ flowchart LR
         S3[(S3 privado)]
         CF[CloudFront + OAC<br/>cabeceras de seguridad]
         ACM[ACM us-east-1]
+        COG[Cognito<br/>Hosted UI]
     end
 
     DNS[Cloudflare DNS<br/>techcapital.foor.dev]
@@ -58,6 +59,7 @@ flowchart LR
     C --> P8
     P8 --> W1 --> W2 --> S3 --> CF
     ACM --> CF
+    COG -. inicio de sesión .-> W2
     DNS --> CF
 ```
 
@@ -68,7 +70,9 @@ flowchart LR
 | Pipelines | Python ≥ 3.11 con uv, pandas, pdfplumber, Typer | Ingesta, limpieza, análisis y exportación. Un módulo por contexto del dominio | 001–008 |
 | Datos curados | CSV en git | Lenguaje publicado entre contextos; base de la reproducibilidad | todas |
 | Contratos | JSON Schema 2020-12 | Forma de los archivos que consume el sitio | 009 |
-| Sitio | Astro, Tailwind CSS 4, d3 7, anime.js 4 | Mapa, radar, fichas, auditoría, metodología y descargas. Estático y sin llaves | 009 |
+| Página pública | Astro, Tailwind CSS 4, d3 7, anime.js 4 | Problema, qué hace la plataforma, uso en el Tianguis, método y descargas (`/`) | 009 |
+| Plataforma | Astro, d3 7, anime.js 4 | Vistas Radar, Fichas, Asistentes y Redes, con selección compartida (`/plataforma/`). Estática y sin llaves | 009 |
+| Acceso | Amazon Cognito con Hosted UI, código de autorización con PKCE | Cuentas dadas de alta por el equipo; inicio y cierre de sesión de la plataforma ([ADR-0009](decisiones/0009-landing-publica-y-plataforma-con-cognito.md)) | 009, 010 |
 | Hospedaje | S3 privado, CloudFront con OAC, ACM, política de cabeceras | Servir el sitio con HTTPS en un subdominio de foor.dev | 010 |
 | DNS | Cloudflare (zona foor.dev) | Registro CNAME sin proxy hacia CloudFront y validación del certificado | 010 |
 | Recolección programada (P2) | Lambda + EventBridge Scheduler, bucket de datos | Repetir mensualmente YouTube y la auditoría de asistentes | 010 |
@@ -96,7 +100,8 @@ flowchart LR
 - Las llaves solo están en `.env`, que está en `.gitignore`. `make verificar` busca patrones de llaves en los archivos versionados.
 - Los buckets bloquean el acceso público. CloudFront accede con OAC.
 - La política de cabeceras de CloudFront incluye HSTS, `X-Content-Type-Options`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy` y una política de contenido acotada a `self`.
-- El sitio no hace llamadas a APIs externas.
+- El sitio no hace llamadas a APIs externas, salvo el intercambio de código por token con el dominio de Cognito.
+- La plataforma pide sesión de Cognito. Es una protección de experiencia: los datos publicados son públicos por diseño (ADR-0009).
 - `data/privado/` y `data/crudo/` nunca se suben a git ni al sitio. Lo crudo se conserva en la computadora que lo generó y su SHA-256 queda en las tablas curadas.
 
 ## Calidad
@@ -123,3 +128,4 @@ flowchart LR
 | [0006](decisiones/0006-aws-terraform-cloudflare.md) | AWS con Terraform y DNS en Cloudflare |
 | [0007](decisiones/0007-python-uv-csv.md) | Python con uv y CSV versionados |
 | [0008](decisiones/0008-trends-desde-red-residencial.md) | Google Trends desde una red residencial |
+| [0009](decisiones/0009-landing-publica-y-plataforma-con-cognito.md) | Página pública y plataforma con acceso por Cognito |

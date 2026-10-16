@@ -96,7 +96,8 @@ resource "aws_cloudfront_function" "indice" {
   code    = file("${path.module}/funciones/indice.js")
 }
 
-# Cabeceras de seguridad (FR-010-03). El sitio no usa scripts ni estilos en línea ni recursos externos.
+# Cabeceras de seguridad (FR-010-03). El sitio no usa scripts ni estilos en línea ni recursos externos;
+# solo se conecta al dominio de Cognito para cambiar el código de acceso por el token (ADR-0009).
 resource "aws_cloudfront_response_headers_policy" "seguridad" {
   name    = "${local.nombre}-cabeceras"
   comment = "Cabeceras de seguridad del sitio"
@@ -124,7 +125,7 @@ resource "aws_cloudfront_response_headers_policy" "seguridad" {
     }
 
     content_security_policy {
-      content_security_policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'"
+      content_security_policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://${local.cognito_dominio}; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'"
       override                = true
     }
   }

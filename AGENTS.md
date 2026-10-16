@@ -50,6 +50,7 @@ Según la tarea, consulta también:
 | Verificación completa | `make verificar` |
 | Paquete de datos del sitio | `make exportar` |
 | Sitio en local | `make dev` |
+| Configurar el acceso con Cognito en `web/.env` | `make web-config` |
 | Compilar el sitio | `make web` |
 | Revisar y aplicar la infraestructura | `make infra-plan` y `make infra-aplicar` |
 | Desplegar | `make desplegar` |
@@ -71,7 +72,8 @@ Las etapas con red o con costo (Trends, YouTube y asistentes) no forman parte de
 - Las pruebas no llaman a servicios externos; usan respuestas guardadas en `tests/datos/`.
 
 **Sitio (`web/`)**
-- Astro estático, Tailwind 4 con los tokens de `docs/diseno.md`, d3 y anime.js. Sin CDN, sin fuentes descargadas y sin llamadas a servicios externos.
+- Astro estático, Tailwind 4 con los tokens de `docs/diseno.md`, d3 y anime.js. Sin CDN, sin fuentes descargadas y sin llamadas a servicios externos, salvo Cognito para el inicio de sesión.
+- Dos superficies: la página pública (`/`) y la plataforma (`/plataforma/`, ADR-0009). Sin `web/.env` la plataforma corre en modo local, sin cuenta; así se desarrolla antes de tener la infraestructura.
 - Todo dato visible sale de `web/public/datos/`. En los `.astro` no se escriben cifras.
 - Antes de dar por terminada una sección, se revisa la lista de `docs/diseno.md` §12.
 

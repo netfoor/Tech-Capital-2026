@@ -9,6 +9,7 @@ const primera = SECCIONES[0];
   >
     <a href="#inicio" class="font-bold text-tinta no-underline">Radar de Atención Turística</a>
 
+    <div class="flex items-center gap-3">
     <nav aria-label="Secciones" class="relative" id="nav-secciones">
       <button
         id="menu-secciones"
@@ -45,6 +46,8 @@ const primera = SECCIONES[0];
         }
       </ol>
     </nav>
+    <a href="/plataforma/" class="boton boton-primario entrar">Entrar a la plataforma</a>
+    </div>
   </div>
   <div class="riel" aria-hidden="true"><div class="riel-avance"></div></div>
 </header>
@@ -81,8 +84,19 @@ const primera = SECCIONES[0];
     box-shadow: inset 3px 0 0 var(--color-sel);
   }
 
+  .entrar {
+    min-height: 44px;
+    padding: 0 16px;
+  }
+
   @media (max-width: 420px) {
     .contador {
+      display: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .entrar {
       display: none;
     }
   }

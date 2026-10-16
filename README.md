@@ -24,6 +24,7 @@ El detalle y las fuentes están en [`docs/producto/evidencia.md`](docs/producto/
 |---|---|
 | **Qué** | Un radar que muestra, por destino, cuánta atención digital recibe y cómo se compara con su desempeño real. Detecta qué destinos tienen capacidad disponible y poca visibilidad, y qué destinos atraen miradas pero no estancias. |
 | **Cómo** | Genera una fuente de datos que hoy no existe y la une con datos oficiales. Se recoge qué aparece en TikTok mediante un panel de personas reales con consentimiento, qué responden los asistentes en cinco idiomas y qué citan, qué se busca en Google y qué se ve en YouTube, incluidos los comentarios. Todo se cruza con la serie mensual 2017–2026 del Observatorio Turístico. |
+| **Dónde** | Una plataforma web con cuentas para la Secretaría (radar, fichas por destino, asistentes y redes) y una página pública que explica el problema, el método y los datos. |
 | **Para qué** | Para que la Secretaría decida dónde y cómo invertir su promoción, llegue al Tianguis 2027 con fichas por destino respaldadas por datos y mida el efecto antes y después. |
 
 Visión completa: [`docs/producto/vision.md`](docs/producto/vision.md).
@@ -54,8 +55,8 @@ El orden de ejecución, las dependencias y la ruta crítica están en [`docs/pla
 | [006 Auditoría de asistentes](specs/006-auditoria-asistentes/spec.md) | Visibilidad en asistentes | P0 | Pendiente |
 | [007 Clasificación de comentarios](specs/007-comentarios/spec.md) | Atención digital | P1 | Pendiente |
 | [008 Radar](specs/008-radar/spec.md) | Análisis | P0 | Pendiente |
-| [009 Sitio](specs/009-sitio/spec.md) | Publicación | P0 | En curso: andamiaje |
-| [010 Infraestructura](specs/010-infraestructura/spec.md) | Plataforma | P0 | En curso: andamiaje |
+| [009 Sitio: página pública y plataforma](specs/009-sitio/spec.md) | Publicación | P0 | En curso: andamiaje con acceso |
+| [010 Infraestructura](specs/010-infraestructura/spec.md) | Plataforma | P0 | En curso: Terraform con Cognito |
 | [011 Entregables y presentación](specs/011-entregables/spec.md) | Entregables | P0 | Pendiente |
 
 P0 = indispensable para la demostración, P1 = la fortalece, P2 = continuidad posterior.
@@ -85,7 +86,7 @@ P0 = indispensable para la demostración, P1 = la fortalece, P2 = continuidad po
 ├── infra/                     Terraform (AWS)
 ├── pipelines/                 Python con uv: ingesta, análisis y exportación
 ├── specs/                     Constitución y especificaciones por funcionalidad
-└── web/                       Sitio (Astro)
+└── web/                       Página pública y plataforma (Astro, acceso con Cognito)
 ```
 
 ## Puesta en marcha

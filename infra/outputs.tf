@@ -35,3 +35,18 @@ output "dns_sitio" {
     valor  = aws_cloudfront_distribution.sitio.domain_name
   }
 }
+
+output "cognito_dominio" {
+  description = "Dominio de la Hosted UI; va en web/.env como PUBLIC_COGNITO_DOMINIO"
+  value       = local.cognito_dominio
+}
+
+output "cognito_cliente_id" {
+  description = "Cliente público de la plataforma; va en web/.env como PUBLIC_COGNITO_CLIENTE_ID"
+  value       = aws_cognito_user_pool_client.plataforma.id
+}
+
+output "cognito_grupo_usuarios_id" {
+  description = "Grupo de usuarios donde se dan de alta las cuentas"
+  value       = aws_cognito_user_pool.plataforma.id
+}

@@ -1,0 +1,41 @@
+---
+import { VISTAS } from '../../vistas';
+---
+
+<header class="barra sticky top-0 z-40 border-b border-linea bg-white">
+  <div class="mx-auto flex h-14 max-w-[1440px] items-center gap-6 px-4 sm:px-6">
+    <a href="/" class="nombre font-bold whitespace-nowrap text-tinta no-underline">Radar de Atención Turística</a>
+    <nav aria-label="Vistas" class="vistas flex h-full flex-1 gap-5 overflow-x-auto">
+      {
+        VISTAS.map((v) => (
+          <a href={`#${v.id}`} data-vista-enlace={v.id} class="vista flex h-full items-center whitespace-nowrap text-tinta-2 no-underline">
+            {v.titulo}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-4">
+      <span id="sesion-correo" class="correo text-[14.5px] text-gris"></span>
+      <button id="salir" type="button" class="min-h-11 font-bold text-tinta">Salir</button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .vista {
+    border-bottom: 2px solid transparent;
+  }
+
+  .vista[aria-current='page'] {
+    color: var(--color-tinta);
+    font-weight: 700;
+    border-bottom-color: var(--color-tc-azul);
+  }
+
+  @media (max-width: 760px) {
+    .nombre,
+    .correo {
+      display: none;
+    }
+  }
+</style>

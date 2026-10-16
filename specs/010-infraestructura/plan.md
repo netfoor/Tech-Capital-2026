@@ -17,6 +17,7 @@ flowchart LR
 | `infra/variables.tf` | `perfil_aws`, `region`, `dominio`, `entorno`, `proyecto` |
 | `infra/sitio.tf` | Bucket, OAC, CloudFront, política del bucket y política de cabeceras |
 | `infra/certificado.tf` | ACM y su validación |
+| `infra/cognito.tf` | Grupo de usuarios, dominio con Hosted UI y cliente público con PKCE (ADR-0009) |
 | `infra/outputs.tf` | Bucket, id y dominio de CloudFront, registros DNS por crear |
 | `infra/desplegar.sh` | Sincronización e invalidación |
 | `infra/README.md` | Pasos de aplicación con el paso manual de Cloudflare |
@@ -28,7 +29,8 @@ flowchart LR
 3. Crear en Cloudflare el CNAME de validación (sin proxy).
 4. `terraform apply` espera la validación, crea CloudFront y muestra `cloudfront_dominio`.
 5. Crear en Cloudflare el CNAME `techcapital` → `cloudfront_dominio` (sin proxy, «DNS only»).
-6. `make web && make desplegar`.
+6. `make web-config && make web && make desplegar`. `make web-config` deja en `web/.env` el dominio y el cliente de Cognito; sin eso la compilación queda en modo local y `desplegar.sh` la rechaza.
+7. Dar de alta las cuentas con `aws cognito-idp admin-create-user` (comando en `infra/README.md`).
 
 ## Costos esperados
 

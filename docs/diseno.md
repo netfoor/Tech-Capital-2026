@@ -127,24 +127,56 @@ Se usa en tres lugares y no en más:
 
 ---
 
-## 5. Estructura de la página
+## 5. Estructura: página pública y plataforma
+
+El sitio tiene dos superficies ([ADR-0009](decisiones/0009-landing-publica-y-plataforma-con-cognito.md)). La página pública cuenta la historia y la plataforma es el producto.
+
+### 5.1 Página pública (`/`)
 
 Orden fijo, definido en `web/src/secciones.ts`:
 
 1. Inicio
 2. El problema
-3. Radar
-4. Fichas de destino
-5. Lo que responden los asistentes
-6. Lo que se ve en redes
-7. Para el Tianguis 2027
-8. Cómo se hizo
-9. Datos y código
+3. La plataforma
+4. Para el Tianguis 2027
+5. Cómo se hizo
+6. Datos y código
 
 **Encabezado** (sticky, blanco, 64 px; 56 px en teléfono)
-- Izquierda: nombre del proyecto en texto y logos de las instituciones del equipo. No se usan logos de dependencias de gobierno ni del evento, para no sugerir un respaldo oficial; el evento se nombra en texto.
-- Derecha: botón con la sección actual («3 de 9 Radar ▾») que abre la lista. No hay barra de pestañas.
+- Izquierda: nombre del proyecto en texto. No se usan logos de dependencias de gobierno ni del evento, para no sugerir un respaldo oficial; el evento se nombra en texto.
+- Derecha: botón con la sección actual («3 de 6 La plataforma ▾») que abre la lista, y el botón primario «Entrar a la plataforma».
 - Abajo: un riel de avance de 2 px. El tramo recorrido va en `tc-azul` y termina en un círculo (la posición actual).
+
+La sección «La plataforma» muestra las cuatro vistas con una imagen real de cada una (capturas de la plataforma con datos) y una frase de para qué sirve. No repite las gráficas completas: invita a entrar.
+
+### 5.2 Plataforma (`/plataforma/`)
+
+Navegación de aplicación, no de documento:
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│ Radar de Atención Turística   Radar  Fichas  Asistentes  Redes   correo  Salir │
+├──────────────────────────────────────────────────────────────────────┤
+│ Filtros: periodo · componentes · idioma (según la vista)                     │
+├───────────────────────────────────────────────┬──────────────────────┤
+│ Vista: mapa, tabla o gráficas                 │ Ficha del destino     │
+│                                               │ (panel de 420 px)     │
+└───────────────────────────────────────────────┴──────────────────────┘
+```
+
+| Vista | Contenido | Datos |
+|---|---|---|
+| Radar (inicio) | Mapa por brecha, tabla de los 12 y gráfica de cuadrantes. Al elegir un destino se abre su ficha en el panel lateral | `radar.json`, `geo/*.json` |
+| Fichas | Las 12 fichas en rejilla, cada una con «Descargar para la cita» | `fichas/<destino_id>.json` |
+| Asistentes | Visibilidad por destino con alternas de idioma y proveedor, dominios citados y un ejemplo de respuesta | `asistentes.json` |
+| Redes | Presencia en el panel de TikTok y en YouTube; opinión agregada (P1) | `redes.json` |
+
+- **Barra superior** (blanca, 56 px, línea inferior en `linea`): nombre del proyecto, las cuatro vistas como enlaces de texto (la activa en tinta, peso 700, con un subrayado de 2 px en `tc-azul`), y a la derecha el correo de la sesión y «Salir». Sin pestañas en forma de píldora.
+- **Rutas** por fragmento: `#radar`, `#fichas`, `#asistentes`, `#redes`, y `#radar/<destino_id>` para abrir una ficha. Así cada estado tiene un enlace que se puede compartir.
+- **Panel de ficha:** 420 px a la derecha en escritorio; en teléfono ocupa toda la pantalla con un botón «Cerrar». Se cierra con Escape.
+- **Estados vacíos:** si un archivo de datos todavía no existe, la vista dice qué falta en una frase («Todavía no hay corridas de asistentes») y no muestra gráficas falsas.
+- **Acceso:** mientras se valida la sesión se ve «Verificando acceso…». Sin sesión, la plataforma lleva al inicio de sesión de Cognito. En modo local (sin configuración de Cognito) aparece una banda gris arriba: «Modo local: acceso sin cuenta».
+- «Cómo se hizo» y las descargas viven en la página pública; la plataforma los enlaza desde el pie de la barra.
 
 **Sección tipo**
 ```
@@ -160,7 +192,7 @@ Orden fijo, definido en `web/src/secciones.ts`:
 - Las secciones alternan blanco y `banda`. El único bloque oscuro es el pie (`noche`), donde el motivo se ve como en la convocatoria.
 
 **Portada** (fondo blanco)
-- Columna de texto (≤ 540 px, para que el H1 quepa en dos o tres líneas): H1 «Radar de Atención Turística de Puebla», el acento, la entrada, dos botones y una nota con el evento.
+- Columna de texto (≤ 540 px, para que el H1 quepa en dos o tres líneas): H1 «Radar de Atención Turística de Puebla», el acento, la entrada, dos botones («Entrar a la plataforma» y «Cómo funciona») y una nota con el evento.
 - Columna del mapa:
   - el contorno del estado con los municipios en `linea`;
   - los 12 Pueblos Mágicos y la capital como puntos en su posición real;
@@ -185,7 +217,7 @@ Orden fijo, definido en `web/src/secciones.ts`:
 | Gráfica de cuadrantes | Dispersión: atención (x) frente a desempeño (y), con líneas en las medianas y cada destino rotulado |
 | Tooltip | Fondo `tinta`, texto blanco de 13.5 px, sin radio. Solo aparece con ratón; en pantallas táctiles el toque selecciona |
 | Aviso de error | Fondo blanco con borde izquierdo de 4 px en `#B91C1C`. Dice qué falló y qué hacer |
-| Verificación de datos | En el pie: «Datos verificados: 9 de 9 archivos coinciden con su huella». Al desplegarlo se ve cada archivo con su SHA-256 abreviada |
+| Verificación de datos | En el pie: «Datos verificados: n de n archivos coinciden con su huella». Al desplegarlo se ve cada archivo con su SHA-256 abreviada |
 
 ---
 
@@ -230,13 +262,15 @@ Orden fijo, definido en `web/src/secciones.ts`:
 - Siempre presentes, salvo en la gráfica de cuadrantes, que rotula directamente.
 - Medido y derivado se distinguen por relleno o trama.
 
-**Selección compartida.** Elegir un destino en cualquier lugar actualiza el mapa, la tabla, la ficha, la gráfica de cuadrantes y la sección de asistentes. Se hace con `seleccionar(destinoId, origen)` en `web/src/scripts/comun.js`.
+**Selección compartida.** En la plataforma, elegir un destino en cualquier lugar actualiza el mapa, la tabla, la gráfica de cuadrantes, el panel de ficha y la vista de asistentes, y cambia la ruta a `#radar/<destino_id>`. Se hace con `seleccionar(destinoId, origen)` en `web/src/scripts/comun.js`.
 
 ---
 
 ## 9. Teléfono (≤ 760 px; una columna desde 1080 px)
 
-- **Encabezado:** el texto «3 de 9» se oculta por debajo de 420 px.
+- **Encabezado de la página pública:** el texto «3 de 6» se oculta por debajo de 420 px.
+- **Barra de la plataforma:** las vistas se vuelven desplazables en horizontal; el correo se oculta y queda «Salir».
+- **Panel de ficha:** ocupa toda la pantalla, con «Cerrar» arriba.
 - **Portada:** el mapa pasa debajo del texto con todo el ancho; los botones ocupan todo el ancho.
 - **Tabla del radar:** se ocultan las columnas de componentes y queda el índice; al tocar una fila se abre la ficha.
 - **Asistentes:** las alternas de idioma se vuelven desplazables en horizontal, sin salto de línea.
@@ -272,6 +306,7 @@ Orden fijo, definido en `web/src/secciones.ts`:
 - [ ] Medido y derivado se distinguen sin color.
 - [ ] El sitio no menciona herramientas de construcción. Comprobar con `grep -riE "hecho con|generado (por|con)|copilot|claude|opus" web/src`; los nombres de los asistentes estudiados aparecen solo en la sección de asistentes.
 - [ ] El manifiesto coincide: 100 % de los archivos verificados.
+- [ ] La plataforma no muestra contenido sin sesión, salvo en modo local, y el despliegue no se hizo en modo local.
 - [ ] Contraste revisado: texto ≥ 4.5 : 1; puntos y líneas ≥ 3 : 1; rellenos claros con borde.
 - [ ] Capturas a 1440×900, 1280×720 y 390×844 revisadas a ojo.
 
@@ -282,7 +317,9 @@ Orden fijo, definido en `web/src/secciones.ts`:
 | Qué | Dónde |
 |---|---|
 | Tokens y estilos | `web/src/styles/global.css` |
-| Secciones | `web/src/components/*.astro` y `web/src/secciones.ts` |
+| Secciones de la página pública | `web/src/components/*.astro` y `web/src/secciones.ts` |
+| Plataforma | `web/src/pages/plataforma/index.astro`, `web/src/components/plataforma/` y `web/src/scripts/plataforma.js` |
+| Acceso | `web/src/scripts/acceso.js` |
 | Selección compartida, formato y colores en JS | `web/src/scripts/comun.js` |
 | Mapa | `web/src/scripts/mapa.js` |
 | Figuras de «Cómo se hizo» | `web/src/scripts/escenas.js` |

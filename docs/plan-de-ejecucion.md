@@ -67,7 +67,7 @@ Orden sugerido: H1 en la mañana de D-1, H2 en la tarde de D-1, H3 en la noche d
 
 ## Definición de terminado de la demostración
 
-- [ ] Sitio en `techcapital.foor.dev` (o el subdominio acordado) con HTTPS.
+- [ ] Sitio en `techcapital.foor.dev` (o el subdominio acordado) con HTTPS: página pública y plataforma con inicio de sesión de Cognito y una cuenta de demostración.
 - [ ] Los 12 Pueblos Mágicos en el radar, con al menos tres componentes de atención.
 - [ ] Sección de asistentes con al menos 400 corridas, tres idiomas y dos proveedores, y fuentes citadas.
 - [ ] Panel con al menos 15 participantes y protocolo publicado.

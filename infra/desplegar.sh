@@ -12,6 +12,12 @@ if [[ ! -f "$DIST/index.html" ]]; then
   exit 1
 fi
 
+# La plataforma no se publica sin acceso: una compilación sin Cognito queda en modo local (ADR-0009).
+if ! grep -rqs "amazoncognito.com" "$DIST/_astro"; then
+  echo "web/dist se compiló en modo local, sin Cognito. Corre: make web-config && make web" >&2
+  exit 1
+fi
+
 cd "$RAIZ/infra"
 BUCKET="$(terraform output -raw bucket_sitio)"
 DISTRIBUCION="$(terraform output -raw cloudfront_id)"
