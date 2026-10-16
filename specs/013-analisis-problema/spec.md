@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Análisis (lee `data/curado/` y `data/referencia/`; no escribe en `data/`) |
 | Prioridad | P0 |
-| Estado | En curso |
+| Estado | Hecha: A–D con datos; E y F pendientes por falta de datos |
 | Depende de | 002 (indicadores oficiales), 012 (catálogo del corredor) |
 | Habilita | Entregable 2 (`docs/entregables/02_problema.md`), entregable 9 (evidencia de análisis y resultados) y el pitch |
 
