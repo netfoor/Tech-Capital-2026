@@ -210,6 +210,37 @@ def asistentes_correr(
         )
 
 
+@asistentes.command("extraer")
+def asistentes_extraer(
+    concurrencia: Annotated[int, typer.Option(help="Llamadas simultáneas")] = 8,
+) -> None:
+    """Anota con un modelo las respuestas en ko y zh y guarda el resultado en caché."""
+    from radar.asistentes import extractor, procesar
+
+    config.cargar_entorno()
+    destinos = catalogo.cargar()
+    corridas = procesar.leer_corridas()
+    por_hacer = len(extractor.pendientes(corridas, extractor.cargar_cache()))
+    typer.echo(f"{por_hacer} respuestas por anotar")
+    hechas = sum(
+        1
+        for _ in extractor.ejecutar(
+            corridas, destinos, extractor.llamar_gemini(), concurrencia=concurrencia
+        )
+    )
+    typer.echo(f"{hechas} anotadas")
+
+
+@asistentes.command("procesar")
+def asistentes_procesar() -> None:
+    """Escribe las cinco tablas curadas de asistentes a partir de lo crudo."""
+    from radar.asistentes import procesar
+
+    tablas = procesar.ejecutar_y_escribir(catalogo.cargar())
+    for nombre, tabla in tablas.items():
+        typer.echo(f"{nombre}: {len(tabla):,} filas")
+
+
 @analisis.command("calcular")
 def calcular_radar() -> None:
     """Calcula `radar_destinos.csv` con los componentes que existan en `data/curado/`."""
