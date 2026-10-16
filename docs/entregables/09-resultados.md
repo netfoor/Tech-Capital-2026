@@ -87,3 +87,7 @@ Las cifras de cada hallazgo están en las tablas generadas al inicio de este arc
 - Los idiomas francés, coreano y chino tienen menos corridas que español e inglés porque el crédito de OpenAI se agotó antes de completarlas.
 - La afluencia y la derrama oficiales se derivan de las llegadas a hotel.
 - El cuadrante describe una posición relativa y no una causa.
+
+## Prueba exploratoria de video corto
+
+Se hizo una prueba de búsqueda en TikTok para los 12 destinos (16 de octubre de 2026, una cuenta, una búsqueda por destino). No entra al radar. El detalle y sus límites están en `docs/evidencia/tiktok-pruebas/README.md`. Un resultado a seguir: en Teziutlán, 5 de 12 resultados son noticias o sucesos y solo 3 son de visita.
