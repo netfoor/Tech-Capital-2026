@@ -18,7 +18,7 @@ Nada se implementa sin `spec.md` → `plan.md` → `tasks.md`. Un cambio de comp
 
 Todo dato publicado se puede rastrear hasta una fuente registrada en `data/fuentes/fuentes.csv`: URL, fecha de consulta y SHA-256 cuando hay archivo. Los indicadores distinguen entre **medido** (registro directo, por ejemplo DataTur) y **derivado** (calculado por la fuente con un factor o supuesto). Ninguna cifra se escribe a mano en el sitio ni en los documentos de entrega: se genera desde `data/curado/`.
 
-- Verificación: cada indicador de `metrics/definitions.yaml` declara su fuente y cada tabla curada tiene su fila en `data/catalog/data_catalog.csv`.
+- Verificación: cada indicador de `backend/metrics/definitions.yaml` declara su fuente y cada tabla curada tiene su fila en `data/catalog/data_catalog.csv`.
 
 ## IV. Recolección legítima y respeto a las personas
 

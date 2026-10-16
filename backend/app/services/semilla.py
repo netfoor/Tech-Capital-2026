@@ -413,7 +413,7 @@ def cargar_indicadores(sesion: Session, ruta: Path, reporte: Reporte) -> None:
 
 
 def cargar_definiciones(sesion: Session, reporte: Reporte) -> None:
-    """Fichas de `metrics/definitions.yaml` (spec 019); van después de la serie oficial."""
+    """Fichas de `backend/metrics/definitions.yaml` (spec 019); van después de la serie oficial."""
     ruta = ajustes().archivo_metricas
     if not ruta.exists():
         reporte.omitidos.append(f"{ruta} no existe (spec 019)")

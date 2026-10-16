@@ -15,7 +15,7 @@ Orden de trabajo, dependencias y carriles. El producto está definido en [`produ
 | 016 PWA del visitante | Lista y mapa, ficha, guardar en mi mapa, planear, recorrido, bitácora y reseña (§05) | P0 | 014 |
 | 017 Recorridos y visitas | Sesión consentida, muestras, detección de paradas, visitas con confianza, trazas sintéticas (§07) | P0 | 014 |
 | 018 Reseñas, barreras y moderación | Reseña por dimensiones, reporte de barrera, moderación que actualiza la ficha (§06.8) | P0 | 014 |
-| 019 Tablero institucional | Panorama, Experiencia, Inclusión y Oferta–demanda; `metrics/definitions.yaml`; agregados con k (§09, §11) | P0 | 013, 017, 018 |
+| 019 Tablero institucional | Panorama, Experiencia, Inclusión y Oferta–demanda; `backend/metrics/definitions.yaml`; agregados con k (§09, §11) | P0 | 013, 017, 018 |
 | 020 Privacidad, seguridad y accesibilidad | Consentimientos, ARCO, EXIF, pruebas de autorización, axe y WCAG 2.2 AA (§06.1, §14) | P0 | 016 |
 | 021 Servidor MCP | `get_destination_metrics`, `get_accessibility_gaps`, `get_data_lineage` (§11) | P1 | 019 |
 | 022 Importar, compartir e intención | Pegar enlace, Web Share Target, enlace de solo lectura, intención → visita (§04.4, §09.I) | P1 | 016, 019 |
