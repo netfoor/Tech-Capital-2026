@@ -1,0 +1,11 @@
+{"osm3s":{"timestamp_osm_base":"2026-10-16T08:00:00Z"},"consulta":"(respuesta guardada para pruebas)","elements":[
+{"type":"node","id":101,"lat":19.0408,"lon":-98.1960,"timestamp":"2025-03-01T10:00:00Z","tags":{"tourism":"museum","name":"Museo Amparo","wheelchair":"yes","toilets:wheelchair":"yes","opening_hours":"We-Mo 10:00-18:00","fee":"yes"}},
+{"type":"node","id":102,"lat":19.0429,"lon":-98.1983,"timestamp":"2024-01-15T10:00:00Z","tags":{"amenity":"place_of_worship","religion":"christian","building":"cathedral","name":"Catedral de Puebla","wheelchair":"limited","step_count":"5","fee":"no"}},
+{"type":"way","id":201,"center":{"lat":19.04291,"lon":-98.19831},"timestamp":"2023-06-01T10:00:00Z","tags":{"amenity":"place_of_worship","name":"Catedral de Puebla","ramp":"yes"}},
+{"type":"node","id":103,"lat":19.0440,"lon":-98.1975,"timestamp":"2022-02-02T10:00:00Z","tags":{"amenity":"restaurant","name":"Fonda de Santa Clara","cuisine":"mexican"}},
+{"type":"node","id":104,"lat":19.0436,"lon":-98.1979,"timestamp":"2021-05-05T10:00:00Z","tags":{"amenity":"toilets","wheelchair":"no"}},
+{"type":"node","id":105,"lat":19.0437,"lon":-98.1978,"timestamp":"2021-05-05T10:00:00Z","tags":{"amenity":"bench"}},
+{"type":"node","id":106,"lat":19.0450,"lon":-98.1990,"timestamp":"2021-05-05T10:00:00Z","tags":{"tourism":"information","information":"board"}},
+{"type":"node","id":107,"lat":19.0577,"lon":-98.3017,"timestamp":"2020-01-01T10:00:00Z","tags":{"historic":"archaeological_site","name":"Zona Arqueológica de Cholula","incline":"12%","surface":"paving_stones"}},
+{"type":"node","id":108,"lat":19.0460,"lon":-98.1950,"timestamp":"2020-01-01T10:00:00Z","tags":{"amenity":"arts_centre","name":"Casa de la Cultura"}}
+]}

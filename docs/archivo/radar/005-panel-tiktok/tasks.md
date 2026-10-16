@@ -9,7 +9,7 @@
 
 ## Procesamiento
 
-- [ ] T005-05 [P] `radar/comun/estadistica.py` con el intervalo de Wilson y sus pruebas. Verificación: `uv run pytest tests/test_estadistica.py`.
+- [x] T005-05 [P] `radar/comun/estadistica.py` con el intervalo de Wilson y sus pruebas. Verificación: `uv run pytest tests/test_estadistica.py`.
 - [ ] T005-06 Plantilla `data/privado/panel/codificacion.csv` y codificación manual de las sesiones recibidas, según las reglas del protocolo. Verificación: ≥ 15 sesiones codificadas.
 - [ ] T005-07 Doble codificación del 20 % de las sesiones y acuerdo reportado. Verificación: porcentaje de acuerdo en el destino anotado en `09-resultados.md`.
 - [ ] T005-08 `radar panel consolidar`: validación, anonimización y presencia con Wilson. Verificación: `panel_observaciones.csv` y `presencia_panel.csv` sin columnas prohibidas (prueba automática).

@@ -1,0 +1,61 @@
+{
+ "id": "resp_x1",
+ "object": "response",
+ "model": "gpt-5-mini-2026-08-07",
+ "status": "completed",
+ "output": [
+  {
+   "type": "reasoning",
+   "id": "rs_1",
+   "summary": []
+  },
+  {
+   "type": "web_search_call",
+   "id": "ws_1",
+   "status": "completed",
+   "action": {
+    "type": "search",
+    "query": "mejores pueblos mágicos Puebla"
+   }
+  },
+  {
+   "type": "message",
+   "id": "msg_1",
+   "role": "assistant",
+   "content": [
+    {
+     "type": "output_text",
+     "text": "Te recomiendo Cuetzalan y Zacatlán, además de Cholula.",
+     "annotations": [
+      {
+       "type": "url_citation",
+       "url": "https://www.puebla.gob.mx/cuetzalan",
+       "title": "Cuetzalan",
+       "start_index": 14,
+       "end_index": 22
+      },
+      {
+       "type": "url_citation",
+       "url": "https://es.wikipedia.org/wiki/Zacatl%C3%A1n",
+       "title": "Zacatlán - Wikipedia",
+       "start_index": 25,
+       "end_index": 33
+      },
+      {
+       "type": "url_citation",
+       "url": "https://www.puebla.gob.mx/cuetzalan",
+       "title": "Cuetzalan",
+       "start_index": 40,
+       "end_index": 50
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "usage": {
+  "input_tokens": 1520,
+  "output_tokens": 310,
+  "total_tokens": 1830
+ }
+}

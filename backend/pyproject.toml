@@ -6,12 +6,15 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
-    "pydantic>=2.9",
+    "pydantic[email]>=2.9",
     "pydantic-settings>=2.6",
     "sqlalchemy>=2.0.36",
     "geoalchemy2>=0.16",
     "alembic>=1.14",
     "psycopg[binary]>=3.2",
+    "pyjwt>=2.15.1",
+    "argon2-cffi>=25.1.0",
+    "pillow>=12.3.0",
 ]
 
 [dependency-groups]
@@ -30,6 +33,12 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-third-party = ["alembic"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/versions/*" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

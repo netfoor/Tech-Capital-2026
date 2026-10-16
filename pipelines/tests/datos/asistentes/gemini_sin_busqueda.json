@@ -1,0 +1,19 @@
+{
+ "model_version": "gemini-3.8-flash",
+ "candidates": [
+  {
+   "content": {
+    "parts": [
+     {
+      "text": "Visita Cholula.",
+      "thought": false
+     }
+    ]
+   }
+  }
+ ],
+ "usage_metadata": {
+  "prompt_token_count": 10,
+  "candidates_token_count": 4
+ }
+}
