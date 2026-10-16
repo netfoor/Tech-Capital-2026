@@ -1,4 +1,5 @@
 import { Link, Route, Routes } from 'react-router'
+import { Tablero } from './admin/Tablero'
 import { EstadoApi } from './componentes/EstadoApi'
 
 function Visitante() {
@@ -6,16 +7,6 @@ function Visitante() {
     <main id="contenido">
       <h1>Puebla Viva 360</h1>
       <p>Descubre, planea y vive recorridos inclusivos en Puebla.</p>
-      <EstadoApi />
-    </main>
-  )
-}
-
-function Tablero() {
-  return (
-    <main id="contenido">
-      <h1>Tablero institucional</h1>
-      <p>Indicadores agregados para la Secretaría de Desarrollo Turístico.</p>
       <EstadoApi />
     </main>
   )
