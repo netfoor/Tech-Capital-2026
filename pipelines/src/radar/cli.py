@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+from typing import Annotated
 
 import pandas as pd
 import typer
@@ -16,6 +17,8 @@ analisis = typer.Typer(no_args_is_help=True, help="Índices, brecha y cuadrantes
 app.add_typer(analisis, name="radar")
 senales = typer.Typer(no_args_is_help=True, help="Señales de atención digital (specs 003 y 004).")
 app.add_typer(senales, name="senales")
+asistentes = typer.Typer(no_args_is_help=True, help="Auditoría de asistentes (spec 006).")
+app.add_typer(asistentes, name="asistentes")
 
 
 def _fallar_si(problemas: list[str], titulo: str) -> None:
@@ -129,6 +132,71 @@ def senales_trends(
         f"{tabla['destino_id'].nunique()} destinos; periodos {tabla['periodo'].min()} "
         f"a {tabla['periodo'].max()}; {len(tabla):,} filas"
     )
+
+
+def _proveedores(nombres: list[str]):
+    from radar.asistentes import proveedores
+
+    return {n: proveedores.crear(n) for n in nombres}
+
+
+def _parametros_corridas(proveedor, idioma, repeticiones, semilla):
+    from radar.asistentes import corridas
+
+    nombres = proveedor or ["openai", "gemini"]
+    prov = _proveedores(nombres)
+    prompts = corridas.cargar_prompts()
+    idiomas = set(idioma) if idioma else None
+    pendientes, total = corridas.plan(prompts, prov, repeticiones, semilla=semilla, idiomas=idiomas)
+    return prov, pendientes, total
+
+
+@asistentes.command("plan")
+def asistentes_plan(
+    proveedor: Annotated[list[str] | None, typer.Option(help="openai o gemini (repetible)")] = None,
+    idioma: Annotated[
+        list[str] | None, typer.Option(help="es, en, fr, ko o zh (repetible)")
+    ] = None,
+    repeticiones: Annotated[int, typer.Option(help="Repeticiones por prompt y proveedor")] = 10,
+    semilla: Annotated[int, typer.Option(help="Semilla del orden aleatorio")] = 2026,
+) -> None:
+    """Cuenta las corridas pendientes y estima los tokens, sin llamar a ningún servicio."""
+    from radar.asistentes import corridas
+
+    config.cargar_entorno()
+    _, pendientes, total = _parametros_corridas(proveedor, idioma, repeticiones, semilla)
+    entrada, salida = corridas.estimar_tokens(len(pendientes))
+    typer.echo(
+        f"Plan: {total} corridas; hechas: {total - len(pendientes)}; pendientes: {len(pendientes)}"
+    )
+    typer.echo(f"Tokens estimados de lo pendiente: {entrada:,} de entrada y {salida:,} de salida")
+
+
+@asistentes.command("correr")
+def asistentes_correr(
+    proveedor: Annotated[list[str] | None, typer.Option(help="openai o gemini (repetible)")] = None,
+    idioma: Annotated[
+        list[str] | None, typer.Option(help="es, en, fr, ko o zh (repetible)")
+    ] = None,
+    repeticiones: Annotated[int, typer.Option(help="Repeticiones por prompt y proveedor")] = 10,
+    semilla: Annotated[int, typer.Option(help="Semilla del orden aleatorio")] = 2026,
+    tope: Annotated[int | None, typer.Option(help="Máximo de corridas de esta ejecución")] = None,
+) -> None:
+    """Ejecuta las corridas pendientes y las guarda en data/crudo/asistentes/ (reanudable)."""
+    from radar.asistentes import corridas
+
+    config.cargar_entorno()
+    prov, pendientes, total = _parametros_corridas(proveedor, idioma, repeticiones, semilla)
+    destino = min(len(pendientes), tope) if tope else len(pendientes)
+    typer.echo(f"{destino} corridas por ejecutar de {total} en el plan")
+    hechas = 0
+    for linea in corridas.ejecutar(pendientes, prov, tope=tope, semilla=semilla):
+        hechas += 1
+        typer.echo(
+            f"[{hechas}/{destino}] {linea['prompt_id']} {linea['proveedor']} "
+            f"#{linea['repeticion']} busco={linea['busco']} "
+            f"tokens={linea['tokens_entrada']}/{linea['tokens_salida']}"
+        )
 
 
 @analisis.command("calcular")
