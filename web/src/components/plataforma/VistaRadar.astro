@@ -9,3 +9,171 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
 <MarcoVista vista={vista}>
   <PanelFicha slot="lateral" />
 </MarcoVista>
+
+<script>
+  import { montarRadar } from '../../scripts/vista-radar.js';
+  const contenedor = document.getElementById('radar-contenido');
+  if (contenedor) {
+    montarRadar(contenedor).catch((error) => {
+      contenedor.innerHTML = `<p class="aviso-error">No se pudieron cargar los datos del radar: ${error.message}</p>`;
+    });
+  }
+</script>
+
+<style is:global>
+  .nota-radar {
+    max-width: 70ch;
+    font-size: 14.5px;
+    color: var(--color-gris);
+  }
+
+  .rejilla-radar {
+    display: grid;
+    gap: 24px;
+    margin-top: 16px;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (max-width: 1079px) {
+    .rejilla-radar {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .mapa-brecha .lienzo-mapa {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .mapa-brecha .etiqueta,
+  .cuadrantes .etiqueta {
+    font-size: 12.5px;
+    fill: var(--color-tinta);
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+
+  .mapa-brecha .leyenda-mapa,
+  .mapa-brecha .fuente-mapa {
+    font-size: 12.5px;
+    color: var(--color-gris);
+  }
+
+  .mapa-brecha .leyenda-clases {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 4px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mapa-brecha .leyenda-clases li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mapa-brecha .muestra {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+  }
+
+  .tabla-radar-caja {
+    overflow-x: auto;
+  }
+
+  .tabla-radar {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .tabla-radar th {
+    background: #fff;
+    border-bottom: 1.5px solid var(--color-tinta);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .tabla-radar th button {
+    min-height: 44px;
+    padding: 0 8px;
+    font-weight: 700;
+    color: var(--color-tinta);
+  }
+
+  .tabla-radar th[aria-sort='ascending'] button::after {
+    content: ' ▲';
+    font-size: 11px;
+  }
+
+  .tabla-radar th[aria-sort='descending'] button::after {
+    content: ' ▼';
+    font-size: 11px;
+  }
+
+  .tabla-radar td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--color-linea);
+    white-space: nowrap;
+  }
+
+  .tabla-radar .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tabla-radar tbody tr {
+    cursor: pointer;
+  }
+
+  .tabla-radar tbody tr.seleccionado {
+    background: var(--color-fila-sel);
+    box-shadow: inset 3px 0 0 var(--color-sel);
+  }
+
+  .cuadrantes {
+    margin-top: 32px;
+  }
+
+  .cuadrantes .eje {
+    font-size: 12.5px;
+    fill: var(--color-gris);
+  }
+
+  .cuadrantes .rotulo-cuadrante {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .punto-radar,
+  .punto-cuadrante {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .anillo-sel {
+    stroke: none;
+  }
+
+  .seleccionado > .anillo-sel,
+  .punto-radar:focus-visible > .anillo-sel,
+  .punto-cuadrante:focus-visible > .anillo-sel {
+    stroke: var(--color-sel);
+    stroke-width: 2.5;
+  }
+
+  .aviso-error {
+    border-left: 4px solid var(--color-error);
+    padding: 12px 16px;
+    background: #fff;
+  }
+</style>

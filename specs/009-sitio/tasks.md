@@ -11,7 +11,7 @@
 
 ## Plataforma
 
-- [ ] T009-06 Vista Radar: mapa por brecha, tabla y gráfica de cuadrantes con selección compartida y ruta `#radar/<destino_id>`. Depende de T008-05. Verificación: elegir un destino en cualquier vista lo marca en las tres y abre el panel.
+- [x] T009-06 Vista Radar: mapa por brecha, tabla y gráfica de cuadrantes con selección compartida y ruta `#radar/<destino_id>`. Depende de T008-05. Verificación: elegir un destino en cualquier vista lo marca en las tres y abre el panel.
 - [ ] T009-07 Panel de ficha y vista Fichas (`fichas/<id>.json`) con impresión de una hoja. Verificación: impresión a PDF de Cuetzalan en una sola hoja carta.
 - [ ] T009-08 Vista Asistentes con alternas de idioma y proveedor, barras con intervalo y dominios citados. Depende de T006-10. Verificación: los 5 idiomas seleccionables.
 - [ ] T009-09 Vista Redes: presencia en el panel y en YouTube; opinión agregada si existe. Depende de T005-08 (y de T004-05 y T007-06 en P1). Verificación: datos visibles con n e intervalo.

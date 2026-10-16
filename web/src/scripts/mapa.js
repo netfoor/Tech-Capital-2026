@@ -41,8 +41,8 @@ function leyendaDesempeno(contenedor) {
     .text('Anillo: índice de atención; el trazo completo equivale a 100.');
 }
 
-/** Dibuja el mapa de la portada con relleno de ocupación y anillo de atención. */
-export async function mapaPortada(figura) {
+/** Datos y proyección comunes a los mapas; `filas` ya trae la posición `xy` de cada destino. */
+export async function cargarBase() {
   const [destinos, radar, estado, municipios] = await Promise.all([
     cargar('destinos.json'),
     cargar('radar.json'),
@@ -50,10 +50,18 @@ export async function mapaPortada(figura) {
     cargar('geo/municipios.json'),
   ]);
   const p = proyeccion(estado);
-  const ruta = geoPath(p);
+  const porId = new Map(destinos.destinos.map((d) => [d.destino_id, d]));
+  const filas = [...radar.destinos.map((r) => ({ ...r, referencia: false })), { ...radar.referencia, referencia: true }]
+    .map((r) => ({ ...r, ...porId.get(r.destino_id) }))
+    .map((r) => ({ ...r, xy: p([r.lon, r.lat]) }))
+    .sort((a, b) => a.xy[0] - b.xy[0]);
+  return { destinos, radar, estado, municipios, p, ruta: geoPath(p), filas };
+}
+
+/** Lienzo con los municipios y el contorno del estado. */
+export function lienzoBase(figura, { estado, municipios, ruta }) {
   const raiz = select(figura);
   raiz.selectAll('*').remove();
-
   const lienzo = raiz
     .append('svg')
     .attr('viewBox', `0 0 ${ANCHO} ${ALTO}`)
@@ -80,11 +88,31 @@ export async function mapaPortada(figura) {
     .attr('stroke', '#9CA3AF')
     .attr('stroke-width', 1);
 
-  const porId = new Map(destinos.destinos.map((d) => [d.destino_id, d]));
-  const filas = [...radar.destinos.map((r) => ({ ...r, referencia: false })), { ...radar.referencia, referencia: true }]
-    .map((r) => ({ ...r, ...porId.get(r.destino_id) }))
-    .map((r) => ({ ...r, xy: p([r.lon, r.lat]) }))
-    .sort((a, b) => a.xy[0] - b.xy[0]);
+  return { raiz, lienzo };
+}
+
+/** Etiquetas sin traslape: se colocan de norte a sur y se bajan si chocan con otra. */
+export function colocarEtiquetas(filas, radio) {
+  const cajas = [];
+  const ancho = (t) => t.length * 6.6;
+  [...filas]
+    .sort((a, b) => a.xy[1] - b.xy[1])
+    .forEach((d) => {
+      const derecha = d.xy[0] <= ANCHO * 0.62;
+      const w = ancho(d.nombre);
+      const x = derecha ? d.xy[0] + radio + 6 : d.xy[0] - radio - 6 - w;
+      let y = d.xy[1] + 4;
+      while (cajas.some((c) => x < c.x + c.w && x + w > c.x && Math.abs(y - c.y) < 13)) y += 13;
+      cajas.push({ x, w, y });
+      d.etiqueta = { derecha, y: y - d.xy[1] };
+    });
+}
+
+/** Mapa de la portada con relleno de ocupación y anillo de atención. */
+export async function mapaPortada(figura) {
+  const base = await cargarBase();
+  const { p, filas } = base;
+  const { raiz, lienzo } = lienzoBase(figura, base);
 
   const puntos = lienzo
     .append('g')
@@ -114,19 +142,7 @@ export async function mapaPortada(figura) {
     .attr('stroke-linecap', 'round')
     .attr('transform', 'rotate(-90)')
     .attr('data-atencion', (d) => d.indice_atencion);
-  // Etiquetas sin traslape: se colocan de norte a sur y se bajan si chocan con otra.
-  const cajas = [];
-  const ancho = (t) => t.length * 6.6;
-  const colocar = (d) => {
-    const derecha = d.xy[0] <= ANCHO * 0.62;
-    const w = ancho(d.nombre);
-    const x = derecha ? d.xy[0] + RA + 6 : d.xy[0] - RA - 6 - w;
-    let y = d.xy[1] + 4;
-    while (cajas.some((c) => x < c.x + c.w && x + w > c.x && Math.abs(y - c.y) < 13)) y += 13;
-    cajas.push({ x, w, y });
-    d.etiqueta = { derecha, y: y - d.xy[1] };
-  };
-  [...filas].sort((a, b) => a.xy[1] - b.xy[1]).forEach(colocar);
+  colocarEtiquetas(filas, RA);
   puntos
     .append('text')
     .attr('class', 'etiqueta')
