@@ -6,6 +6,6 @@
 - [x] T003-04 Comando `radar senales trends` y tabla `interes_busqueda_mensual.csv` para los 12 Pueblos Mágicos en MX. Se ejecuta desde una red residencial. Verificación: 12 destinos × periodos desde 2017-01; ningún destino con todos los meses en 0.
 - [x] T003-05 [P] Reproducir el pico de noviembre de Chignahuapan frente a la afluencia oficial y guardar la gráfica en `docs/entregables/figuras/`. Verificación: figura y una nota en `09-resultados.md`.
 - [ ] T003-06 [P] (P1) Repetición de un lote otro día y reporte de variabilidad. Verificación: correlación reportada en el plan.
-- [ ] T003-07 [P] (P1) Serie en región US. Verificación: filas con `geo=US`.
+- [~] T003-07 [P] (P1) Serie en región US. Verificación: filas con `geo=US`.
 
 > 2026-10-16 · T003-03 y T003-04 se corrieron desde la computadora del equipo: 12 destinos, 2017-01 a 2026-09, 1 404 filas. El crudo (`data/crudo/trends/`) se conserva fuera de git.
