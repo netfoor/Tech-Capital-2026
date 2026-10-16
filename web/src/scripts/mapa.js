@@ -41,6 +41,21 @@ function leyendaDesempeno(contenedor) {
     .text('Anillo: índice de atención; el trazo completo equivale a 100.');
 }
 
+/**
+ * En pantallas angostas el lienzo se reduce y las etiquetas quedarían de menos de 12 px reales:
+ * se ocultan y el nombre queda en el aria-label y en la tabla (docs/diseno.md §8).
+ */
+export function ajustarEtiquetas(figura) {
+  const revisar = () => {
+    const svg = figura.querySelector('svg');
+    if (!svg) return;
+    const escala = svg.getBoundingClientRect().width / ANCHO;
+    figura.classList.toggle('sin-nombres', escala < 0.96);
+  };
+  new ResizeObserver(revisar).observe(figura);
+  revisar();
+}
+
 /** Datos y proyección comunes a los mapas; `filas` ya trae la posición `xy` de cada destino. */
 export async function cargarBase() {
   const [destinos, radar, estado, municipios] = await Promise.all([
@@ -145,7 +160,7 @@ export async function mapaPortada(figura) {
   colocarEtiquetas(filas, RA);
   puntos
     .append('text')
-    .attr('class', 'etiqueta')
+    .attr('class', 'etiqueta nombre-punto')
     .attr('x', (d) => (d.etiqueta.derecha ? RA + 6 : -(RA + 6)))
     .attr('y', (d) => d.etiqueta.y)
     .attr('text-anchor', (d) => (d.etiqueta.derecha ? 'start' : 'end'))
@@ -156,8 +171,9 @@ export async function mapaPortada(figura) {
   const [x1] = p([-98.9 + 50 / (111.32 * Math.cos((19 * Math.PI) / 180)), 17.95]);
   const barra = lienzo.append('g').attr('transform', `translate(${x0},${y0})`);
   barra.append('line').attr('x1', 0).attr('x2', x1 - x0).attr('stroke', '#374151').attr('stroke-width', 2);
-  barra.append('text').attr('class', 'etiqueta').attr('y', -6).text('50 km');
+  barra.append('text').attr('class', 'etiqueta escala-km').attr('y', -6).text('50 km');
 
+  ajustarEtiquetas(figura);
   leyendaDesempeno(raiz);
   raiz
     .append('figcaption')

@@ -299,13 +299,13 @@ Navegación de aplicación, no de documento:
 
 ## 12. Lista de revisión antes de publicar
 
-- [ ] Los encabezados están en negritas: el reset de Tailwind no los dejó en 400.
-- [ ] No hay desborde horizontal a 390 px y las etiquetas de los SVG no se salen.
-- [ ] El texto de los SVG mide al menos 12 px reales en teléfono.
-- [ ] Las animaciones de scroll se deshacen al subir; con movimiento reducido todo queda en su estado final.
+- [x] Los encabezados están en negritas: el reset de Tailwind no los dejó en 400.
+- [x] No hay desborde horizontal a 390 px y las etiquetas de los SVG no se salen.
+- [x] El texto de los SVG mide al menos 12 px reales en teléfono.
+- [x] Las animaciones de scroll se deshacen al subir; con movimiento reducido todo queda en su estado final.
 - [ ] Medido y derivado se distinguen sin color.
-- [ ] El sitio no menciona herramientas de construcción. Comprobar con `grep -riE "hecho con|generado (por|con)|copilot|claude|opus" web/src`; los nombres de los asistentes estudiados aparecen solo en la sección de asistentes.
-- [ ] El manifiesto coincide: 100 % de los archivos verificados.
+- [x] El sitio no menciona herramientas de construcción. Comprobar con `grep -riE "hecho con|generado (por|con)|copilot|claude|opus" web/src`; los nombres de los asistentes estudiados aparecen solo en la sección de asistentes.
+- [x] El manifiesto coincide: 100 % de los archivos verificados.
 - [ ] La plataforma no muestra contenido sin sesión, salvo en modo local, y el despliegue no se hizo en modo local.
 - [ ] Contraste revisado: texto ≥ 4.5 : 1; puntos y líneas ≥ 3 : 1; rellenos claros con borde.
 - [ ] Capturas a 1440×900, 1280×720 y 390×844 revisadas a ojo.

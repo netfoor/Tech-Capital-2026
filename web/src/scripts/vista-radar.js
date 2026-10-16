@@ -1,6 +1,6 @@
 // Vista Radar: mapa por brecha, tabla de los 12 y gráfica de cuadrantes con selección compartida.
 import { axisBottom, axisLeft, scaleLinear, select } from 'd3';
-import { cargarBase, colocarEtiquetas, lienzoBase } from './mapa.js';
+import { ajustarEtiquetas, cargarBase, colocarEtiquetas, lienzoBase } from './mapa.js';
 import { CUADRANTES, ESCALAS, alSeleccionar, colorDe, formato, necesitaBorde, seleccionado, seleccionar } from './comun.js';
 
 const COLUMNAS = [
@@ -74,12 +74,13 @@ export async function montarRadar(contenedor) {
     .text((d) => `${d.nombre}: brecha ${formato.decimal(d.brecha)}`);
   puntos
     .append('text')
-    .attr('class', 'etiqueta')
+    .attr('class', 'etiqueta nombre-punto')
     .attr('x', (d) => (d.etiqueta.derecha ? 16 : -16))
     .attr('y', (d) => d.etiqueta.y)
     .attr('text-anchor', (d) => (d.etiqueta.derecha ? 'start' : 'end'))
     .text((d) => d.nombre);
 
+  ajustarEtiquetas(figura);
   const leyenda = raiz.append('div').attr('class', 'leyenda-mapa');
   leyenda.append('p').attr('class', 'leyenda-titulo').text('Relleno: brecha (atención − desempeño)');
   const e = ESCALAS.brecha;
