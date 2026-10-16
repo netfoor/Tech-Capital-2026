@@ -29,3 +29,7 @@ Los cuatro estados se separan siempre: **producto objetivo**, **MVP implementado
 
 1. Specs 012 (ingesta) y 014 (API y modelo) en paralelo.
 2. Después 015 (recomendador), 016 (PWA) y 018 (barreras).
+
+## Para decidir con el equipo
+
+- 2026-10-16: llegaron a `main` 14 commits del Radar (specs 001, 003, 005, 006 y 008: Trends, auditoría de asistentes e índices). Se integraron sin perder nada: el código sigue en `pipelines/` con sus pruebas y las tareas quedaron en `docs/archivo/radar/`. Propuesta: reutilizar la auditoría de asistentes como módulo P1 del tablero («qué recomiendan los asistentes sobre cada destino»).

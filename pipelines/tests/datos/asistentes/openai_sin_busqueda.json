@@ -1,0 +1,20 @@
+{
+ "id": "resp_x2",
+ "model": "gpt-5-mini-2026-08-07",
+ "output": [
+  {
+   "type": "message",
+   "content": [
+    {
+     "type": "output_text",
+     "text": "Visita Atlixco.",
+     "annotations": []
+    }
+   ]
+  }
+ ],
+ "usage": {
+  "input_tokens": 20,
+  "output_tokens": 5
+ }
+}
