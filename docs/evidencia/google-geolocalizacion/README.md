@@ -1,7 +1,7 @@
 # Piloto de geolocalización en búsquedas de Google (Atlixco y Teziutlán)
 
 Estado: protocolo propuesto; las búsquedas se hacen a mano desde el navegador del equipo.
-Relacionado con T003-07 (comparación de búsquedas por ubicación).
+Documento de apoyo a la comparación de señales por ubicación (ver spec 003).
 
 ## Pregunta
 ¿Cambia lo que Google muestra por la ubicación declarada, y cuánto de la diferencia se debe a la hora y no a la geografía?
