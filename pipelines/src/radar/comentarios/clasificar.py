@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import threading
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import jsonschema
@@ -52,16 +54,18 @@ def clasificar(
     ruta_cache: Path,
     lote: int = 20,
     modelo: str = "",
+    concurrencia: int = 6,
 ) -> dict[str, dict]:
     """Clasifica los comentarios sin caché por lotes; devuelve la caché completa."""
     cache = cargar_cache(ruta_cache)
     ruta_cache.parent.mkdir(parents=True, exist_ok=True)
     pendientes = [c for c in comentarios if clave(c) not in cache]
-    for i in range(0, len(pendientes), lote):
-        bloque = pendientes[i : i + lote]
+    candado = threading.Lock()
+
+    def procesar(bloque: list[dict]) -> None:
         lineas = [f"{n} | {limpieza.limpiar(c['texto'])}" for n, c in enumerate(bloque)]
         respuesta = _analizar(llamar(PROMPT + "\n\n" + "\n".join(lineas)), set(range(len(bloque))))
-        with ruta_cache.open("a", encoding="utf-8") as f:
+        with candado, ruta_cache.open("a", encoding="utf-8") as f:
             for n, c in enumerate(bloque):
                 r = respuesta.get(n)
                 if r is None:
@@ -76,4 +80,8 @@ def clasificar(
                 }
                 cache[fila["clave"]] = fila
                 f.write(json.dumps(fila, ensure_ascii=False) + "\n")
+
+    bloques = [pendientes[i : i + lote] for i in range(0, len(pendientes), lote)]
+    with ThreadPoolExecutor(max_workers=concurrencia) as pool:
+        list(pool.map(procesar, bloques))
     return cache
