@@ -1,4 +1,4 @@
-"""Fichas semánticas de los indicadores (`metrics/definitions.yaml`, spec 019).
+"""Fichas semánticas de los indicadores (`backend/metrics/definitions.yaml`, spec 019).
 
 Se cargan a `core.metric_definition` (lo que cabe en sus columnas) y a `core.data_lineage`
 (una fila por fuente del indicador). La ficha completa se sirve desde el YAML versionado.

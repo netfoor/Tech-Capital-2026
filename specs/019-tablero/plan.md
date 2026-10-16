@@ -8,7 +8,7 @@ El tablero lee tres cosas: la serie oficial ya cargada en `analytics.aggregate_m
 
 | Archivo | Contenido |
 |---|---|
-| `metrics/definitions.yaml` | Ficha semántica de cada indicador (§09) |
+| `backend/metrics/definitions.yaml` | Ficha semántica de cada indicador (§09) |
 | `backend/app/services/definiciones.py` | Lectura del YAML y carga a `core.metric_definition` y `core.data_lineage` |
 | `backend/app/services/metricas.py` | Oferta–demanda, Inclusión, Panorama, Experiencia, supresión k, intervalos y linaje |
 | `backend/app/api/b2b.py` | `GET /b2b/supply-demand`, `/b2b/accessibility-gaps`, `/b2b/metrics` y `GET /metrics/{id}/lineage`; `?formato=csv` |

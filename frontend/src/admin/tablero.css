@@ -507,3 +507,12 @@
     padding-right: 1rem;
   }
 }
+
+/* Los títulos toman el color del tema del tablero, no el de la PWA. */
+.tb h1,
+.tb h2,
+.tb h3,
+.tb-entrada h1,
+.tb-entrada h2 {
+  color: var(--tb-texto);
+}

@@ -11,7 +11,7 @@
 ## Bases que atiende
 
 - §3 de la convocatoria: decisiones basadas en evidencia y distribución de los beneficios del turismo (módulo Oferta–demanda con destinos alternativos).
-- §5: datos con procedencia (`metrics/definitions.yaml`, `core.metric_definition`, `core.data_lineage`), calidad y privacidad (supresión k).
+- §5: datos con procedencia (`backend/metrics/definitions.yaml`, `core.metric_definition`, `core.data_lineage`), calidad y privacidad (supresión k).
 - §8: prototipo demostrable desde el día 1 con datos públicos reales y, aparte, un conjunto sintético etiquetado.
 - Turismo accesible e incluyente: módulo Inclusión con brechas de información de accesibilidad (§06.7) y el circuito cerrado de moderación (§06.8).
 
@@ -41,7 +41,7 @@ Dar a la Secretaría un tablero en `/admin` con cuatro módulos (§09): **Panora
 
 ## Requisitos funcionales
 
-- **FR-019-01** `metrics/definitions.yaml` con la ficha semántica de §09 por indicador: `id`, `nombre`, `pregunta`, `formula`, `unidad`, `numerador`, `denominador`, `filtros`, `fuentes`, `frecuencia`, `cobertura`, `limitaciones`, `k_minimo`, `decision_potencial`, `procedencia`, `modulo` y `version`.
+- **FR-019-01** `backend/metrics/definitions.yaml` con la ficha semántica de §09 por indicador: `id`, `nombre`, `pregunta`, `formula`, `unidad`, `numerador`, `denominador`, `filtros`, `fuentes`, `frecuencia`, `cobertura`, `limitaciones`, `k_minimo`, `decision_potencial`, `procedencia`, `modulo` y `version`.
 - **FR-019-02** Carga idempotente de las fichas a `core.metric_definition` y de sus fuentes a `core.data_lineage` (`entidad = metric_definition`). La semilla de 014 la llama después de la serie oficial.
 - **FR-019-03** `GET /b2b/supply-demand` con datos públicos de `analytics.aggregate_metric` (serie de la spec 002): ocupación ponderada de los últimos 12 meses publicados, cuartos libres por día, estadía, crecimiento contra los 12 meses previos, participación, HHI de llegadas (12 meses y serie anual), serie mensual de ocupación, POI del catálogo por destino y candidatos a destino alternativo.
 - **FR-019-04** `GET /b2b/accessibility-gaps?corredor_id=` con cobertura de información por destino, atributo y estado; barreras reportadas y aceptadas; tiempo mediano de moderación; prioridades sugeridas generadas desde los datos.
@@ -69,7 +69,7 @@ Dar a la Secretaría un tablero en `/admin` con cuatro módulos (§09): **Panora
 
 ## Preguntas abiertas
 
-- 2026-10-16. `core.metric_definition` no tiene columnas para toda la ficha de §09 (pregunta, numerador, filtros, cobertura, limitaciones, decisión). Para no abrir una migración en paralelo con 017, la tabla guarda nombre, descripción (la pregunta), fórmula, versión, unidad, denominador, procedencia, fuente principal y k; la ficha completa se sirve desde `metrics/definitions.yaml`, que está versionado. Si 021 necesita consultarla en SQL, se agrega una columna `ficha` JSONB.
+- 2026-10-16. `core.metric_definition` no tiene columnas para toda la ficha de §09 (pregunta, numerador, filtros, cobertura, limitaciones, decisión). Para no abrir una migración en paralelo con 017, la tabla guarda nombre, descripción (la pregunta), fórmula, versión, unidad, denominador, procedencia, fuente principal y k; la ficha completa se sirve desde `backend/metrics/definitions.yaml`, que está versionado. Si 021 necesita consultarla en SQL, se agrega una columna `ficha` JSONB.
 - 2026-10-16. El HHI de llegadas se calcula sobre los centros turísticos con `nivel = destino`. «Resto del Estado» se excluye porque agrupa muchos municipios (contarlo como un centro inflaría el índice) y los subcentros de Cholula se excluyen porque ya están dentro de Cholula. La respuesta reporta la cobertura (llegadas de los centros entre llegadas del Estado). Acatzingo y Tepeaca solo tienen datos desde 2025: entran al índice desde ese año y su crecimiento sale como «sin evidencia suficiente».
 - 2026-10-16. Ocupación, estadía y cuartos libres se calculan sobre valores medidos de la fuente (cuartos, llegadas y turistas noche), así que se marcan `medido`; la afluencia y la derrama los marca la fuente como derivados y así se muestran.
 - 2026-10-16. Candidato a destino alternativo (regla v1): ocupación de 12 meses menor que la del Estado y cuartos libres por día mayores o iguales que la mediana de los destinos. Es una señal para revisar, no una recomendación causal.

@@ -29,7 +29,8 @@ class Ajustes(BaseSettings):
     demo_analista_correo: str = ""
     demo_analista_contrasena: str = ""
     # Fichas semánticas de los indicadores del tablero (spec 019).
-    archivo_metricas: Path = RAIZ_REPO / "metrics" / "definitions.yaml"
+    # Vive dentro de backend/ para que viaje con la API al desplegarse.
+    archivo_metricas: Path = Path(__file__).resolve().parents[1] / "metrics" / "definitions.yaml"
     # Fotos de reportes, sin EXIF. Vive bajo data/privado/, que no se versiona.
     directorio_media: Path = RAIZ_REPO / "data" / "privado" / "media"
     foto_max_bytes: int = 5 * 1024 * 1024
