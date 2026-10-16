@@ -4,11 +4,11 @@
 
 | § | Entregable | Archivo | Estado |
 |---|---|---|---|
-| §9.1 | Descripción ejecutiva del proyecto | `01-descripcion-ejecutiva.md` | Pendiente (T011-03) |
-| §9.2 | Definición del problema y usuarios o beneficiarios | `02-problema-y-usuarios.md` | Pendiente (T011-03); base en [`../producto/`](../producto/) |
+| §9.1 | Descripción ejecutiva del proyecto | `01-descripcion-ejecutiva.md` | Listo |
+| §9.2 | Definición del problema y usuarios o beneficiarios | `02-problema-y-usuarios.md` | Listo; base en [`../producto/`](../producto/) |
 | §9.3 | Descripción de la solución | `03-solucion.md` | Pendiente (T011-09) |
 | §9.4 | Inventario y documentación de las fuentes de datos | `04-inventario-fuentes.md` | Pendiente (T011-08); base en [`../../data/fuentes/fuentes.csv`](../../data/fuentes/fuentes.csv) |
-| §9.5 | Justificación de la selección de los datos | `05-justificacion-datos.md` | Pendiente (T011-04) |
+| §9.5 | Justificación de la selección de los datos | `05-justificacion-datos.md` | Listo |
 | §9.6 | Procesos de obtención, limpieza, integración, transformación y análisis | `06-procesos-de-datos.md` | Pendiente (T011-07) |
 | §9.7 | Arquitectura o metodología | `07-arquitectura.md` | Pendiente (T011-07); base en [`../arquitectura.md`](../arquitectura.md) |
 | §9.8 | Prototipo funcional o demostrable | `08-prototipo.md` | Pendiente (T011-09) |
