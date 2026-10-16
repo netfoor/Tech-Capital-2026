@@ -35,7 +35,7 @@ Un chatbot no es parte de la solución. Ningún componente decide por la Secreta
 | Campo | Valor |
 |---|---|
 | Función | Para respuestas en coreano y chino, devolver la lista de destinos del catálogo mencionados, con su orden |
-| Modelo | El mismo proveedor de OpenAI, con salida estructurada en JSON Schema y una lista cerrada de `destino_id` |
+| Modelo | Google Gemini, con salida estructurada en JSON Schema y una lista cerrada de `destino_id`. Se usó Gemini y no OpenAI porque el crédito de OpenAI se agotó durante la primera auditoría (decisión del 16 de octubre de 2026) |
 | Entradas | Texto de la respuesta y lista de destinos con sus nombres |
 | Validación | Revisión manual de todas las respuestas en coreano y chino de la primera tanda. Se reportan precisión y exhaustividad |
 | Limitaciones | Puede confundir destinos con nombres parecidos. Una mención ambigua se marca como `revisar` y no se cuenta |
