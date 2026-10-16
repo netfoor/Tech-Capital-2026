@@ -1,0 +1,21 @@
+---
+// Motivo ■▰● bajo cada título (docs/diseno.md §4): datos oficiales, señales digitales y asistentes.
+interface Props {
+  class?: string;
+}
+const { class: clase } = Astro.props;
+---
+
+<svg
+  class:list={['block', clase]}
+  width="132"
+  height="12"
+  viewBox="0 0 132 12"
+  aria-hidden="true"
+  focusable="false"
+>
+  <line x1="10" y1="6" x2="122" y2="6" class="stroke-linea" stroke-width="1.5"></line>
+  <rect x="2" y="2" width="8" height="8" class="fill-tc-verde stroke-verde-texto" stroke-width="1"></rect>
+  <polygon points="60,10 64,2 72,2 68,10" class="fill-tc-agua stroke-agua-texto" stroke-width="1"></polygon>
+  <circle cx="126" cy="6" r="4" class="fill-tc-azul"></circle>
+</svg>

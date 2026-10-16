@@ -1,0 +1,49 @@
+---
+import Acento from './Acento.astro';
+import { seccion } from '../secciones';
+const s = seccion('inicio');
+---
+
+<section id="inicio" aria-labelledby="inicio-titulo" class="portada bg-white">
+  <div
+    class="mx-auto grid max-w-[1320px] items-center gap-10 px-4 sm:px-6 min-[1080px]:grid-cols-[minmax(0,540px)_1fr]"
+  >
+    <div>
+      <h1 id="inicio-titulo" class="titulo-portada">Radar de Atención Turística de Puebla</h1>
+      <Acento class="mt-5" />
+      <p class="entrada mt-5 text-tinta-2">{s.entrada}</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a class="boton boton-primario max-[760px]:w-full" href="#radar">Ver el radar</a>
+        <a class="boton boton-secundario max-[760px]:w-full" href="#metodo">Cómo se hizo</a>
+      </div>
+      <p class="nota mt-6">{s.bases}</p>
+    </div>
+    {/* Mapa de portada: T009-04 (relleno de ocupación y anillo de atención). */}
+    <figure
+      id="mapa-portada"
+      class="mapa-portada"
+      role="img"
+      aria-label="Mapa del estado de Puebla con los Pueblos Mágicos y la capital"
+    >
+    </figure>
+  </div>
+</section>
+
+<style>
+  .portada {
+    padding: 72px 0 104px;
+  }
+
+  .mapa-portada {
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 3 / 4;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 760px) {
+    .portada {
+      padding: 40px 0 72px;
+    }
+  }
+</style>

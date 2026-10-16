@@ -1,0 +1,9 @@
+---
+import Seccion from './Seccion.astro';
+import { seccion } from '../secciones';
+---
+
+<Seccion seccion={seccion('fichas')}>
+  {/* T009-07: ficha del destino elegido e impresión, desde fichas/<destino_id>.json. */}
+  <div id="fichas-contenido"></div>
+</Seccion>

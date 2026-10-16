@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+
+/* Tokens de docs/diseno.md §2 y §3. Las escalas de datos viven en src/scripts/comun.js. */
+@theme {
+  --color-tinta: #111827;
+  --color-tinta-2: #374151;
+  --color-gris: #6b7280;
+  --color-linea: #e2e5ea;
+  --color-banda: #f4f6f8;
+  --color-noche: #0e1a2e;
+  --color-tc-verde: #33f814;
+  --color-tc-agua: #00e0c8;
+  --color-tc-azul: #0058f8;
+  --color-verde-texto: #1e7d12;
+  --color-agua-texto: #00796b;
+  --color-sel: #0058f8;
+  --color-fila-sel: #eaf1fe;
+  --color-rejilla: #e8ebef;
+  --color-error: #b91c1c;
+
+  --font-sans:
+    'Amazon Ember', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --breakpoint-telefono: 47.5rem;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 72px;
+    background: #fff;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--color-tinta);
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    color: var(--color-tinta);
+  }
+
+  h1 {
+    font-weight: 800;
+  }
+
+  a {
+    color: var(--color-tc-azul);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sel);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 760px) {
+    html {
+      scroll-padding-top: 64px;
+    }
+
+    body {
+      font-size: 16px;
+    }
+  }
+}
+
+@layer components {
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .titulo-portada {
+    font-size: clamp(38px, 4.2vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .titulo-seccion {
+    font-size: clamp(30px, 3.3vw, 44px);
+    line-height: 1.12;
+  }
+
+  .entrada {
+    font-size: 19px;
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  .nota {
+    font-size: 14px;
+    color: var(--color-gris);
+  }
+
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 3px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .boton-primario {
+    background: var(--color-tc-azul);
+    color: #fff;
+  }
+
+  .boton-secundario {
+    border: 1.5px solid var(--color-tinta);
+    color: var(--color-tinta);
+  }
+
+  @media (max-width: 760px) {
+    .entrada {
+      font-size: 17px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

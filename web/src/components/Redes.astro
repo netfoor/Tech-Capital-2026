@@ -1,0 +1,9 @@
+---
+import Seccion from './Seccion.astro';
+import { seccion } from '../secciones';
+---
+
+<Seccion seccion={seccion('redes')}>
+  {/* T009-09: presencia en el panel y en YouTube, desde redes.json. */}
+  <div id="redes-contenido"></div>
+</Seccion>

@@ -1,0 +1,9 @@
+---
+import Seccion from './Seccion.astro';
+import { seccion } from '../secciones';
+---
+
+<Seccion seccion={seccion('asistentes')}>
+  {/* T009-08: visibilidad por idioma y proveedor, y dominios citados, desde asistentes.json. */}
+  <div id="asistentes-contenido"></div>
+</Seccion>

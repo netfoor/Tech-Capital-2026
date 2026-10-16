@@ -1,0 +1,9 @@
+---
+import Seccion from './Seccion.astro';
+import { seccion } from '../secciones';
+---
+
+<Seccion seccion={seccion('radar')}>
+  {/* T009-06: mapa por brecha, tabla de los 12 y gráfica de cuadrantes, desde radar.json. */}
+  <div id="radar-contenido"></div>
+</Seccion>
