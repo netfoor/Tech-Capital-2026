@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .config import CONFIG_DEFECTO, Config, estancia_tipica
+from .config import CONFIG_DEFECTO, Config, es_alternativo, estancia_tipica
 from .elegibilidad import (
     Clasificacion,
     banio_confiable,
@@ -20,7 +20,14 @@ from .geo import zona
 from .horarios import hora_a_minutos
 from .ranking import IndiceTfidf, origen_de_referencia, puntuar
 from .secuencia import Contexto, Plan, construir_ruta, utilidad_con_diversidad
-from .tipos import Parada, POICandidato, RespuestaRuta, Restricciones, SolicitudRuta
+from .tipos import (
+    NoIncluido,
+    Parada,
+    POICandidato,
+    RespuestaRuta,
+    Restricciones,
+    SolicitudRuta,
+)
 
 VERSION = "015-v1"
 
@@ -62,7 +69,7 @@ def metricas_plan(plan: Plan, pois_por_id: dict[str, POICandidato], config: Conf
         "tiempo_usado_min": plan.total_min,
         "distancia_m": round(plan.distancia_m, 1),
         "n_paradas": n,
-        "n_descansos": sum(1 for p in plan.paradas if p.poi_id == "descanso"),
+        "n_descansos": sum(1 for e in plan.eventos if e.tipo == "descanso"),
         "n_banios": sum(
             1
             for p in plan.paradas
@@ -70,9 +77,7 @@ def metricas_plan(plan: Plan, pois_por_id: dict[str, POICandidato], config: Conf
         ),
         "zonas_distintas": len({zona(p.lat, p.lon, config) for p in lugares}),
         "destinos_distintos": len({p.destino_id for p in lugares if p.destino_id}),
-        "cobertura_alternativos": (
-            sum(1 for p in lugares if p.es_destino_alternativo) / n if n else 0.0
-        ),
+        "cobertura_alternativos": (sum(1 for p in lugares if es_alternativo(p)) / n if n else 0.0),
         "linea_tiempo": [e.como_dict() for e in plan.eventos],
     }
 
@@ -144,16 +149,16 @@ def recomendar(
             previas += 1
         paradas.append(parada)
 
-    no_incluidos: list[tuple[str, str]] = [(p.poi_id, m) for p, m in clas.excluidos]
+    no_incluidos: list[NoIncluido] = [NoIncluido(p.poi_id, m) for p, m in clas.excluidos]
     descartados = {p.poi_id for p in sin_lugar}
     for p in sorted(clas.elegibles, key=lambda p: p.poi_id):
         if p.poi_id in en_ruta:
             continue
         if p.poi_id in descartados:
-            no_incluidos.append((p.poi_id, "No cabe en tu tiempo o en su horario con esta ruta"))
+            no_incluidos.append(NoIncluido(p.poi_id, "No cabe en tu tiempo o en su horario"))
         else:
             no_incluidos.append(
-                (p.poi_id, "Elegible, pero otros lugares aprovechan mejor tu tiempo")
+                NoIncluido(p.poi_id, "Elegible, pero otros lugares aprovechan mejor tu tiempo")
             )
 
     sin_verificar = sorted(
@@ -169,9 +174,7 @@ def recomendar(
                 {"poi_id": p.poi_id, "nombre": p.nombre, "motivo": motivo, "sin_verificar": True}
             )
             datos_desconocidos.append(f"{p.nombre}: {motivo}. Solo se ofrece como alternativa.")
-        territoriales = [
-            p for p in candidatos if p.es_destino_alternativo and p.poi_id not in en_ruta
-        ][:2]
+        territoriales = [p for p in candidatos if es_alternativo(p) and p.poi_id not in en_ruta][:2]
         for p in territoriales:
             alternativos.append(p.poi_id)
             detalle_alt.append(
@@ -184,7 +187,7 @@ def recomendar(
             )
     else:
         for p, motivo in sin_verificar:
-            no_incluidos.append((p.poi_id, motivo))
+            no_incluidos.append(NoIncluido(p.poi_id, motivo))
 
     for p in plan.secuencia:
         datos_desconocidos.extend(datos_desconocidos_poi(p, r))
@@ -231,4 +234,5 @@ def recomendar(
         explicacion=explicacion,
         datos_desconocidos=datos_desconocidos,
         metricas=metricas,
+        motor=VERSION,
     )

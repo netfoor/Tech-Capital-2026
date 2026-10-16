@@ -28,9 +28,11 @@ def _si_confiable(poi: POICandidato, atributo: str, minimo: float) -> bool:
     a = poi.accesibilidad.get(atributo)
     if a is None or a.estado == "reportado":
         return False
-    if a.valor.strip().lower() not in {"si", "sí", "yes", "true", "designated", "1"}:
+    if (a.valor or "").strip().lower() not in {"si", "sí", "yes", "true", "designated", "1"}:
         return False
-    return a.estado == "verificado" or (a.estado == "sin_verificar" and a.confianza >= minimo)
+    return a.estado == "verificado" or (
+        a.estado == "sin_verificar" and (a.confianza or 0) >= minimo
+    )
 
 
 def _pendiente_confiable(poi: POICandidato, maximo: float, minimo: float) -> bool:
@@ -38,12 +40,14 @@ def _pendiente_confiable(poi: POICandidato, maximo: float, minimo: float) -> boo
     if a is None or a.estado == "reportado":
         return False
     try:
-        valor = float(a.valor.strip().rstrip("%"))
+        valor = float((a.valor or "").strip().rstrip("%"))
     except ValueError:
         return False
     if valor > maximo:
         return False
-    return a.estado == "verificado" or (a.estado == "sin_verificar" and a.confianza >= minimo)
+    return a.estado == "verificado" or (
+        a.estado == "sin_verificar" and (a.confianza or 0) >= minimo
+    )
 
 
 def verificar(

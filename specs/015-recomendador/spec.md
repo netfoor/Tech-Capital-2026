@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Inteligencia (recomendación de itinerarios) |
 | Prioridad | P0 |
-| Estado | En curso: motor, baselines y evaluación offline |
+| Estado | MVP implementado y evaluado offline con datos sintéticos; falta repetir la evaluación con el catálogo real de la spec 012 |
 | Depende de | 012 (catálogo `poi.csv` y `poi_accesibilidad.csv`), 014 (endpoint que lo consume) |
 | Habilita | 016 (planificación en la PWA), escena de valor §06.8 |
 
@@ -71,3 +71,6 @@ Que una persona con tiempo, intereses, presupuesto y necesidades de acceso obten
 - 2026-10-16. Sin `dia_semana`, la ventana de horario es la intersección de los días en que abre (conservador) y la advertencia dice qué días cierra.
 - 2026-10-16. `wheelchair=limited` no cuenta como «sin escalones»: queda fuera con motivo «acceso limitado».
 - 2026-10-16. La zona para medir diversidad es una celda de 500 m; el contrato de `poi.csv` no trae barrio ni colonia.
+- 2026-10-16. Compatibilidad con la spec 014 (PR de la API): `tipos.py` es un superconjunto de sus tipos provisionales. Se conservan `recomendar()` y `recomendar_multidia(solicitud, pois, alternativas)` (más el alias directo `planear_multidia`), `AtributoAcceso`, `NoIncluido` (tupla con nombres `poi_id`, `motivo`), `DiaPlan` y el campo `motor`. Los descansos no son paradas propias (el endpoint exige que cada parada sea un POI del catálogo): se suman al traslado de la parada siguiente y se anuncian en sus advertencias; la línea de tiempo completa queda en `metricas`.
+- 2026-10-16. En los datos de la spec 014, `estado=reportado` también aparece como «declarado por el prestador». El motor lo trata siempre como barrera (opción conservadora). Conviene separar «declarado» de «barrera reportada» en el modelo de datos.
+- 2026-10-16. El motor es solo a pie: desde Cholula, Atlixco no cabe en una ruta de un día; el provisional de 014 suponía vehículo para más de 2 km. Transporte queda fuera de alcance.

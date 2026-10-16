@@ -69,7 +69,9 @@ def evaluar_atributo(
     config: Config,
 ) -> tuple[str, str]:
     """Devuelve (estado, explicación breve)."""
-    if atributo is None:
+    if atributo is None or atributo.valor is None or not str(atributo.valor).strip():
+        if atributo is not None and atributo.estado == "reportado":
+            return NO_CUMPLE, "barrera reportada por visitantes"
         return DESCONOCIDO, "sin dato"
     if atributo.estado == "reportado":
         return NO_CUMPLE, "barrera reportada por visitantes"
@@ -78,12 +80,13 @@ def evaluar_atributo(
         return NO_CUMPLE, f"valor «{atributo.valor}»"
     if ok is None:
         return DESCONOCIDO, f"valor no interpretable «{atributo.valor}»"
+    confianza = atributo.confianza or 0.0
     if atributo.estado == "verificado":
         return CUMPLE, f"verificado ({atributo.origen or 'origen sin dato'})"
-    if atributo.estado == "sin_verificar" and atributo.confianza >= config.confianza_minima:
-        return CUMPLE, f"sin verificar, confianza {atributo.confianza:.2f} ({atributo.origen})"
+    if atributo.estado == "sin_verificar" and confianza >= config.confianza_minima:
+        return CUMPLE, f"confianza {confianza:.2f} ({atributo.origen})"
     if atributo.estado == "sin_verificar":
-        return DESCONOCIDO, f"confianza baja ({atributo.confianza:.2f})"
+        return DESCONOCIDO, f"confianza baja ({confianza:.2f})"
     return DESCONOCIDO, f"estado «{atributo.estado}»"
 
 
@@ -127,7 +130,7 @@ def cumple_restricciones_lugar(
             return NO_CUMPLE, f"No cumple «{NOMBRE_ATRIBUTO[atr]}»: {detalle}"
     for estado, atr, detalle in resultados:
         if estado == DESCONOCIDO:
-            return DESCONOCIDO, f"Sin verificar: {NOMBRE_ATRIBUTO[atr]} ({detalle})"
+            return DESCONOCIDO, f"{NOMBRE_ATRIBUTO[atr].capitalize()} sin verificar ({detalle})"
     return CUMPLE, ""
 
 
@@ -207,13 +210,15 @@ def clasificar(
 
         # Duración.
         if estancia > limite_min:
-            res.excluidos.append((poi, f"La visita típica ({estancia} min) no cabe en tu tiempo"))
+            res.excluidos.append(
+                (poi, f"No cabe en tu tiempo: la visita típica dura {estancia} min")
+            )
             continue
         if origen is not None:
             ida = minutos_caminando(origen, (poi.lat, poi.lon), config)
             if ida + estancia > limite_min:
                 res.excluidos.append(
-                    (poi, f"Está a {ida} min caminando: no cabe en tu tiempo con la visita")
+                    (poi, f"No cabe en tu tiempo: está a {ida} min caminando más la visita")
                 )
                 continue
 

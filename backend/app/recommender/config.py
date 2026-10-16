@@ -40,6 +40,7 @@ ESTANCIA_POR_CATEGORIA: dict[str, int] = {
     "artesanias": 30,
     "restaurante": 60,
     "cafe": 30,
+    "cafeteria": 30,
     "parque": 30,
     "plaza": 20,
     "monumento": 15,
@@ -87,7 +88,7 @@ class Config:
     tamano_zona_m: float = TAMANO_ZONA_M
     # Una sola comida o café por ruta de un día: evita rutas de dos restaurantes.
     max_por_categoria: dict[str, int] = field(
-        default_factory=lambda: {"restaurante": 1, "cafe": 1, "mercado": 1}
+        default_factory=lambda: {"restaurante": 1, "cafe": 1, "cafeteria": 1, "mercado": 1}
     )
     max_candidatos: int = 40
     max_alternativos: int = 5
@@ -95,6 +96,20 @@ class Config:
 
 
 CONFIG_DEFECTO = Config()
+
+
+def es_alternativo(poi) -> bool:
+    """Destino alternativo: el dato del catálogo o, si falta, no ser polo saturado."""
+    if poi.es_destino_alternativo is not None:
+        return bool(poi.es_destino_alternativo)
+    return poi.destino_id not in POLOS_SATURADOS
+
+
+def popularidad(poi) -> float:
+    """Popularidad de 0 a 1: el dato del catálogo o, si falta, 0.8 en polos y 0.3 fuera."""
+    if poi.popularidad is not None:
+        return min(max(float(poi.popularidad), 0.0), 1.0)
+    return 0.8 if poi.destino_id in POLOS_SATURADOS else 0.3
 
 
 def estancia_tipica(categoria: str) -> int:

@@ -81,29 +81,29 @@ Perfiles de solicitud **sintéticos**, n = 40 (semilla 2026; incluye la escena d
 
 | Método | Perfiles con ≥1 violación indispensable | Violaciones indispensables | Paradas (media) | Cobertura de destinos alternativos | Zonas distintas | Popularidad media de las paradas | Tiempo usado / disponible |
 |---|---|---|---|---|---|---|---|
-| **Motor inclusivo** | **0 de 40** | **0** | 3.35 | **0.75** | 3.28 | **0.40** | 0.77 |
-| Baseline popularidad | 33 de 40 | 185 | 5.30 | 0.00 | 3.40 | 0.80 | 0.86 |
-| Baseline cercanía | 33 de 40 | 188 | 5.60 | 0.05 | 3.75 | 0.72 | 0.90 |
-| Baseline popularidad + filtro ingenuo* | 33 de 40 | 155 | 4.92 | 0.02 | 3.35 | 0.78 | 0.85 |
-| Ablación: sin diversidad | 0 de 40 | 0 | 3.27 | 0.50 | 3.03 | 0.52 | 0.74 |
-| Ablación: sin pertinencia | 0 de 40 | 0 | 3.42 | 0.86 | 3.36 | 0.35 | 0.76 |
+| **Motor inclusivo** | **0 de 40** | **0** | 3.52 | **0.74** | 3.49 | **0.41** | 0.76 |
+| Baseline popularidad | 33 de 40 | 185 | 5.30 | 0.00 | 3.40 | 0.80 | 0.87 |
+| Baseline cercanía | 33 de 40 | 171 | 5.20 | 0.06 | 3.55 | 0.71 | 0.90 |
+| Baseline popularidad + filtro ingenuo* | 33 de 40 | 154 | 4.92 | 0.02 | 3.35 | 0.78 | 0.85 |
+| Ablación: sin diversidad | 0 de 40 | 0 | 3.48 | 0.49 | 3.18 | 0.52 | 0.75 |
+| Ablación: sin pertinencia | 0 de 40 | 0 | 3.45 | 0.85 | 3.36 | 0.35 | 0.75 |
 
 \* Excluye solo los lugares con `valor=no` y trata la falta de dato como «accesible», el error que la constitución (XIII) prohíbe.
 
-Latencia del motor: p50 3.8 ms y p95 79.8 ms (mínimo de 3 corridas por perfil en una laptop de desarrollo; cambia con la carga de la máquina, ver el reporte). Requisito: p95 < 1 s.
+Latencia del motor en la última corrida: p50 3.4 ms y p95 433 ms (mínimo de 3 corridas por perfil, en una laptop de desarrollo con otros procesos activos; en corridas con la máquina menos cargada el p95 fue de 80 a 110 ms). Requisito: p95 < 1 s. La latencia cambia con la carga y no es determinista; el resto de las cifras sí.
 
-Multi-día, n = 12 planes sintéticos: 99 lugares asignados contra 55 del orden ingenuo; 605 m por lugar asignado contra 2 491 m; 1 cruce entre días contra 5; 0 duplicados; 0 violaciones indispensables.
+Multi-día, n = 12 planes sintéticos: 101 lugares asignados contra 55 del orden ingenuo; 628 m por lugar asignado contra 2 491 m; 3 cruces entre días contra 5; 0 duplicados; 0 violaciones indispensables.
 
-Pruebas: 67 pruebas unitarias del recomendador (`backend/tests/test_recomendador_*.py`), entre ellas la propiedad «ninguna violación» sobre 240 solicitudes aleatorias en 12 catálogos aleatorios con casos frontera y 80 solicitudes sobre el catálogo sintético.
+Pruebas: 68 pruebas unitarias del recomendador (`backend/tests/test_recomendador_*.py`), entre ellas la propiedad «ninguna violación» sobre 240 solicitudes aleatorias en 12 catálogos aleatorios con casos frontera y 80 solicitudes sobre el catálogo sintético. Además pasan las pruebas del endpoint de la spec 014 (`tests/test_itinerarios.py`) con este motor.
 
 ### Lectura honesta
 
-- **La garantía funciona**: 0 violaciones indispensables contra 155 a 188 de las baselines. La baseline con filtro ingenuo aún tiene 60 paradas sin acceso sin escalones confiable: tratar la falta de dato como «accesible» es el error que el motor evita.
-- **Tiene costo**: el motor arma menos paradas (3.35 contra 5.30) y usa menos tiempo (77 % contra 86 %), porque excluye lugares sin dato confiable e inserta descansos y baños. En perfiles con muchas restricciones la ruta puede quedar corta o vacía (1 ruta vacía y 5 que usan menos de la mitad del tiempo; detalle en el reporte).
-- **La diversidad territorial depende del término de diversidad**: sin él, la cobertura de destinos alternativos baja de 0.75 a 0.50 y la popularidad media sube de 0.40 a 0.52. En zonas distintas por ruta el motor queda por debajo de las baselines porque arma menos paradas.
-- **Sin pertinencia** la cobertura de alternativos sube a 0.86, pero la coincidencia con los intereses baja de 0.56 a 0.44: hay una tensión real entre pertinencia y distribución, y los pesos actuales son un punto intermedio, no un óptimo calibrado.
+- **La garantía funciona**: 0 violaciones indispensables contra 154 a 185 de las baselines. La baseline con filtro ingenuo aún tiene 59 paradas sin acceso sin escalones confiable: tratar la falta de dato como «accesible» es el error que el motor evita.
+- **Tiene costo**: el motor arma menos paradas (3.52 contra 5.30) y usa menos tiempo (76 % contra 87 %), porque excluye lugares sin dato confiable e inserta descansos y baños. En perfiles con muchas restricciones la ruta queda corta o vacía (1 ruta vacía y 4 que usan menos de la mitad del tiempo; detalle en el reporte).
+- **La diversidad territorial depende del término de diversidad**: sin él, la cobertura de destinos alternativos baja de 0.74 a 0.49 y la popularidad media sube de 0.41 a 0.52.
+- **Sin pertinencia** la cobertura de alternativos sube a 0.85, pero la coincidencia con los intereses baja de 0.54 a 0.43: hay una tensión real entre pertinencia y distribución, y los pesos actuales son un punto intermedio, no un óptimo calibrado.
 - La «coincidencia de intereses» usa la misma similitud que optimiza el motor; favorece al motor por construcción y no prueba satisfacción.
-- En el multi-día el orden ingenuo a veces recorre menos metros por lugar (planes 03, 08, 09 y 12), pero asigna muchos menos lugares.
+- En el multi-día el orden ingenuo a veces recorre menos metros por lugar, pero asigna muchos menos lugares. Con pocos lugares y varios días, el agrupamiento puede dejar un lugar por día.
 
 ## 6. Limitaciones
 

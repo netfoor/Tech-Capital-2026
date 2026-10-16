@@ -1,0 +1,14 @@
+poi_id,atributo,valor,origen,fecha,confianza,estado,evidencia
+demo-cholula-zocalo,acceso_sin_escalones,si,equipo_verificador,2026-10-10,0.9,verificado,Visita de verificación (demo)
+demo-cholula-zocalo,banio_accesible,si,equipo_verificador,2026-10-10,0.9,verificado,Visita de verificación (demo)
+demo-cholula-museo,acceso_sin_escalones,si,equipo_verificador,2026-10-10,0.9,verificado,Visita de verificación (demo)
+demo-cholula-museo,rampa,si,osm,2026-09-01,0.6,sin_verificar,wheelchair=yes
+demo-cholula-piramide,acceso_sin_escalones,no,equipo_verificador,2026-10-10,0.9,verificado,Escalinata (demo)
+demo-cholula-piramide,numero_escalones,200,osm,2026-09-01,0.5,sin_verificar,step_count=200
+demo-cholula-mercado,acceso_sin_escalones,si,osm,2026-09-01,0.5,sin_verificar,wheelchair=yes
+demo-atlixco-zocalo,acceso_sin_escalones,si,equipo_verificador,2026-10-11,0.9,verificado,Visita de verificación (demo)
+demo-atlixco-zocalo,banio_accesible,si,equipo_verificador,2026-10-11,0.9,verificado,Visita de verificación (demo)
+demo-atlixco-cerro,acceso_sin_escalones,no,equipo_verificador,2026-10-11,0.9,verificado,Escaleras (demo)
+demo-atlixco-cerro,pendiente_pct,18,osm,2026-09-01,0.5,sin_verificar,incline=18%
+demo-atlixco-restaurante,banio_accesible,si,prestador,2026-10-01,0.6,reportado,Declarado por el prestador (demo)
+demo-cholula-cafe,rampa,si,osm,,0.5,sin_verificar,Fila sin fecha: la semilla la rechaza

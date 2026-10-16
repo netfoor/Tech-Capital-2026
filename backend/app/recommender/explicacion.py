@@ -2,18 +2,22 @@
 
 from __future__ import annotations
 
-from .config import Config
+from .config import CONFIG_DEFECTO, Config, es_alternativo
 from .elegibilidad import (
     ATR_PENDIENTE,
     ATR_SIN_ESCALONES,
     CUMPLE,
+    DESCONOCIDO,
+    NOMBRE_ATRIBUTO,
+    _booleano,
+    evaluar_atributo,
     evaluar_banio,
     evaluar_pendiente,
     evaluar_sin_escalones,
 )
 from .horarios import parsear
 from .ranking import Puntaje
-from .tipos import POICandidato, Restricciones
+from .tipos import ATRIBUTOS_CLAVE, POICandidato, Restricciones
 
 LIMITACION_TRAYECTOS = (
     "Los tiempos de caminata son estimaciones en línea recta con un factor de desvío de 1.3 "
@@ -34,7 +38,7 @@ def _procedencia(poi: POICandidato, atributo: str) -> str:
     quien = ORIGENES.get(a.origen, a.origen or "una fuente sin nombre")
     if a.estado == "verificado":
         return f"está verificado por {quien}"
-    return f"viene de {quien} con confianza {a.confianza:.2f}; aún no lo verifica el equipo"
+    return f"viene de {quien} con confianza {a.confianza or 0:.2f}; aún no lo verifica el equipo"
 
 
 def motivo_parada(
@@ -52,7 +56,7 @@ def motivo_parada(
         razones.append("es un buen punto para empezar")
     elif traslado_min <= 10:
         razones.append(f"está a {traslado_min} min caminando de la parada anterior")
-    if poi.es_destino_alternativo:
+    if es_alternativo(poi):
         razones.append("es un destino alternativo con menos afluencia que los polos saturados")
     if restricciones.sin_escalones and evaluar_sin_escalones(poi, config)[0] == CUMPLE:
         razones.append("su acceso sin escalones " + _procedencia(poi, ATR_SIN_ESCALONES))
@@ -77,10 +81,14 @@ def datos_desconocidos_poi(poi: POICandidato, restricciones: Restricciones) -> l
         faltan.append(f"{poi.nombre}: horario sin verificar")
     if not poi.costo_rango:
         faltan.append(f"{poi.nombre}: costo sin verificar")
-    if restricciones.pendiente_max_pct is None and ATR_PENDIENTE not in poi.accesibilidad:
+    pendiente = poi.accesibilidad.get(ATR_PENDIENTE)
+    if restricciones.pendiente_max_pct is None and (pendiente is None or not pendiente.valor):
         faltan.append(f"{poi.nombre}: pendiente del acceso sin dato")
-    if not restricciones.sin_escalones and "acceso_sin_escalones" not in poi.accesibilidad:
-        faltan.append(f"{poi.nombre}: acceso sin escalones sin verificar")
+    for atributo in ATRIBUTOS_CLAVE:
+        if evaluar_atributo(poi.accesibilidad.get(atributo), _booleano, CONFIG_DEFECTO)[0] == (
+            DESCONOCIDO
+        ):
+            faltan.append(f"{poi.nombre}: {NOMBRE_ATRIBUTO[atributo]} sin verificar ({atributo})")
     return faltan
 
 

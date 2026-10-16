@@ -62,6 +62,7 @@ class _Estado:
     desde_banio: int = 0
     max_hueco_banio: int = 0
     traslado_acum: int = 0
+    descansos_tramo: int = 0
     distancia_m: float = 0.0
     eventos: list[Evento] = field(default_factory=list)
     paradas: list[Parada] = field(default_factory=list)
@@ -100,27 +101,13 @@ class _Simulador:
         if tipo == "traslado":
             e.traslado_acum += dur
 
-    def _descanso_parada(self, e: _Estado) -> None:
+    def _descanso_en_trayecto(self, e: _Estado) -> None:
+        """Descanso antes de seguir caminando. No es una parada propia: se suma al
+        traslado de la parada siguiente y se anuncia en sus advertencias."""
         dur = self.ctx.config.duracion_descanso_min
-        llegada = e.t
-        traslado = e.traslado_acum
         self._avanzar(e, dur, "descanso", None)
-        e.paradas.append(
-            Parada(
-                orden=0,
-                poi_id="descanso",
-                nombre="Descanso",
-                llegada_min=llegada,
-                estancia_min=dur,
-                traslado_min=traslado,
-                motivo=(
-                    f"Descanso de {dur} min: pediste descansar cada "
-                    f"{self.ctx.restricciones.descansos_cada_min} min. "
-                    "Busca una banca o un lugar con sombra."
-                ),
-            )
-        )
-        e.traslado_acum = 0
+        e.traslado_acum += dur
+        e.descansos_tramo += 1
 
     def _actividad(self, e: _Estado, dur: int, tipo: str, poi_id: str | None) -> int:
         """Agrega una actividad partiéndola con descansos si hace falta.
@@ -139,7 +126,7 @@ class _Simulador:
                     self._avanzar(e, self.ctx.config.duracion_descanso_min, "descanso", poi_id)
                     pausas += 1
                 else:
-                    self._descanso_parada(e)
+                    self._descanso_en_trayecto(e)
                 continue
             tramo = min(restante, hueco)
             self._avanzar(e, tramo, tipo, poi_id)
@@ -165,6 +152,13 @@ class _Simulador:
         # Ventana de horario verificable.
         ventanas = self.ctx.ventanas.get(poi.poi_id)
         advertencias: list[str] = []
+        if e.descansos_tramo:
+            advertencias.append(
+                f"El traslado incluye {e.descansos_tramo} descanso(s) de "
+                f"{self.ctx.config.duracion_descanso_min} min: pediste descansar cada "
+                f"{self.ctx.restricciones.descansos_cada_min} min. Busca una banca o sombra."
+            )
+            e.descansos_tramo = 0
         elegida: tuple[int, int] | None = None
         if ventanas is not None:
             reloj = self.ctx.inicio_min + e.t
@@ -369,11 +363,20 @@ def _insercion_voraz(
                     continue
                 dt = max(p.total_min - plan.total_min, 0)
                 valor = u / (dt + 1) ** exp
-                clave = (valor, -dt, c.poi_id)
+                # Desempate: menor poi_id y, para el mismo lugar, la posición más tardía
+                # (conserva al frente lo más pertinente cuando no hay punto de partida).
+                clave = (valor, -dt, pos)
                 if (
                     mejor is None
+                    or mejor_poi is None
                     or clave[:2] > mejor[:2]
-                    or (clave[:2] == mejor[:2] and c.poi_id < mejor[2])
+                    or (
+                        clave[:2] == mejor[:2]
+                        and (
+                            c.poi_id < mejor_poi.poi_id
+                            or (c.poi_id == mejor_poi.poi_id and pos > mejor[2])
+                        )
+                    )
                 ):
                     mejor, mejor_plan, mejor_poi = clave, p, c
         if mejor_plan is None or mejor_poi is None:

@@ -12,15 +12,16 @@
 from __future__ import annotations
 
 import random
+from dataclasses import replace
 
-from .config import CONFIG_DEFECTO, Config, estancia_tipica
+from .config import CONFIG_DEFECTO, Config, es_alternativo, estancia_tipica
 from .elegibilidad import clasificar, es_banio, es_servicio
 from .explicacion import motivo_parada
 from .geo import haversine_m, minutos_caminando, segmentos_se_cruzan
 from .horarios import hora_a_minutos
 from .motor import crear_contexto
 from .secuencia import Contexto, Plan, _dos_opt, construir_ruta, simular
-from .tipos import Parada, POICandidato, RespuestaMultidia, SolicitudMultidia
+from .tipos import DiaPlan, NoIncluido, POICandidato, RespuestaMultidia, SolicitudMultidia
 
 HOLGURA_TRASLADO_MIN = 10
 
@@ -156,7 +157,7 @@ def planear_multidia(
         else [None] * solicitud.dias
     )
 
-    no_incluidos: list[tuple[str, str]] = []
+    no_incluidos: list[NoIncluido] = []
     vistos: set[str] = set()
     seleccion_ids: list[str] = []
     for pid in solicitud.poi_ids:
@@ -164,7 +165,7 @@ def planear_multidia(
             continue
         vistos.add(pid)
         if pid not in por_id:
-            no_incluidos.append((pid, "No está en el catálogo"))
+            no_incluidos.append(NoIncluido(pid, "No está en el catálogo"))
         else:
             seleccion_ids.append(pid)
     seleccion = [por_id[pid] for pid in seleccion_ids]
@@ -179,9 +180,10 @@ def planear_multidia(
         None,
         config,
     )
-    no_incluidos += [(p.poi_id, m) for p, m in clas.excluidos]
+    no_incluidos += [NoIncluido(p.poi_id, m) for p, m in clas.excluidos]
     no_incluidos += [
-        (p.poi_id, f"{m}. No se incluye: verifícalo antes de ir") for p, m in clas.sin_verificar
+        NoIncluido(p.poi_id, f"{m}. No se incluye: verifícalo antes de ir")
+        for p, m in clas.sin_verificar
     ]
     elegibles_ids = {p.poi_id for p in clas.elegibles}
     elegibles = [p for p in seleccion if p.poi_id in elegibles_ids]
@@ -218,15 +220,15 @@ def planear_multidia(
                     break
             if not colocado:
                 no_incluidos.append(
-                    (
+                    NoIncluido(
                         poi.poi_id,
                         f"No cabe en {solicitud.dias} día(s) de {solicitud.horas_por_dia:g} h "
                         "por tiempo u horario",
                     )
                 )
 
-    dias: list[list[Parada]] = []
-    for plan in planes:
+    dias: list[DiaPlan] = []
+    for numero, plan in enumerate(planes, start=1):
         primera = True
         for parada in plan.paradas:
             poi = por_id.get(parada.poi_id)
@@ -236,15 +238,13 @@ def planear_multidia(
                 )
                 parada.advertencias = clas.advertencias.get(poi.poi_id, []) + parada.advertencias
                 primera = False
-        dias.append(plan.paradas)
+        dias.append(DiaPlan(dia=numero, paradas=plan.paradas))
 
     # Sugerencias territoriales: hasta 2 destinos alternativos cercanos.
     alternativos: list[str] = []
     if solicitud.incluir_alternativos and any(p.secuencia for p in planes):
         otros = [
-            p
-            for p in pois
-            if p.poi_id not in vistos and p.es_destino_alternativo and not es_servicio(p)
+            p for p in pois if p.poi_id not in vistos and es_alternativo(p) and not es_servicio(p)
         ]
         clas_otros = clasificar(
             otros,
@@ -285,6 +285,40 @@ def planear_multidia(
         "linea_tiempo_por_dia": [[e.como_dict() for e in p.eventos] for p in planes],
         "dias_semana": dias_semana,
     }
-    return RespuestaMultidia(
-        dias=dias, no_incluidos=no_incluidos, alternativos=alternativos, metricas=metricas
+    n_asig = len(asignados)
+    explicacion = (
+        f"Plan de {solicitud.dias} día(s) de {solicitud.horas_por_dia:g} h con {n_asig} de "
+        f"{len(seleccion_ids)} lugar(es) guardado(s), agrupados por cercanía y horario."
     )
+    if len(seleccion_ids) - n_asig:
+        explicacion += (
+            f" {len(seleccion_ids) - n_asig} quedaron fuera; cada uno dice por qué en "
+            "«no incluidos»."
+        )
+    if r.alguna():
+        explicacion += " No relajamos ninguna restricción indispensable."
+    if alternativos:
+        explicacion += " Sugerimos destinos alternativos cercanos, marcados como sugerencia."
+    return RespuestaMultidia(
+        dias=dias,
+        no_incluidos=no_incluidos,
+        alternativos=alternativos,
+        explicacion=explicacion,
+        metricas=metricas,
+        motor="015-v1",
+    )
+
+
+def recomendar_multidia(
+    solicitud: SolicitudMultidia,
+    pois: list[POICandidato],
+    alternativas: list[POICandidato] | None = None,
+    config: Config = CONFIG_DEFECTO,
+) -> RespuestaMultidia:
+    """Firma que usa el endpoint de la spec 014: ``pois`` son los guardados elegidos y
+    ``alternativas`` el resto del catálogo (fuente de baños y de sugerencias)."""
+    if not solicitud.poi_ids:
+        solicitud = replace(solicitud, poi_ids=[p.poi_id for p in pois])
+    vistos = {p.poi_id for p in pois}
+    catalogo = list(pois) + [p for p in (alternativas or []) if p.poi_id not in vistos]
+    return planear_multidia(solicitud, catalogo, config)

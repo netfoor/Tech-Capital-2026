@@ -1,31 +1,45 @@
-"""Contrato del recomendador inclusivo (spec 015).
+"""Contrato del recomendador inclusivo (specs 014 y 015).
 
-Estos tipos son la interfaz que consume el endpoint de la spec 014. Los nombres
-son estables: si un tipo provisional choca con estos, mandan estos.
+Es la interfaz estable entre la API (spec 014) y el motor (spec 015). El motor no
+conoce la base de datos ni la API: recibe candidatos ya leídos del catálogo y
+devuelve identificadores de POI.
+
+Estos tipos son un superconjunto compatible de los provisionales de la spec 014:
+los campos que consume el endpoint existen con el mismo nombre, y los que agrega
+la spec 015 tienen valor por defecto.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from datetime import date
+from typing import Any, NamedTuple
 
 PRESUPUESTOS = ("gratis", "bajo", "medio", "alto")
+ATRIBUTOS_CLAVE = ("acceso_sin_escalones", "banio_accesible")
 
 
 @dataclass(frozen=True)
 class AtributoAcc:
     """Un atributo de accesibilidad de un POI con su procedencia.
 
-    - ``valor``: "si", "no", "limitado" o un número como texto (pendiente en %).
-    - ``estado``: "verificado", "sin_verificar" o "reportado" (barrera reportada).
+    - ``valor``: "si", "no", "limitado", un número como texto (pendiente en %) o
+      ``None`` si no hay dato.
+    - ``estado``: "verificado", "sin_verificar", "reportado" (barrera reportada) o
+      "en_moderacion".
     - ``origen``: prestador, equipo, comunidad u osm.
-    - ``confianza``: de 0 a 1.
+    - ``confianza``: de 0 a 1 (``None`` se trata como 0).
     """
 
-    valor: str
+    valor: str | None
     estado: str
-    origen: str = ""
-    confianza: float = 0.0
+    origen: str | None = ""
+    confianza: float | None = 0.0
+    fecha: date | None = None
+
+
+# Nombre que usa la spec 014.
+AtributoAcceso = AtributoAcc
 
 
 @dataclass(frozen=True)
@@ -56,19 +70,20 @@ class POICandidato:
     lat: float
     lon: float
     costo_rango: str | None
-    horario_osm: str | None
     accesibilidad: dict[str, AtributoAcc] = field(default_factory=dict)
-    es_destino_alternativo: bool = False
-    popularidad: float = 0.5
+    horario_osm: str | None = None
+    is_synthetic: bool = False
+    # None = el catálogo no lo trae; el motor aplica la regla de polos saturados.
+    es_destino_alternativo: bool | None = None
+    popularidad: float | None = None
     subcategoria: str | None = None
     descripcion: str = ""
-    is_synthetic: bool = False
 
 
 @dataclass(frozen=True)
 class SolicitudRuta:
     horas_disponibles: float
-    punto_partida: tuple[float, float] | None = None
+    punto_partida: tuple[float, float] | None = None  # (lat, lon); nunca se guarda
     intereses: list[str] = field(default_factory=list)
     presupuesto: str | None = None
     restricciones: Restricciones = field(default_factory=Restricciones)
@@ -82,37 +97,53 @@ class Parada:
     orden: int
     poi_id: str
     nombre: str
-    llegada_min: int
+    llegada_min: int  # minutos desde el inicio del recorrido
     estancia_min: int
-    traslado_min: int
+    traslado_min: int  # incluye los descansos programados en el trayecto
     motivo: str
     advertencias: list[str] = field(default_factory=list)
+
+
+class NoIncluido(NamedTuple):
+    """Lugar que no entra y por qué. Es una tupla ``(poi_id, motivo)`` con nombres."""
+
+    poi_id: str
+    motivo: str
 
 
 @dataclass
 class RespuestaRuta:
     paradas: list[Parada]
-    no_incluidos: list[tuple[str, str]]
+    no_incluidos: list[NoIncluido]
     alternativos: list[str]
     explicacion: str
     datos_desconocidos: list[str]
-    metricas: dict[str, Any]
+    metricas: dict[str, Any] = field(default_factory=dict)
+    motor: str = "015-v1"
 
 
 @dataclass(frozen=True)
 class SolicitudMultidia:
-    poi_ids: list[str]
     dias: int
     horas_por_dia: float
     restricciones: Restricciones = field(default_factory=Restricciones)
+    poi_ids: list[str] = field(default_factory=list)
     hora_inicio: str = "10:00"
     dia_semana_inicio: int | None = None
     incluir_alternativos: bool = True
 
 
 @dataclass
+class DiaPlan:
+    dia: int  # 1, 2, …
+    paradas: list[Parada]
+
+
+@dataclass
 class RespuestaMultidia:
-    dias: list[list[Parada]]
-    no_incluidos: list[tuple[str, str]]
+    dias: list[DiaPlan]
+    no_incluidos: list[NoIncluido]
     alternativos: list[str]
-    metricas: dict[str, Any]
+    explicacion: str = ""
+    metricas: dict[str, Any] = field(default_factory=dict)
+    motor: str = "015-v1"

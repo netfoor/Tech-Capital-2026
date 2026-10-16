@@ -9,6 +9,7 @@ from app.recommender import (
     SolicitudMultidia,
     SolicitudRuta,
     planear_multidia,
+    recomendar_multidia,
 )
 from app.recommender.carga import cargar_catalogo
 from app.recommender.tipos import RespuestaRuta
@@ -28,7 +29,8 @@ def _atractivos(catalogo):
 
 def _verificar_dias(resp, sol, por_id):
     """Cada día pasa el verificador de una ruta con las mismas restricciones."""
-    for i, paradas in enumerate(resp.dias):
+    for i, dia_plan in enumerate(resp.dias):
+        paradas = dia_plan.paradas
         dia = sol.dia_semana_inicio
         s = SolicitudRuta(
             horas_disponibles=sol.horas_por_dia,
@@ -51,7 +53,7 @@ def test_sin_duplicados_y_todo_contabilizado(catalogo):
     ids = [p.poi_id for p in _atractivos(catalogo)][::2]
     sol = SolicitudMultidia(poi_ids=ids + ids[:3], dias=3, horas_por_dia=6)
     r = planear_multidia(sol, catalogo)
-    asignados = [p.poi_id for d in r.dias for p in d if p.poi_id in ids]
+    asignados = [p.poi_id for d in r.dias for p in d.paradas if p.poi_id in ids]
     assert len(asignados) == len(set(asignados))
     no_incl = [pid for pid, _ in r.no_incluidos]
     assert set(asignados) | set(no_incl) == set(ids)
@@ -90,7 +92,7 @@ def test_restricciones_se_respetan_cada_dia(catalogo):
         _verificar_dias(r, sol, por_id)
         if sol.restricciones.sin_escalones:
             for d in r.dias:
-                for p in d:
+                for p in d.paradas:
                     if p.poi_id in por_id:
                         assert "acceso_sin_escalones" in por_id[p.poi_id].accesibilidad
 
@@ -103,9 +105,9 @@ def test_sin_verificar_sale_con_motivo(catalogo):
         poi_ids=sin_dato, dias=1, horas_por_dia=6, restricciones=Restricciones(sin_escalones=True)
     )
     r = planear_multidia(sol, catalogo)
-    assert r.dias == [[]]
+    assert [d.paradas for d in r.dias] == [[]]
     motivos = dict(r.no_incluidos)
-    assert all("Sin verificar" in motivos[pid] for pid in sin_dato)
+    assert all("sin verificar" in motivos[pid] for pid in sin_dato)
 
 
 def test_metricas_y_agrupamiento_mejoran_el_orden_ingenuo(catalogo):
@@ -128,7 +130,7 @@ def test_metricas_y_agrupamiento_mejoran_el_orden_ingenuo(catalogo):
     # Cada día queda en una sola ciudad.
     for d in r.dias:
         destinos = {next(p for p in catalogo if p.poi_id == x.poi_id).destino_id
-                    for x in d if x.poi_id in intercalado}  # fmt: skip
+                    for x in d.paradas if x.poi_id in intercalado}  # fmt: skip
         assert len(destinos) <= 1
 
 
@@ -147,7 +149,9 @@ def test_determinista(catalogo):
     sol = SolicitudMultidia(poi_ids=ids, dias=2, horas_por_dia=6)
     a = planear_multidia(sol, catalogo)
     b = planear_multidia(sol, list(reversed(catalogo)))
-    assert [[p.poi_id for p in d] for d in a.dias] == [[p.poi_id for p in d] for d in b.dias]
+    assert [[p.poi_id for p in d.paradas] for d in a.dias] == [
+        [p.poi_id for p in d.paradas] for d in b.dias
+    ]
 
 
 def test_id_desconocido_y_dias_invalidos(catalogo):
@@ -171,6 +175,18 @@ def test_atributo_reportado_excluye_en_multidia(catalogo):
         ),
         catalogo,
     )
-    assert r.dias == [[]]
+    assert [d.paradas for d in r.dias] == [[]]
     assert "barrera reportada" in dict(r.no_incluidos)["syn-cen-01"]
     assert AtributoAcc  # tipo exportado
+
+
+def test_firma_del_endpoint_recomendar_multidia(catalogo):
+    elegidos = [p for p in _atractivos(catalogo) if p.destino_id == "puebla"][:4]
+    resto = [p for p in catalogo if p not in elegidos]
+    r = recomendar_multidia(SolicitudMultidia(dias=2, horas_por_dia=5), elegidos, resto)
+    assert [d.dia for d in r.dias] == [1, 2]
+    asignados = {p.poi_id for d in r.dias for p in d.paradas}
+    assert asignados <= {p.poi_id for p in catalogo}
+    assert {p.poi_id for p in elegidos} == asignados | {n.poi_id for n in r.no_incluidos}
+    assert r.explicacion and r.motor == "015-v1"
+    assert all(n.motivo for n in r.no_incluidos)

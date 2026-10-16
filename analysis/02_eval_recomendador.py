@@ -44,7 +44,7 @@ from app.recommender import (  # noqa: E402
 )
 from app.recommender.baselines import BASELINES  # noqa: E402
 from app.recommender.carga import cargar_catalogo  # noqa: E402
-from app.recommender.config import CONFIG_DEFECTO, Config, Pesos  # noqa: E402
+from app.recommender.config import CONFIG_DEFECTO, Config, Pesos, es_alternativo, popularidad  # noqa: E402
 from app.recommender.elegibilidad import es_servicio  # noqa: E402
 from app.recommender.geo import zona  # noqa: E402
 from app.recommender.ranking import VOCABULARIO_INTERESES, IndiceTfidf, consulta  # noqa: E402
@@ -220,11 +220,11 @@ def evaluar_rutas(pois, solicitudes):
                     "viol_horario": sum(x.tipo == "horario" for x in v),
                     "viol_presupuesto": sum(x.tipo == "presupuesto" for x in v),
                     "cobertura_alternativos": (
-                        sum(p.es_destino_alternativo for p in lugares) / n if n else 0.0
+                        sum(es_alternativo(p) for p in lugares) / n if n else 0.0
                     ),
                     "zonas_distintas": len({zona(p.lat, p.lon) for p in lugares}),
                     "destinos_distintos": len({p.destino_id for p in lugares}),
-                    "popularidad_media": (sum(p.popularidad for p in lugares) / n if n else 0.0),
+                    "popularidad_media": (sum(popularidad(p) for p in lugares) / n if n else 0.0),
                     "coincidencia_intereses": (sum(coincide) / n if n else 0.0),
                     "tiempo_usado_min": r.metricas["tiempo_usado_min"],
                     "tiempo_disponible_min": r.metricas["tiempo_disponible_min"],
@@ -295,7 +295,8 @@ def evaluar_multidia(pois):
         r = planear_multidia(sol, pois)
         ms = (time.perf_counter() - t0) * 1000
         violaciones = 0
-        for d, paradas in enumerate(r.dias):
+        for d, dia_plan in enumerate(r.dias):
+            paradas = dia_plan.paradas
             dia = None if sol.dia_semana_inicio is None else (sol.dia_semana_inicio + d) % 7
             s = SolicitudRuta(
                 horas_disponibles=sol.horas_por_dia,
@@ -306,7 +307,7 @@ def evaluar_multidia(pois):
             rr = RespuestaRuta(paradas, [], [], "", [], {"linea_tiempo": r.metricas[
                 "linea_tiempo_por_dia"][d]})  # fmt: skip
             violaciones += sum(x.tipo in INDISPENSABLES for x in verificar(rr, s, por_id))
-        asignados = [p.poi_id for d in r.dias for p in d if p.poi_id in seleccion]
+        asignados = [p.poi_id for d in r.dias for p in d.paradas if p.poi_id in seleccion]
         m = r.metricas
         filas.append(
             {

@@ -13,9 +13,9 @@ import unicodedata
 from collections import Counter
 from dataclasses import dataclass, field
 
-from .config import Config
+from .config import Config, es_alternativo, popularidad
 from .elegibilidad import ATR_BANIO, ATR_PENDIENTE, ATR_SIN_ESCALONES, _numero
-from .geo import minutos_caminando
+from .geo import haversine_m, minutos_caminando
 from .horarios import parsear
 from .tipos import POICandidato
 
@@ -39,6 +39,7 @@ VOCABULARIO_INTERESES: dict[str, tuple[str, ...]] = {
         "comida",
         "restaurante",
         "cafe",
+        "cafeteria",
         "mercado",
         "mole",
         "dulces",
@@ -143,11 +144,11 @@ def calidad_informacion(poi: POICandidato) -> float:
         if a is None:
             valores.append(0.0)
         elif a.estado == "verificado":
-            valores.append(a.confianza)
+            valores.append(a.confianza or 0.0)
         elif a.estado == "sin_verificar":
-            valores.append(0.5 * a.confianza)
+            valores.append(0.5 * (a.confianza or 0.0))
         else:  # reportado: dato reciente y útil
-            valores.append(0.5 * a.confianza)
+            valores.append(0.5 * (a.confianza or 0.0))
     horario_ok = 1.0 if parsear(poi.horario_osm) is not None else 0.0
     return 0.8 * (sum(valores) / len(valores)) + 0.2 * horario_ok
 
@@ -163,18 +164,23 @@ def esfuerzo(poi: POICandidato, minutos: int | None) -> float:
 def origen_de_referencia(
     pois: list[POICandidato], intereses: list[str], indice: IndiceTfidf
 ) -> tuple[float, float] | None:
-    """Sin punto de partida, el centroide de los 10 lugares más pertinentes."""
+    """Sin punto de partida, el medoide de los 5 lugares más pertinentes: un lugar
+    real, no un centroide que puede caer entre dos ciudades."""
     if not pois:
         return None
     terminos = [t for i in intereses for t in consulta(i)]
     orden = sorted(
         pois,
         key=lambda p: (-(indice.similitud(terminos, p.poi_id) if terminos else 0.0), p.poi_id),
-    )[:10]
-    return (
-        sum(p.lat for p in orden) / len(orden),
-        sum(p.lon for p in orden) / len(orden),
+    )[:5]
+    medoide = min(
+        orden,
+        key=lambda p: (
+            sum(haversine_m((p.lat, p.lon), (q.lat, q.lon)) for q in orden),
+            p.poi_id,
+        ),
     )
+    return (medoide.lat, medoide.lon)
 
 
 def puntuar(
@@ -203,9 +209,7 @@ def puntuar(
         ]
         minutos = minutos_caminando(origen, (p.lat, p.lon), config) if origen else None
         cerc = 0.5 if minutos is None else max(0.0, 1 - minutos / radio)
-        div = 0.5 * (1.0 if p.es_destino_alternativo else 0.0) + 0.5 * (
-            1 - min(max(p.popularidad, 0.0), 1.0)
-        )
+        div = 0.5 * (1.0 if es_alternativo(p) else 0.0) + 0.5 * (1 - popularidad(p))
         cal = calidad_informacion(p)
         esf = esfuerzo(p, minutos)
         total = (

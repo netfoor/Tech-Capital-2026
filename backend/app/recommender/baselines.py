@@ -14,7 +14,7 @@ baños. Pueden violar restricciones indispensables: eso es lo que se mide.
 
 from __future__ import annotations
 
-from .config import CONFIG_DEFECTO, Config
+from .config import CONFIG_DEFECTO, Config, popularidad
 from .elegibilidad import ATR_SIN_ESCALONES, clasificar
 from .geo import minutos_caminando
 from .horarios import hora_a_minutos
@@ -50,7 +50,7 @@ def _baseline(
             for p in candidatos
             if not (
                 (a := p.accesibilidad.get(ATR_SIN_ESCALONES))
-                and a.valor.strip().lower() in {"no", "limitado", "limited"}
+                and (a.valor or "").strip().lower() in {"no", "limitado", "limited"}
             )
         ]
     origen = solicitud.punto_partida or origen_de_referencia(
@@ -62,7 +62,7 @@ def _baseline(
             for p in candidatos
         }
     else:
-        base = {p.poi_id: p.popularidad for p in candidatos}
+        base = {p.poi_id: popularidad(p) for p in candidatos}
     candidatos = sorted(candidatos, key=lambda p: (-base[p.poi_id], p.poi_id))
     candidatos = candidatos[: config.max_candidatos]
     ctx = crear_contexto(
@@ -89,6 +89,7 @@ def _baseline(
         explicacion=f"Ruta de la línea base «{nombre}».",
         datos_desconocidos=[],
         metricas=metricas,
+        motor=f"baseline-{nombre}",
     )
 
 

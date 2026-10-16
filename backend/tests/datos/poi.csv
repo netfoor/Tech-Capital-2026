@@ -1,0 +1,9 @@
+poi_id,nombre,categoria,subcategoria,destino_id,corredor_id,municipio_cvegeo,lat,lon,direccion,horario_osm,costo_rango,descripcion,fuentes,osm_id,denue_id,sic_id,match_score,is_synthetic
+demo-cholula-zocalo,Plaza demo de Cholula,plaza,,cholula,demo-cholula-atlixco,21140,19.0633,-98.3036,Centro (demo),24/7,gratis,Plaza sintética para pruebas,osm-demo,,,,,true
+demo-cholula-museo,Museo demo de Cholula,museo,historia,cholula,demo-cholula-atlixco,21140,19.0640,-98.3050,Calle 1 (demo),Tu-Su 09:00-18:00,bajo,Museo sintético para pruebas,osm-demo|denue-demo,n1,d1,,0.9500,true
+demo-cholula-piramide,Zona arqueológica demo,zona_arqueologica,,cholula,demo-cholula-atlixco,21140,19.0577,-98.3017,Calle 2 (demo),Tu-Su 09:00-17:00,bajo,Sitio sintético con escalinata,osm-demo,n2,,,,true
+demo-cholula-mercado,Mercado demo de Cholula,mercado,,cholula,demo-cholula-atlixco,21140,19.0650,-98.3070,Calle 3 (demo),,gratis,Mercado sintético,osm-demo,n3,,,,true
+demo-cholula-cafe,Café demo,cafeteria,,cholula,demo-cholula-atlixco,21140,19.0620,-98.3040,Calle 4 (demo),Mo-Sa 08:00-20:00,medio,Café sintético,denue-demo,,d2,,0.8000,true
+demo-atlixco-zocalo,Plaza demo de Atlixco,plaza,,atlixco,demo-cholula-atlixco,21019,18.9088,-98.4342,Centro (demo),24/7,gratis,Plaza sintética de Atlixco,osm-demo,n4,,,,true
+demo-atlixco-cerro,Mirador demo de Atlixco,mirador,,atlixco,demo-cholula-atlixco,21019,18.9070,-98.4400,Cerro (demo),,gratis,Mirador sintético con pendiente,osm-demo,n5,,,,true
+demo-atlixco-restaurante,Restaurante demo de Atlixco,restaurante,,atlixco,demo-cholula-atlixco,21019,18.9100,-98.4330,Calle 5 (demo),Mo-Su 13:00-22:00,alto,Restaurante sintético,denue-demo,,d3,,0.7000,true
