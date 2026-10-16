@@ -1,0 +1,19 @@
+orden,destino_id,nombre,pueblo_magico,municipios_cvegeo,denue_museos_sitios_7121,recintos_sic_zona,oferta_cultural_registrada,denue_alojamiento_7211,llegadas_2025,participacion_llegadas_2025,ocupacion_2025,ocupacion_estado_2025,diferencia_ocupacion_pp,estadia_2025,cuartos_libres_por_dia_2025,oferta_cultural_relevante,baja_demanda,candidato_destino_alternativo
+1,chignahuapan,Chignahuapan,True,21053,2,7,9,68,351514.0000,0.0510,45.3450,51.5728,-6.2278,1.8047,661.3260,True,True,True
+2,cuetzalan,Cuetzalan,True,21043,5,3,8,41,196014.0000,0.0284,41.2753,51.5728,-10.2975,1.8274,428.6438,True,True,True
+3,atlixco,Atlixco,True,21019,3,5,8,74,213962.0000,0.0311,44.1894,51.5728,-7.3834,1.7908,440.8027,True,True,True
+4,pahuatlan,Pahuatlán,True,21109,0,7,7,12,33365.0000,0.0048,32.0600,51.5728,-19.5128,1.8121,105.2959,True,True,True
+5,tetela-de-ocampo,Tetela de Ocampo,True,21172,1,5,6,8,34787.0000,0.0050,32.8809,51.5728,-18.6919,1.7913,107.6959,True,True,True
+6,huejotzingo,Huejotzingo,True,21074,1,3,4,13,46536.0000,0.0068,48.2005,51.5728,-3.3723,1.8338,96.3342,True,True,True
+7,tlatlauquitepec,Tlatlauquitepec,True,21186,0,3,3,21,69393.0000,0.0101,35.9564,51.5728,-15.6164,1.7982,191.4904,True,True,True
+8,teziutlan,Teziutlán,True,21174,0,3,3,26,122242.0000,0.0177,39.9230,51.5728,-11.6498,1.8277,284.1644,True,True,True
+9,huauchinango,Huauchinango,True,21071,1,1,2,40,124634.0000,0.0181,43.1899,51.5728,-8.3829,1.8612,254.9233,True,True,True
+10,xicotepec,Xicotepec,True,21197,0,2,2,26,90541.0000,0.0131,43.7792,51.5728,-7.7936,1.8017,179.3260,True,True,True
+11,puebla,Ciudad de Puebla,False,21114,57,80,137,323,3191517.0000,0.4632,59.9926,51.5728,8.4198,1.8590,4253.1233,False,False,False
+12,cholula,Cholula,True,21140;21119,15,15,30,67,540058.0000,0.0784,57.6035,51.5728,6.0307,1.8583,629.9041,True,False,False
+13,zacatlan,Zacatlán,True,21208,4,6,10,87,478062.0000,0.0694,52.1766,51.5728,0.6038,1.8037,688.3534,True,False,False
+14,tehuacan,Tehuacán,False,21156,3,0,3,88,328281.0000,0.0476,50.1387,51.5728,-1.4341,1.8966,491.1342,False,True,False
+15,acatzingo,Acatzingo,False,21004,2,0,2,12,9837.0000,0.0014,28.4773,51.5728,-23.0955,1.7870,40.7425,False,True,False
+16,tepeaca,Tepeaca,False,21164,1,0,1,23,61723.0000,0.0090,29.7562,51.5728,-21.8166,1.7801,244.8411,False,True,False
+17,san-martin-texmelucan,San Martín Texmelucan,False,21132,1,0,1,33,42587.0000,0.0062,37.6582,51.5728,-13.9146,1.7752,107.8000,False,True,False
+18,izucar-de-matamoros,Izúcar de Matamoros,False,21085,0,0,0,30,64320.0000,0.0093,45.8961,51.5728,-5.6767,1.7674,117.4055,False,True,False

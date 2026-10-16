@@ -1,5 +1,5 @@
 import { useCallback, useState, type FormEvent } from 'react'
-import { Navigate, NavLink, Route, Routes } from 'react-router'
+import { Link, Navigate, NavLink, Route, Routes } from 'react-router'
 import { guardarSesion, iniciarSesion, sesionGuardada, type Sesion } from './api'
 import { Experiencia, Inclusion, Moderacion, OfertaDemanda, Panorama } from './modulos'
 import { ContextoVista, type Vista } from './vista'
@@ -108,6 +108,7 @@ export function Tablero() {
             <p className="tb-usuario">
               {sesion.usuario.nombre_visible ?? sesion.usuario.correo} · {sesion.usuario.rol}
             </p>
+            <Link to="/">App del visitante</Link>
             <button type="button" className="tb-boton-sec" onClick={salir}>
               Cerrar sesión
             </button>

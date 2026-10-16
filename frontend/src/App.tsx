@@ -1,30 +1,30 @@
-import { Link, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { Tablero } from './admin/Tablero'
-import { EstadoApi } from './componentes/EstadoApi'
-
-function Visitante() {
-  return (
-    <main id="contenido">
-      <h1>Puebla Viva 360</h1>
-      <p>Descubre, planea y vive recorridos inclusivos en Puebla.</p>
-      <EstadoApi />
-    </main>
-  )
-}
+import { Marco } from './componentes/Marco'
+import { Cuenta } from './paginas/Cuenta'
+import { Descubrir } from './paginas/Descubrir'
+import { Ficha } from './paginas/Ficha'
+import { MiMapa } from './paginas/MiMapa'
+import { MiRecorrido, NoEncontrado } from './paginas/MiRecorrido'
+import { Planear } from './paginas/Planear'
+import { Reportar } from './paginas/Reportar'
+import { Resena } from './paginas/Resena'
 
 export default function App() {
   return (
-    <>
-      <a className="saltar" href="#contenido">
-        Saltar al contenido
-      </a>
-      <nav aria-label="Principal">
-        <Link to="/">Visitante</Link> · <Link to="/admin">Secretaría</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Visitante />} />
-        <Route path="/admin/*" element={<Tablero />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route element={<Marco />}>
+        <Route index element={<Descubrir />} />
+        <Route path="lugar/:poiId" element={<Ficha />} />
+        <Route path="lugar/:poiId/reportar" element={<Reportar />} />
+        <Route path="lugar/:poiId/resena" element={<Resena />} />
+        <Route path="mi-mapa" element={<MiMapa />} />
+        <Route path="planear" element={<Planear />} />
+        <Route path="recorrido" element={<MiRecorrido />} />
+        <Route path="cuenta" element={<Cuenta />} />
+        <Route path="*" element={<NoEncontrado />} />
+      </Route>
+      <Route path="/admin/*" element={<Tablero />} />
+    </Routes>
   )
 }
