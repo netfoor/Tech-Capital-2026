@@ -55,3 +55,17 @@ def test_escribir_firma_cada_archivo(armado, tmp_path):
     for a in manifiesto["archivos"]:
         datos = (destino / a["ruta"]).read_bytes()
         assert paquete.sha256(datos) == a["sha256"] and len(datos) == a["bytes"]
+
+
+def test_los_poligonos_tienen_la_orientacion_que_espera_d3(armado):
+    """Con la orientación de origen d3 vería el complemento del estado (área ≈ 4π)."""
+
+    def area_con_signo(anillo):
+        return sum(
+            x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(anillo, anillo[1:], strict=False)
+        )
+
+    for f in armado["geo/estado.json"]["features"]:
+        poligono = f["geometry"]["coordinates"]
+        poligono = poligono if f["geometry"]["type"] == "Polygon" else poligono[0]
+        assert area_con_signo(poligono[0]) < 0  # exterior en sentido horario

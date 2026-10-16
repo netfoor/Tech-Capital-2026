@@ -18,16 +18,77 @@ const s = seccion('inicio');
       </div>
       <p class="nota mt-6">{s.bases}</p>
     </div>
-    {/* Mapa de portada: T009-04 (relleno de ocupación y anillo de atención). */}
     <figure
       id="mapa-portada"
       class="mapa-portada"
       role="img"
       aria-label="Mapa del estado de Puebla con los Pueblos Mágicos y la capital"
     >
+      <p class="cargando-mapa">Cargando el mapa…</p>
     </figure>
   </div>
 </section>
+
+<script>
+  import { mapaPortada } from '../scripts/mapa.js';
+  const figura = document.getElementById('mapa-portada');
+  if (figura) {
+    mapaPortada(figura).catch((error) => {
+      figura.innerHTML = `<p class="cargando-mapa">No se pudo cargar el mapa: ${error.message}</p>`;
+    });
+  }
+</script>
+
+<style is:global>
+  .mapa-portada .lienzo-mapa {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .mapa-portada .etiqueta {
+    font-size: 12.5px;
+    fill: var(--color-tinta);
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+
+  .mapa-portada .leyenda-mapa,
+  .mapa-portada .fuente-mapa,
+  .mapa-portada .cargando-mapa {
+    font-size: 12.5px;
+    color: var(--color-gris);
+  }
+
+  .mapa-portada .leyenda-titulo {
+    font-weight: 700;
+    color: var(--color-tinta-2);
+  }
+
+  .mapa-portada .leyenda-clases {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 4px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mapa-portada .leyenda-clases li {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mapa-portada .muestra {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+  }
+</style>
 
 <style>
   .portada {

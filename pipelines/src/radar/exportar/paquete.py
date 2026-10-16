@@ -129,6 +129,13 @@ def destinos_json(i: Insumos, generado: str) -> dict:
     return {"generado": generado, "destinos": filas}
 
 
+def _invertir_anillos(tipo: str, c):
+    """d3 lee los anillos de un polígono con el sentido contrario al de INEGI; se invierten."""
+    if tipo == "Polygon":
+        return [list(reversed(anillo)) for anillo in c]
+    return [[list(reversed(anillo)) for anillo in poligono] for poligono in c]
+
+
 def _redondear_coordenadas(c):
     if isinstance(c, list):
         return [_redondear_coordenadas(x) for x in c]
@@ -155,7 +162,9 @@ def geo_json(i: Insumos) -> tuple[dict, dict]:
                 },
                 "geometry": {
                     "type": f["geometry"]["type"],
-                    "coordinates": _redondear_coordenadas(f["geometry"]["coordinates"]),
+                    "coordinates": _redondear_coordenadas(
+                        _invertir_anillos(f["geometry"]["type"], f["geometry"]["coordinates"])
+                    ),
                 },
             }
             for f in sorted(crudo["features"], key=lambda f: f["properties"]["cvegeo"])
@@ -173,7 +182,9 @@ def geo_json(i: Insumos) -> tuple[dict, dict]:
                 "properties": {"cvegeo": "21", "nombre": "Puebla", "destino_id": None},
                 "geometry": {
                     "type": g["type"],
-                    "coordinates": _redondear_coordenadas(g["coordinates"]),
+                    "coordinates": _redondear_coordenadas(
+                        _invertir_anillos(g["type"], g["coordinates"])
+                    ),
                 },
             }
             for g in geometrias
