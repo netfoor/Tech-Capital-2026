@@ -138,3 +138,106 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Secciones públicas con datos (T009-10 y T009-11). */
+.hallazgos {
+  display: grid;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.hallazgo {
+  border: 1px solid var(--color-linea);
+  background: #fff;
+  padding: 20px;
+}
+
+.hallazgo-cifra {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--color-tinta);
+}
+
+.hallazgo-unidad,
+.hallazgo-fuente,
+.vis-n {
+  font-size: 13.5px;
+  color: var(--color-gris);
+}
+
+.mini-barras {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mini-barras li {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.mb-pista {
+  height: 10px;
+  background: var(--color-rejilla);
+}
+
+.mb-pista span {
+  display: block;
+  height: 100%;
+  background: var(--color-tc-azul);
+}
+
+.mb-valor {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tianguis-rejilla,
+.metodo-bloques {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.metodo-lista {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.formulas div {
+  margin-top: 10px;
+}
+
+.formulas dt {
+  font-weight: 700;
+}
+
+.formulas code,
+.descargas code {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+}
+
+.descargas {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.descargas li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-linea);
+}

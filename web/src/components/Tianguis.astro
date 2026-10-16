@@ -4,6 +4,10 @@ import { seccion } from '../secciones';
 ---
 
 <Seccion seccion={seccion('tianguis')}>
-  {/* T009-10: uso para las citas, comparación por idioma y medición antes y después. */}
   <div id="tianguis-contenido"></div>
 </Seccion>
+
+<script>
+  import { montarTianguis } from '../scripts/publica.js';
+  montarTianguis();
+</script>

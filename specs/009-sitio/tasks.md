@@ -18,8 +18,8 @@
 
 ## Página pública y cierre
 
-- [ ] T009-10 [P] Secciones El problema, Para el Tianguis 2027 y Cómo se hizo, con datos de `evidencia.json` y `metodo.json`. Verificación: ninguna cifra escrita a mano (`grep` de dígitos en los `.astro` revisado).
-- [ ] T009-11 [P] Datos y código: descargas y manifiesto legible. Verificación: cada descarga coincide en SHA-256 con su archivo de `data/curado/`.
+- [x] T009-10 [P] Secciones El problema, Para el Tianguis 2027 y Cómo se hizo, con datos de `evidencia.json` y `metodo.json`. Verificación: ninguna cifra escrita a mano (`grep` de dígitos en los `.astro` revisado).
+- [x] T009-11 [P] Datos y código: descargas y manifiesto legible. Verificación: cada descarga coincide en SHA-256 con su archivo de `data/curado/`.
 - [ ] T009-14 Sección «La plataforma» con capturas reales de las cuatro vistas (`public/capturas/`), tomadas con `scripts/revisar.mjs`. Depende de T009-06 a T009-09. Verificación: cuatro imágenes con texto alternativo.
 - [ ] T009-12 Revisión en teléfono y accesibilidad; lista de `docs/diseno.md` §12 completa. Verificación: `node scripts/revisar.mjs` sin fallas y casillas marcadas.
 - [ ] T009-13 (P1) Prueba sin conexión: servir `web/dist/` compilado en modo local sin internet. Verificación: página pública y plataforma funcionan completas.
