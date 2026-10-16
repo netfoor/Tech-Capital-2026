@@ -12,6 +12,11 @@
   </div>
 </aside>
 
+<script>
+  import { montarPanel } from '../../scripts/ficha.js';
+  montarPanel();
+</script>
+
 <style>
   .panel {
     align-self: start;
@@ -26,6 +31,182 @@
       z-index: 50;
       overflow-y: auto;
       border: 0;
+    }
+  }
+</style>
+
+<style is:global>
+  .ficha-zona,
+  .cifra-nota,
+  .vis-n,
+  .ficha-pie,
+  .ficha-notas {
+    font-size: 13.5px;
+    color: var(--color-gris);
+  }
+
+  .ficha-nombre {
+    font-size: 24px;
+  }
+
+  .ficha-cuadrante {
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  .ficha-reco {
+    margin-top: 2px;
+    color: var(--color-tinta-2);
+  }
+
+  .cifras {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 18px 0;
+  }
+
+  .cifras dt {
+    font-size: 13.5px;
+    color: var(--color-tinta-2);
+  }
+
+  .cifras dd:not(.cifra-nota) {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .marca-origen {
+    display: inline-block;
+    width: 12px;
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  .ficha-sub {
+    margin: 18px 0 6px;
+    font-size: 15px;
+  }
+
+  .comp-lista,
+  .vis-lista,
+  .dom-lista,
+  .ficha-notas {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .comp-fila,
+  .vis-fila {
+    display: grid;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 14px;
+  }
+
+  .comp-fila {
+    grid-template-columns: 14px minmax(110px, 150px) 1fr 44px;
+  }
+
+  .vis-fila {
+    grid-template-columns: 72px 1fr auto;
+  }
+
+  .comp-barra,
+  .vis-barra {
+    position: relative;
+    height: 10px;
+    background: var(--color-rejilla);
+  }
+
+  .comp-barra span {
+    display: block;
+    height: 100%;
+    background: var(--color-tc-azul);
+  }
+
+  .vis-valor {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: #7ea6f7;
+  }
+
+  .vis-ic {
+    position: absolute;
+    top: 4px;
+    height: 2px;
+    background: var(--color-tinta);
+  }
+
+  .comp-valor {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .spark {
+    width: 100%;
+    height: 70px;
+  }
+
+  .ficha-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .rejilla-fichas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tarjeta-ficha {
+    border: 1px solid var(--color-linea);
+    padding: 16px;
+  }
+
+  #hoja-impresion {
+    display: none;
+  }
+
+  @media print {
+    @page {
+      size: letter;
+      margin: 1.2cm;
+    }
+
+    body > *:not(#hoja-impresion) {
+      display: none !important;
+    }
+
+    #hoja-impresion {
+      display: block;
+    }
+
+    #hoja-impresion .hoja {
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    #hoja-impresion .cifras dd:not(.cifra-nota) {
+      font-size: 18px;
+    }
+
+    #hoja-impresion .hoja-marca {
+      font-weight: 700;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    #hoja-impresion .spark {
+      height: 48px;
     }
   }
 </style>

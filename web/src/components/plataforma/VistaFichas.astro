@@ -6,3 +6,13 @@ const vista = VISTAS.find((v) => v.id === 'fichas')!;
 ---
 
 <MarcoVista vista={vista} />
+
+<script>
+  import { montarFichas } from '../../scripts/ficha.js';
+  const contenedor = document.getElementById('fichas-contenido');
+  if (contenedor) {
+    montarFichas(contenedor).catch((error) => {
+      contenedor.innerHTML = `<p class="aviso-error">No se pudieron cargar las fichas: ${error.message}</p>`;
+    });
+  }
+</script>
