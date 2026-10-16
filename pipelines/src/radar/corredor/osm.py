@@ -17,7 +17,6 @@ FUENTE_ID = "osm-overpass"
 SERVIDORES = (
     "https://overpass-api.de/api/interpreter",
     "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
-    "https://overpass.kumi.systems/api/interpreter",
 )
 AGENTE = "PueblaViva360/0.1 (Hackathon Tech Capital 2026; ingesta de POI turisticos)"
 
@@ -60,7 +59,7 @@ def consulta_centro(centro: Centro, timeout: int = 180) -> str:
 def consultar(
     consulta: str,
     servidores: tuple[str, ...] = SERVIDORES,
-    intentos: int = 6,
+    intentos: int = 8,
     espera_inicial_s: float = 15.0,
 ) -> tuple[bytes, str]:
     """Envía la consulta con espera creciente entre intentos. Devuelve (cuerpo, url)."""
@@ -83,7 +82,7 @@ def consultar(
         except httpx.HTTPError as e:
             ultimo = f"{url}: {type(e).__name__}"
         time.sleep(espera)
-        espera *= 2
+        espera = min(espera * 2, 120.0)
     raise RuntimeError(f"Overpass no respondió después de {intentos} intentos ({ultimo})")
 
 

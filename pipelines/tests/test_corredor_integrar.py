@@ -93,6 +93,24 @@ def test_determinista(tmp_path):
         assert ha == hb
 
 
+COLUMNAS_CATALOGO = (
+    "id,nombre,propietario,url,licencia,url_licencia,fecha_consulta,fecha_actualizacion_fuente,"
+    "alcance_espacial,alcance_temporal,granularidad,formato,campos_usados,calidad_observada,"
+    "faltantes,sesgos,terminos_uso,transformaciones,script_ingesta,responsable,estado"
+).split(",")
+
+
+def test_catalogo_de_fuentes(resultado):
+    from radar import config
+
+    catalogo = pd.read_csv(config.ruta("data", "catalog", "data_catalog.csv"), dtype=str)
+    assert list(catalogo.columns) == COLUMNAS_CATALOGO
+    assert catalogo["id"].is_unique
+    assert set(catalogo["estado"]) <= {"verificada", "pendiente", "descartada"}
+    usadas = {f for fs in resultado.poi["fuentes"] for f in fs.split("|")}
+    assert usadas <= set(catalogo["id"])
+
+
 def test_reporte_de_calidad(resultado):
     texto = calidad.reporte(resultado)
     assert "Cobertura de información de accesibilidad" in texto

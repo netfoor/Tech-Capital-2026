@@ -40,6 +40,8 @@ datos: ## Regenera data/curado/ con las etapas que no usan red
 	$(PIPE) radar fuentes
 	$(PIPE) radar catalogo
 	$(PIPE) radar indicadores
+	$(PIPE) radar corredor integrar
+	$(PIPE) radar corredor reporte
 
 verificar: secretos ## Llaves, pruebas, estilo y compilación
 	$(BACK) pytest -q

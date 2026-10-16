@@ -145,11 +145,14 @@ def base_nombre(nombre: str) -> str:
 
 
 def similitud(a: str, b: str) -> float:
-    """0–1. `token_set_ratio` premia que un nombre contenga al otro; se castiga un poco."""
+    """0–1. `token_set_ratio` premia que un nombre contenga al otro; se castiga: poco si el
+    nombre contenido tiene dos palabras o más, mucho si es una sola («Catedral» dentro de
+    «Hotel Catedral»)."""
     x, y = base_nombre(a), base_nombre(b)
     if not x or not y:
         return 0.0
-    return max(fuzz.token_sort_ratio(x, y), 0.9 * fuzz.token_set_ratio(x, y)) / 100
+    peso = 0.9 if min(len(x.split()), len(y.split())) >= 2 else 0.75
+    return max(fuzz.token_sort_ratio(x, y), peso * fuzz.token_set_ratio(x, y)) / 100
 
 
 _MINUSCULAS = {"de", "del", "la", "el", "los", "las", "y", "en", "a", "con"}
@@ -496,7 +499,7 @@ def _integrar_denue(pois: list[Poi], tabla: pd.DataFrame, est: Counter) -> list[
             est[f"enlaces_denue_{f.scian_prefijo}"] += 1
             continue
         cat = _categoria_denue(f.codigo_act)
-        if cat is None:
+        if cat is None or not f.nom_estab.strip():
             continue
         municipio, destino, corredor_id = _ubicar(float(f.lat), float(f.lon))  # type: ignore[misc]
         nuevos.append(
@@ -531,6 +534,18 @@ def _accesibilidad(pois: list[Poi]) -> pd.DataFrame:
 
 UMBRAL_POSIBLE_DUPLICADO = 0.90
 DISTANCIA_POSIBLE_DUPLICADO_M = 300.0
+_GRUPOS = {
+    "museo": "cultura",
+    "centro_cultural": "cultura",
+    "sitio_historico": "cultura",
+    "zona_arqueologica": "cultura",
+    "restaurante": "alimentos",
+    "cafe": "alimentos",
+}
+
+
+def _grupo(categoria: str) -> str:
+    return _GRUPOS.get(categoria, categoria)
 
 
 def posibles_duplicados(poi: pd.DataFrame) -> pd.DataFrame:
@@ -541,12 +556,12 @@ def posibles_duplicados(poi: pd.DataFrame) -> pd.DataFrame:
     """
     propios = poi[~poi["poi_id"].str.startswith("osm-")]
     de_osm = poi[poi["poi_id"].str.startswith("osm-")]
-    celdas: dict[tuple[int, int], list[tuple[str, str, float, float]]] = {}
+    celdas: dict[tuple[int, int], list[tuple[str, str, str, float, float]]] = {}
     paso = 0.003
     for f in de_osm.itertuples(index=False):
         lat, lon = float(f.lat), float(f.lon)
         celdas.setdefault((int(lat // paso), int(lon // paso)), []).append(
-            (f.poi_id, f.nombre, lat, lon)
+            (f.poi_id, f.nombre, f.categoria, lat, lon)
         )
     filas = []
     for f in propios.itertuples(index=False):
@@ -554,7 +569,9 @@ def posibles_duplicados(poi: pd.DataFrame) -> pd.DataFrame:
         i, j = int(lat // paso), int(lon // paso)
         for di in (-1, 0, 1):
             for dj in (-1, 0, 1):
-                for poi_id, nombre, a, o in celdas.get((i + di, j + dj), []):
+                for poi_id, nombre, cat, a, o in celdas.get((i + di, j + dj), []):
+                    if _grupo(cat) != _grupo(f.categoria):
+                        continue
                     d = geo.distancia_m(lat, lon, a, o)
                     if not (DISTANCIA_ENLACE_M <= d < DISTANCIA_POSIBLE_DUPLICADO_M):
                         continue
