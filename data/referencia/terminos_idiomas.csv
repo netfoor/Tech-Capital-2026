@@ -35,6 +35,6 @@ xicotepec,zh,Xicotepec,Sin artículo en zh.wikipedia según los enlaces de idiom
 zacatlan,fr,Zacatlán,"https://es.wikipedia.org/wiki/Municipio_de_Zacatlán (enlace de idioma fr de Wikipedia, consultado 2026-10-16)",true
 zacatlan,ko,Zacatlán,"https://es.wikipedia.org/wiki/Municipio_de_Zacatlán (enlace de idioma ko de Wikipedia, consultado 2026-10-16)",true
 zacatlan,zh,Zacatlán,Sin artículo en zh.wikipedia según los enlaces de idioma de https://es.wikipedia.org/wiki/Municipio_de_Zacatlán (consultado 2026-10-16); se conserva el nombre oficial,false
-puebla,fr,Puebla,"Nombre ambiguo (estado o capital) en fr.wikipedia; no se usa para detectar la capital, lo resuelve el extractor. Consultado 2026-10-16",false
+puebla,fr,ville de Puebla|centre historique de Puebla|centre-ville de Puebla|Puebla ville|capitale de Puebla,Expresiones que nombran la ciudad y no el estado; ajustadas al revisar respuestas reales de asistentes en francés (2026-10-16),true
 puebla,ko,Puebla,"Nombre ambiguo (estado o capital) en ko.wikipedia; no se usa para detectar la capital, lo resuelve el extractor. Consultado 2026-10-16",false
 puebla,zh,普埃布拉,"Nombre ambiguo (estado o capital) en zh.wikipedia; no se usa para detectar la capital, lo resuelve el extractor. Consultado 2026-10-16",false

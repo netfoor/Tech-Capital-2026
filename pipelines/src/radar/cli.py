@@ -97,6 +97,32 @@ def ver_resumen(anio: int = typer.Option(2025, help="Año completo a resumir")) 
     )
 
 
+@senales.command("youtube")
+def senales_youtube(
+    sin_comentarios: bool = typer.Option(False, help="No descarga comentarios"),
+) -> None:
+    """Consulta YouTube y escribe `presencia_youtube.csv` y `videos_por_destino.csv`."""
+    from radar.senales import youtube
+
+    config.cargar_entorno()
+    destinos = catalogo.cargar()
+    consultas = youtube.cargar_consultas()
+    unidades = youtube.comprobar_cuota(consultas, not sin_comentarios)
+    typer.echo(f"Cuota estimada: {unidades} unidades de 10,000 diarias")
+    cliente = youtube.Cliente()
+    presencia, videos, comentarios = youtube.ejecutar(
+        destinos, consultas, cliente, con_comentarios=not sin_comentarios
+    )
+    salida = config.ruta(config.CURADO)
+    salida.mkdir(parents=True, exist_ok=True)
+    presencia.to_csv(salida / "presencia_youtube.csv", index=False, float_format="%.4f")
+    videos.to_csv(salida / "videos_por_destino.csv", index=False, float_format="%.4f")
+    if not sin_comentarios:
+        ruta = youtube.escribir_comentarios(comentarios)
+        typer.echo(f"{len(comentarios)} comentarios en {ruta.relative_to(config.raiz())}")
+    typer.echo(f"Cuota usada: {cliente.unidades} unidades; {len(videos)} destinos con video")
+
+
 @senales.command("trends")
 def senales_trends(
     geo: str = typer.Option("MX", help="Región de Google Trends"),

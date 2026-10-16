@@ -11,7 +11,7 @@ teziutlan,total,440,33,7.5000,5.3900,10.3457
 tlatlauquitepec,total,440,123,27.9545,23.9659,32.3248
 xicotepec,total,440,55,12.5000,9.7307,15.9184
 zacatlan,total,440,255,57.9545,53.2928,62.4786
-puebla,total,440,313,71.1364,66.7339,75.1730
+puebla,total,440,335,76.1364,71.9382,79.8821
 tehuacan,total,440,86,19.5455,16.1104,23.5076
 izucar-de-matamoros,total,440,3,0.6818,0.2321,1.9852
 san-martin-texmelucan,total,440,2,0.4545,0.1247,1.6420
@@ -29,7 +29,7 @@ teziutlan,brazo=controlado,440,33,7.5000,5.3900,10.3457
 tlatlauquitepec,brazo=controlado,440,123,27.9545,23.9659,32.3248
 xicotepec,brazo=controlado,440,55,12.5000,9.7307,15.9184
 zacatlan,brazo=controlado,440,255,57.9545,53.2928,62.4786
-puebla,brazo=controlado,440,313,71.1364,66.7339,75.1730
+puebla,brazo=controlado,440,335,76.1364,71.9382,79.8821
 tehuacan,brazo=controlado,440,86,19.5455,16.1104,23.5076
 izucar-de-matamoros,brazo=controlado,440,3,0.6818,0.2321,1.9852
 san-martin-texmelucan,brazo=controlado,440,2,0.4545,0.1247,1.6420
@@ -83,7 +83,7 @@ teziutlan,idioma=fr,60,8,13.3333,6.9141,24.1652
 tlatlauquitepec,idioma=fr,60,18,30.0000,19.8982,42.5087
 xicotepec,idioma=fr,60,8,13.3333,6.9141,24.1652
 zacatlan,idioma=fr,60,33,55.0000,42.4919,66.9063
-puebla,idioma=fr,60,10,16.6667,9.3132,28.0316
+puebla,idioma=fr,60,32,53.3333,40.8934,65.3721
 tehuacan,idioma=fr,60,12,20.0000,11.8285,31.7818
 izucar-de-matamoros,idioma=fr,60,0,0.0000,0.0000,6.0172
 san-martin-texmelucan,idioma=fr,60,0,0.0000,0.0000,6.0172
@@ -137,7 +137,7 @@ teziutlan,proveedor=gemini,220,4,1.8182,0.7093,4.5808
 tlatlauquitepec,proveedor=gemini,220,75,34.0909,28.1482,40.5796
 xicotepec,proveedor=gemini,220,11,5.0000,2.8145,8.7300
 zacatlan,proveedor=gemini,220,115,52.2727,45.6903,58.7772
-puebla,proveedor=gemini,220,141,64.0909,57.5598,70.1383
+puebla,proveedor=gemini,220,148,67.2727,60.8223,73.1303
 tehuacan,proveedor=gemini,220,60,27.2727,21.8154,33.5101
 izucar-de-matamoros,proveedor=gemini,220,1,0.4545,0.0803,2.5294
 san-martin-texmelucan,proveedor=gemini,220,1,0.4545,0.0803,2.5294
@@ -191,7 +191,7 @@ teziutlan,proveedor=gemini;idioma=fr,30,0,0.0000,0.0000,11.3513
 tlatlauquitepec,proveedor=gemini;idioma=fr,30,10,33.3333,19.2305,51.2199
 xicotepec,proveedor=gemini;idioma=fr,30,0,0.0000,0.0000,11.3513
 zacatlan,proveedor=gemini;idioma=fr,30,13,43.3333,27.3775,60.8027
-puebla,proveedor=gemini;idioma=fr,30,2,6.6667,1.8477,21.3235
+puebla,proveedor=gemini;idioma=fr,30,9,30.0000,16.6647,47.8758
 tehuacan,proveedor=gemini;idioma=fr,30,9,30.0000,16.6647,47.8758
 izucar-de-matamoros,proveedor=gemini;idioma=fr,30,0,0.0000,0.0000,11.3513
 san-martin-texmelucan,proveedor=gemini;idioma=fr,30,0,0.0000,0.0000,11.3513
@@ -245,7 +245,7 @@ teziutlan,proveedor=openai,220,29,13.1818,9.3372,18.2902
 tlatlauquitepec,proveedor=openai,220,48,21.8182,16.8697,27.7339
 xicotepec,proveedor=openai,220,44,20.0000,15.2495,25.7802
 zacatlan,proveedor=openai,220,140,63.6364,57.0962,69.7085
-puebla,proveedor=openai,220,172,78.1818,72.2661,83.1303
+puebla,proveedor=openai,220,187,85.0000,79.6832,89.1155
 tehuacan,proveedor=openai,220,26,11.8182,8.1939,16.7530
 izucar-de-matamoros,proveedor=openai,220,2,0.9091,0.2497,3.2535
 san-martin-texmelucan,proveedor=openai,220,1,0.4545,0.0803,2.5294
@@ -299,7 +299,7 @@ teziutlan,proveedor=openai;idioma=fr,30,8,26.6667,14.1827,44.4480
 tlatlauquitepec,proveedor=openai;idioma=fr,30,8,26.6667,14.1827,44.4480
 xicotepec,proveedor=openai;idioma=fr,30,8,26.6667,14.1827,44.4480
 zacatlan,proveedor=openai;idioma=fr,30,20,66.6667,48.7801,80.7695
-puebla,proveedor=openai;idioma=fr,30,8,26.6667,14.1827,44.4480
+puebla,proveedor=openai;idioma=fr,30,23,76.6667,59.0717,88.2076
 tehuacan,proveedor=openai;idioma=fr,30,3,10.0000,3.4600,25.6211
 izucar-de-matamoros,proveedor=openai;idioma=fr,30,0,0.0000,0.0000,11.3513
 san-martin-texmelucan,proveedor=openai;idioma=fr,30,0,0.0000,0.0000,11.3513
@@ -353,7 +353,7 @@ teziutlan,tono=casual,280,27,9.6429,6.7119,13.6662
 tlatlauquitepec,tono=casual,280,83,29.6429,24.5984,35.2383
 xicotepec,tono=casual,280,28,10.0000,7.0096,14.0731
 zacatlan,tono=casual,280,160,57.1429,51.2883,62.8041
-puebla,tono=casual,280,207,73.9286,68.4871,78.7224
+puebla,tono=casual,280,218,77.8571,72.6351,82.3251
 tehuacan,tono=casual,280,27,9.6429,6.7119,13.6662
 izucar-de-matamoros,tono=casual,280,0,0.0000,0.0000,1.3534
 san-martin-texmelucan,tono=casual,280,2,0.7143,0.1961,2.5665
@@ -371,7 +371,7 @@ teziutlan,tono=comprador,100,0,0.0000,0.0000,3.6993
 tlatlauquitepec,tono=comprador,100,0,0.0000,0.0000,3.6993
 xicotepec,tono=comprador,100,0,0.0000,0.0000,3.6993
 zacatlan,tono=comprador,100,44,44.0000,34.6720,53.7719
-puebla,tono=comprador,100,82,82.0000,73.3326,88.2998
+puebla,tono=comprador,100,93,93.0000,86.2505,96.5681
 tehuacan,tono=comprador,100,44,44.0000,34.6720,53.7719
 izucar-de-matamoros,tono=comprador,100,2,2.0000,0.5502,7.0012
 san-martin-texmelucan,tono=comprador,100,0,0.0000,0.0000,3.6993

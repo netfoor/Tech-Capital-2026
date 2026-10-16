@@ -1,0 +1,204 @@
+{
+ "resultados": {
+  "g-es-1": [
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "a1"
+    },
+    "snippet": {
+     "title": "Qué hacer en Cholula en un día",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "a2"
+    },
+    "snippet": {
+     "title": "Atlixco y Cholula: guía",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "a3"
+    },
+    "snippet": {
+     "title": "Comida en Puebla ciudad",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   }
+  ],
+  "g-es-2": [
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "a1"
+    },
+    "snippet": {
+     "title": "Qué hacer en Cholula en un día",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "a4"
+    },
+    "snippet": {
+     "title": "Pueblos mágicos de la Sierra Norte",
+     "description": "Cuetzalan, Zacatlán y Chignahuapan",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   }
+  ],
+  "e-cuetzalan": [
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "b1"
+    },
+    "snippet": {
+     "title": "Cuetzalan en 2 días",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "b2"
+    },
+    "snippet": {
+     "title": "Cuetzalan del Progreso: cascadas",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "b3"
+    },
+    "snippet": {
+     "title": "Otro lugar sin relación",
+     "description": "Playa de Oaxaca",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   },
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "b4"
+    },
+    "snippet": {
+     "title": "Cuetzalan de noche",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   }
+  ],
+  "e-atlixco": [
+   {
+    "id": {
+     "kind": "youtube#video",
+     "videoId": "c1"
+    },
+    "snippet": {
+     "title": "Atlixco Valle de Catrinas",
+     "description": "",
+     "publishedAt": "2026-01-01T00:00:00Z"
+    }
+   }
+  ]
+ },
+ "detalles": {
+  "a1": {},
+  "b1": {
+   "statistics": {
+    "viewCount": "1000",
+    "commentCount": "10"
+   },
+   "snippet": {
+    "publishedAt": "2026-06-01T00:00:00Z"
+   }
+  },
+  "b2": {
+   "statistics": {
+    "viewCount": "5000",
+    "commentCount": "50"
+   },
+   "snippet": {
+    "publishedAt": "2026-03-01T00:00:00Z"
+   }
+  },
+  "b3": {
+   "statistics": {
+    "viewCount": "99999",
+    "commentCount": "9"
+   },
+   "snippet": {
+    "publishedAt": "2026-01-01T00:00:00Z"
+   }
+  },
+  "b4": {
+   "statistics": {
+    "viewCount": "300",
+    "commentCount": "3"
+   },
+   "snippet": {
+    "publishedAt": "2026-05-01T00:00:00Z"
+   }
+  },
+  "c1": {
+   "statistics": {
+    "viewCount": "800",
+    "commentCount": "8"
+   },
+   "snippet": {
+    "publishedAt": "2026-04-01T00:00:00Z"
+   }
+  }
+ },
+ "hilos": [
+  {
+   "snippet": {
+    "topLevelComment": {
+     "snippet": {
+      "textDisplay": "¿Cuánto cuesta llegar?",
+      "likeCount": 3,
+      "publishedAt": "2026-07-01T00:00:00Z",
+      "authorDisplayName": "Nombre Real",
+      "authorChannelId": {
+       "value": "UC123"
+      },
+      "authorProfileImageUrl": "x"
+     }
+    }
+   }
+  },
+  {
+   "snippet": {
+    "topLevelComment": {
+     "snippet": {
+      "textDisplay": "Muy bonito",
+      "likeCount": 3,
+      "publishedAt": "2026-07-01T00:00:00Z",
+      "authorDisplayName": "Nombre Real",
+      "authorChannelId": {
+       "value": "UC123"
+      },
+      "authorProfileImageUrl": "x"
+     }
+    }
+   }
+  }
+ ]
+}

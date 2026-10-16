@@ -1,0 +1,20 @@
+consulta_id,tipo,texto,idioma,region
+g-es-1,generica,qué visitar en Puebla,es,MX
+g-es-2,generica,pueblos mágicos de Puebla,es,MX
+g-es-3,generica,fin de semana en Puebla,es,MX
+g-es-4,generica,sierra norte de Puebla,es,MX
+g-en-1,generica,things to do in Puebla Mexico,en,MX
+g-en-2,generica,Puebla Mexico travel,en,MX
+e-atlixco,especifica,Atlixco Puebla qué hacer,es,MX
+e-chignahuapan,especifica,Chignahuapan Puebla qué hacer,es,MX
+e-cholula,especifica,Cholula Puebla qué hacer,es,MX
+e-cuetzalan,especifica,Cuetzalan Puebla qué hacer,es,MX
+e-huauchinango,especifica,Huauchinango Puebla qué hacer,es,MX
+e-huejotzingo,especifica,Huejotzingo Puebla qué hacer,es,MX
+e-pahuatlan,especifica,Pahuatlán Puebla qué hacer,es,MX
+e-tetela-de-ocampo,especifica,Tetela de Ocampo Puebla qué hacer,es,MX
+e-teziutlan,especifica,Teziutlán Puebla qué hacer,es,MX
+e-tlatlauquitepec,especifica,Tlatlauquitepec Puebla qué hacer,es,MX
+e-xicotepec,especifica,Xicotepec Puebla qué hacer,es,MX
+e-zacatlan,especifica,Zacatlán Puebla qué hacer,es,MX
+e-puebla,especifica,Puebla ciudad qué hacer,es,MX
