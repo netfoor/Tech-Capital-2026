@@ -43,3 +43,6 @@ CLAUDE.local.md
 
 # Fotos de prueba del backend
 backend/tests/.media/
+
+.vercel
+.env*.local
