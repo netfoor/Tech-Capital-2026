@@ -17,6 +17,6 @@
 | §9.11 | Documentación de los componentes con IA | [`../ia-responsable.md`](../ia-responsable.md) | En curso |
 | §7 | Material para la mentoría | [`mentoria.md`](mentoria.md) | Listo |
 | §8 | Preguntas del jurado | `preguntas-del-jurado.md` | Pendiente (T011-06) |
-| §8, §17 | Operación, costos y continuidad | `modelo-de-operacion.md` | Pendiente (T011-05) |
+| §8, §17 | Operación, costos y continuidad | `modelo-de-operacion.md` | Listo (costos por completar en T010-06) |
 
 Regla: ninguna cifra de estos archivos se escribe a mano si existe en `data/curado/` (constitución, III).

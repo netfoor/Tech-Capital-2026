@@ -19,7 +19,7 @@
 - [x] T006-09 `radar/asistentes/citas.py` y su resumen de dominios. Verificación: `asistentes_citas.csv` con `tipo_dominio` en ≥ 90 % de las filas.
 - [x] T006-10 `radar asistentes procesar`: las cinco tablas curadas con Wilson, incluida `asistentes_ejemplos.csv`. Verificación: `asistentes_visibilidad.csv` tiene los 12 Pueblos Mágicos en el segmento total y hay un ejemplo por idioma.
 - [ ] T006-11 Validación manual de 60 respuestas estratificadas por idioma; precisión y exhaustividad anotadas en `docs/ia-responsable.md`. Verificación: métricas registradas; si están bajo la meta, se corrige y se vuelve a procesar.
-- [ ] T006-12 Costo real de la corrida a partir de los tokens. Verificación: cifra en `09-resultados.md`.
+- [~] T006-12 Costo real de la corrida a partir de los tokens. Verificación: cifra en `09-resultados.md`.
 
 ## P1 y P2
 

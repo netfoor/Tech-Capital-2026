@@ -15,7 +15,7 @@ Datos: `interes_busqueda_mensual.csv` (Google Trends, MX, 2017-01 a 2026-09, ree
 
 Datos: `asistentes_corridas.csv` (380 corridas al 2026-10-16: 160 de OpenAI con búsqueda web y 220 de Gemini con `google_search`).
 
-- Consumo de tokens: OpenAI 3 751 668 de entrada y 537 029 de salida (23 000 de entrada por corrida en promedio, por el contexto de búsqueda); Gemini 7 190 de entrada y 307 059 de salida. El costo en pesos se calcula multiplicando por la tarifa vigente de cada proveedor al cierre de la corrida; la cifra final se anota aquí cuando se complete.
+- Consumo de tokens: OpenAI 3 751 668 de entrada y 537 029 de salida (23 000 de entrada por corrida en promedio, por el contexto de búsqueda); Gemini 7 190 de entrada y 307 059 de salida. Con la tarifa publicada por OpenAI para `gpt-5-mini` (0.25 USD por millón de tokens de entrada y 2.00 USD por millón de salida, consultada el 16 de octubre de 2026 en la documentación del modelo), los tokens de OpenAI suman unos 2.0 USD. Faltan por confirmar la tarifa de la herramienta de búsqueda de OpenAI, la de Gemini y el tipo de cambio, así que el costo total en pesos se anota cuando se tengan (T006-12).
 - Tasa de búsqueda: OpenAI buscó en 94.4 % de las corridas y Gemini en 0.9 %.
 - Cholula es el destino más visible: aparece en 78 % de las respuestas. Le siguen Zacatlán, Cuetzalan y Atlixco (55 a 57 %). Teziutlán aparece en 6 % y Huauchinango en 11 %.
 
