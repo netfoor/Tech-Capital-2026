@@ -8,6 +8,7 @@ que se prueba con respuestas guardadas y sin red.
 from __future__ import annotations
 
 import os
+import threading
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
@@ -110,13 +111,15 @@ class OpenAIConBusqueda:
     def __init__(self, modelo: str | None = None, cliente: Any = None) -> None:
         self.modelo = modelo or os.environ.get("OPENAI_MODEL") or MODELO_OPENAI_POR_DEFECTO
         self._cliente = cliente
+        self._candado = threading.Lock()
 
     def _cliente_real(self) -> Any:  # pragma: no cover - requiere llave y red
-        if self._cliente is None:
-            from openai import OpenAI
+        with self._candado:  # un solo cliente compartido entre hilos
+            if self._cliente is None:
+                from openai import OpenAI
 
-            self._cliente = OpenAI()
-        return self._cliente
+                self._cliente = OpenAI()
+            return self._cliente
 
     def consultar(self, texto: str) -> RespuestaAsistente:
         respuesta = self._cliente_real().responses.create(
@@ -131,13 +134,15 @@ class GeminiConBusqueda:
     def __init__(self, modelo: str | None = None, cliente: Any = None) -> None:
         self.modelo = modelo or os.environ.get("GEMINI_MODEL") or MODELO_GEMINI_POR_DEFECTO
         self._cliente = cliente
+        self._candado = threading.Lock()
 
     def _cliente_real(self) -> Any:  # pragma: no cover - requiere llave y red
-        if self._cliente is None:
-            from google import genai
+        with self._candado:  # un solo cliente compartido entre hilos
+            if self._cliente is None:
+                from google import genai
 
-            self._cliente = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-        return self._cliente
+                self._cliente = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+            return self._cliente
 
     def consultar(self, texto: str) -> RespuestaAsistente:
         from google.genai import types
