@@ -9,8 +9,9 @@ import pandas as pd
 import typer
 
 from radar import catalogo, config, fuentes
+from radar.exportar import paquete
 from radar.indicadores import resumen, sectur_ot
-from radar.radar import atencion, indices
+from radar.radar import atencion, desempeno, indices
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, help=__doc__)
 analisis = typer.Typer(no_args_is_help=True, help="Índices, brecha y cuadrantes (spec 008).")
@@ -250,6 +251,8 @@ def calcular_radar() -> None:
     tablas = atencion.cargar_tablas()
     tabla, cortes, disponibles = indices.calcular(mensual, tablas, universo)
     tabla.to_csv(curado / "radar_destinos.csv", index=False, float_format="%.4f")
+    referencia = desempeno.calcular(mensual, ["puebla"])
+    referencia.to_csv(curado / "radar_referencia.csv", index=False, float_format="%.4f")
     con_cuadrante = int(tabla["cuadrante"].notna().sum())
     typer.echo(
         f"{len(tabla)} destinos; componentes: {', '.join(disponibles) or 'ninguno'}; "
@@ -259,6 +262,21 @@ def calcular_radar() -> None:
         typer.echo(
             f"Cortes: atención {cortes['atencion']:.1f}, desempeño {cortes['desempeno']:.1f}"
         )
+
+
+@app.command("exportar")
+def exportar(
+    validar: Annotated[
+        bool, typer.Option("--validar", help="Solo valida contra contratos, sin escribir.")
+    ] = False,
+) -> None:
+    """Arma el paquete de datos del sitio, lo valida contra `contracts/` y lo firma (spec 009)."""
+    armado = paquete.armar()
+    _fallar_si(paquete.validar(armado), "Contratos")
+    if validar:
+        return
+    destino = paquete.escribir(armado)
+    typer.echo(f"Paquete escrito en {destino} ({len(armado)} archivos de datos)")
 
 
 def main() -> None:  # pragma: no cover

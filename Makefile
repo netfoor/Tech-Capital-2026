@@ -19,6 +19,7 @@ instalar: ## Instala las dependencias de pipelines y del sitio
 datos: ## Regenera data/curado/ con las etapas que no usan red
 	$(UV) radar fuentes
 	$(UV) radar catalogo
+	$(UV) radar exportar --validar
 	$(UV) radar indicadores
 	$(UV) radar radar calcular
 
@@ -31,6 +32,7 @@ verificar: secretos ## Llaves, pruebas, estilo, huellas de fuentes y catálogo
 	$(UV) ruff format --check .
 	$(UV) radar fuentes
 	$(UV) radar catalogo
+	$(UV) radar exportar --validar
 
 secretos: ## Busca patrones de llaves en los archivos del repositorio
 	@if git grep --untracked -nIE '$(PATRON_LLAVES)' -- . ':(exclude)Makefile'; then \

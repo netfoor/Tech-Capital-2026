@@ -4,19 +4,11 @@ from __future__ import annotations
 
 import pandas as pd
 
+from radar.comun.cuadrantes import RECOMENDACIONES  # noqa: F401  (se reexporta)
 from radar.comun.estadistica import mediana, percentiles
 from radar.radar import atencion, desempeno
 
 MIN_COMPONENTES = 2
-
-RECOMENDACIONES = {
-    "consolidado": "Mantener; medir la saturación",
-    "atencion_sin_estancia": (
-        "Convertir la atención en pernocta: motivos para quedarse y resolver fricciones"
-    ),
-    "demanda_poco_visible": "Crecer con contenido; la demanda existe",
-    "por_posicionar": "Prioridad de promoción si la experiencia reportada es buena",
-}
 
 
 def clasificar(atencion_i: float, desempeno_i: float, corte_a: float, corte_d: float) -> str:
