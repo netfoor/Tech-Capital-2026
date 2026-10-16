@@ -1,0 +1,3 @@
+archivo,url,fecha_consulta,sha256,bytes,sha256_original
+data/fuentes/corredor/denue/denue_21_turismo_estatal.csv,https://www.inegi.org.mx/contenidos/masiva/denue/denue_21_csv.zip,2026-10-16,72dfc543ec07f9aa3dc2d75297ffd9a54c92f2ba920098ed2fab8ca9984e8a04,2895631,814aea797a6fa3d9ed0307d14eeda516806ea765fcaa4fb4f7192c40029210af
+data/fuentes/corredor/denue/denue_21_turismo_zonas.csv,https://www.inegi.org.mx/contenidos/masiva/denue/denue_21_csv.zip,2026-10-16,8905b895797e0b9107c1a85dc016ad8c6d169caf115f5dff29f2bf8b9109caf4,2325749,814aea797a6fa3d9ed0307d14eeda516806ea765fcaa4fb4f7192c40029210af

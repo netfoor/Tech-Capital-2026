@@ -95,6 +95,72 @@ def ver_resumen(anio: int = typer.Option(2025, help="Año completo a resumir")) 
     )
 
 
+corredor_app = typer.Typer(
+    no_args_is_help=True,
+    help="Catálogo del corredor Puebla–Cholula y de los Pueblos Mágicos (spec 012).",
+)
+app.add_typer(corredor_app, name="corredor")
+
+
+@corredor_app.command("descargar")
+def corredor_descargar(
+    fuente: Annotated[
+        list[str] | None,
+        typer.Option("--fuente", help="Fuente a descargar: osm, sic o denue (se puede repetir)"),
+    ] = None,
+    rehacer: Annotated[
+        bool, typer.Option(help="Vuelve a consultar Overpass aunque ya haya crudo del día")
+    ] = False,
+) -> None:
+    """Con red: consulta Overpass, el SIC y el DENUE; guarda crudo, extractos y manifiestos."""
+    from radar.corredor import descargar
+
+    fecha = descargar.hoy()
+    pendientes: list[str] = []
+    for f in fuente or ["osm", "sic", "denue"]:
+        typer.echo(f"Descargando {f}…")
+        try:
+            if f == "osm":
+                descargar.descargar_osm(fecha, typer.echo, rehacer=rehacer)
+            elif f == "sic":
+                descargar.descargar_sic(fecha, typer.echo)
+            elif f == "denue":
+                descargar.descargar_denue(fecha, typer.echo)
+            else:
+                raise typer.BadParameter(f"Fuente desconocida: {f}")
+        except typer.BadParameter:
+            raise
+        except Exception as e:  # una fuente caída no detiene a las demás
+            pendientes.append(f"{f}: {e}")
+            typer.secho(f"  {f} falló: {e}", fg=typer.colors.YELLOW, err=True)
+    if pendientes:
+        typer.secho(
+            "Fuentes pendientes (documentar en la spec): " + "; ".join(pendientes),
+            fg=typer.colors.YELLOW,
+        )
+
+
+@corredor_app.command("integrar")
+def corredor_integrar() -> None:
+    """Sin red: integra OSM, SIC y DENUE y escribe las tablas curadas de POI."""
+    from radar.corredor import descargar, integrar
+
+    problemas = [p for f in ("osm", "sic", "denue") for p in descargar.verificar_manifiesto(f)]
+    _fallar_si(problemas, "Extractos")
+    resultado = integrar.ejecutar()
+    for linea in resultado.resumen():
+        typer.echo(linea)
+
+
+@corredor_app.command("reporte")
+def corredor_reporte() -> None:
+    """Sin red: escribe reports/calidad_datos.md y las cifras de docs/corredor_piloto.md."""
+    from radar.corredor import calidad
+
+    for ruta in calidad.escribir():
+        typer.echo(f"Escrito {ruta}")
+
+
 @senales.command("trends")
 def senales_trends(
     geo: str = typer.Option("MX", help="Región de Google Trends"),
