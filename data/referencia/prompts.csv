@@ -12,12 +12,12 @@ EN-C01,en,US,casual,"I'm visiting Puebla, Mexico for a weekend. What shouldn't I
 EN-C02,en,US,casual,"What are the best small towns (Pueblos Mágicos) to visit near Puebla, Mexico?",equipo,true
 EN-C03,en,US,casual,"Plan a 3-day trip around Puebla state, Mexico, with less touristy places",equipo,true
 EN-B01,en,US,comprador,"I'm a tour operator building a 5-day cultural package in Puebla, Mexico. Which destinations would you include and why?",equipo,true
-FR-C01,fr,FR,casual,Je vais à Puebla au Mexique pour un week-end. Qu'est-ce que je ne dois pas manquer ?,equipo,false
-FR-C02,fr,FR,casual,"Quels villages (Pueblos Mágicos) visiter autour de Puebla, au Mexique ?",equipo,false
-FR-B01,fr,FR,comprador,Je suis voyagiste. Quelles destinations de l'État de Puebla inclurais-tu dans un circuit culturel de 5 jours ?,equipo,false
-KO-C01,ko,KR,casual,멕시코 푸에블라에 주말 여행을 가요. 꼭 가봐야 할 곳이 어디인가요?,equipo,false
-KO-C02,ko,KR,casual,푸에블라 근처에서 가볼 만한 작은 마을(푸에블로 마히코)을 추천해 주세요.,equipo,false
-KO-B01,ko,KR,comprador,저는 여행사 직원입니다. 멕시코 푸에블라주 5일 문화 패키지에 어떤 여행지를 넣으면 좋을까요?,equipo,false
-ZH-C01,zh,CN,casual,我要去墨西哥普埃布拉过周末，有哪些地方不能错过？,equipo,false
-ZH-C02,zh,CN,casual,普埃布拉附近有哪些值得去的小镇（魔幻小镇）？,equipo,false
-ZH-B01,zh,CN,comprador,我是旅行社的产品经理，想设计墨西哥普埃布拉州五天的文化线路，你会包括哪些目的地？,equipo,false
+FR-C01,fr,FR,casual,Je vais à Puebla au Mexique pour un week-end. Qu'est-ce que je ne dois pas manquer ?,equipo,true
+FR-C02,fr,FR,casual,"Quels villages (Pueblos Mágicos) visiter autour de Puebla, au Mexique ?",equipo,true
+FR-B01,fr,FR,comprador,Je suis voyagiste. Quelles destinations de l'État de Puebla inclurais-tu dans un circuit culturel de 5 jours ?,equipo,true
+KO-C01,ko,KR,casual,멕시코 푸에블라에 주말 여행을 가요. 꼭 가봐야 할 곳이 어디인가요?,equipo,true
+KO-C02,ko,KR,casual,푸에블라 근처에서 가볼 만한 작은 마을(푸에블로 마히코)을 추천해 주세요.,equipo,true
+KO-B01,ko,KR,comprador,저는 여행사 직원입니다. 멕시코 푸에블라주 5일 문화 패키지에 어떤 여행지를 넣으면 좋을까요?,equipo,true
+ZH-C01,zh,CN,casual,我要去墨西哥普埃布拉过周末，有哪些地方不能错过？,equipo,true
+ZH-C02,zh,CN,casual,普埃布拉附近有哪些值得去的小镇（魔幻小镇）？,equipo,true
+ZH-B01,zh,CN,comprador,我是旅行社的产品经理，想设计墨西哥普埃布拉州五天的文化线路，你会包括哪些目的地？,equipo,true

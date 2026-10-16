@@ -3,8 +3,8 @@
 ## Preparación
 
 - [x] T006-01 `data/referencia/prompts.csv` con los 22 prompts del plan y la columna `revisado` (es y en revisados; fr, ko y zh pendientes en T006-02). Verificación: 22 filas; es 9, en 4, fr 3, ko 3 y zh 3.
-- [ ] T006-02 [P] Revisión de los prompts en fr, ko y zh por alguien que hable el idioma o con traducción de ida y vuelta. Verificación: `revisado=true` en las 9 filas.
-- [ ] T006-03 [P] `data/referencia/dominios.csv` con al menos 40 dominios clasificados (gobierno, medio, blog, agencia de viajes, red social, enciclopedia). Verificación: archivo presente.
+- [x] T006-02 [P] Revisión de los prompts en fr, ko y zh por alguien que hable el idioma o con traducción de ida y vuelta. Verificación: `revisado=true` en las 9 filas.
+- [x] T006-03 [P] `data/referencia/dominios.csv` con al menos 40 dominios clasificados (gobierno, medio, blog, agencia de viajes, red social, enciclopedia). Verificación: archivo presente.
 - [ ] T006-04 `radar/asistentes/proveedores.py` con las dos clases y pruebas simuladas (el extra `asistentes` ya está en `pyproject.toml`). Verificación: `uv run pytest tests/test_proveedores.py`.
 
 ## Corrida
@@ -26,3 +26,5 @@
 - [ ] T006-13 [P] (P1) Brazo real a partir de T005-09 y comparación con el controlado en español. Verificación: segmento `brazo=real` en la tabla de visibilidad.
 - [ ] T006-14 [P] (P1) Brazo sin búsqueda en Gemini (el mismo corpus sin herramienta). Verificación: segmento `con_busqueda=false`.
 - [ ] T006-15 [P] (P2) Omisiones y errores por destino (H4). Verificación: tabla `asistentes_afirmaciones.csv` para al menos 3 destinos.
+
+> 2026-10-16 · T006-02: los nueve prompts fr, ko y zh se revisaron con traducción de ida y vuelta al español (sentido y registro equivalentes al original). Una persona que hable el idioma debería confirmarlos antes de la corrida; si cambia alguno, se actualiza `prompts.csv` y se anota la versión.
