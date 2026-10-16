@@ -1,0 +1,534 @@
+# Ficha semántica de cada indicador del tablero institucional (spec 019, §09).
+#
+# Se carga a core.metric_definition y core.data_lineage con:
+#   uv run python -m app.services.semilla        (después de la serie oficial)
+#
+# Campos: id, nombre, modulo, pregunta, formula, unidad, numerador, denominador, filtros,
+# fuentes, frecuencia, cobertura, limitaciones, k_minimo, decision_potencial, procedencia,
+# version. `k_minimo` es el umbral de producción; el entorno (K_MINIMO) puede fijar otro en la
+# demostración y cada respuesta dice el k aplicado. `k_minimo: null` = no describe personas.
+# `procedencia`: medido (registro directo o cálculo sobre valores medidos) o derivado
+# (la fuente aplica un factor o supuesto).
+
+version_archivo: "2026-10-16"
+
+# Fuentes de primera parte. Las externas viven en data/fuentes/fuentes.csv.
+fuentes_propias:
+  - fuente_id: pv360-catalogo
+    nombre: Catálogo integrado de lugares de Puebla Viva 360 (OSM, DENUE y Sistema de Información Cultural)
+    institucion: Puebla Viva 360
+    tipo: primera_parte
+  - fuente_id: pv360-visitas
+    nombre: Visitas confirmadas y candidatas de sesiones consentidas en la PWA
+    institucion: Puebla Viva 360
+    tipo: primera_parte
+  - fuente_id: pv360-resenas
+    nombre: Reseñas estructuradas por dimensión en la PWA
+    institucion: Puebla Viva 360
+    tipo: primera_parte
+  - fuente_id: pv360-moderacion
+    nombre: Reportes de barrera y casos de moderación
+    institucion: Puebla Viva 360
+    tipo: primera_parte
+
+indicadores:
+  # ---------------------------------------------------------------- Oferta–demanda
+  - id: ocupacion_12m
+    nombre: Ocupación hotelera de los últimos 12 meses
+    modulo: oferta_demanda
+    pregunta: ¿Qué proporción de los cuartos disponibles se ocupó en cada destino en el último año publicado?
+    formula: 100 × Σ cuartos_ocupados / Σ cuartos_disponibles, en los 12 últimos meses con llegadas en el Estado
+    unidad: porcentaje
+    numerador: Cuartos noche ocupados en la ventana
+    denominador: Cuartos noche disponibles en la ventana
+    filtros: [destino_id, nivel]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Centros turísticos con nivel destino y el Estado; Acatzingo y Tepeaca desde 2025-01
+    limitaciones: Hoteles que reportan al Observatorio Turístico; no incluye hospedaje informal ni plataformas de renta. Ponderada por cuartos, no es el promedio de porcentajes mensuales.
+    k_minimo: null
+    decision_potencial: Orientar promoción y eventos a destinos con capacidad ociosa.
+    procedencia: medido
+    version: "1"
+
+  - id: cuartos_libres_dia_12m
+    nombre: Cuartos libres por día
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos cuartos quedaron sin ocupar en promedio cada día del último año?
+    formula: (Σ cuartos_disponibles − Σ cuartos_ocupados) / días de la ventana
+    unidad: cuartos por día
+    numerador: Cuartos noche libres en la ventana
+    denominador: Días calendario de la ventana
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Igual que ocupacion_12m
+    limitaciones: Capacidad registrada, no capacidad real de atención; no distingue temporadas dentro de la ventana.
+    k_minimo: null
+    decision_potencial: Dimensionar cuántos visitantes adicionales podría recibir un destino sin presión hotelera.
+    procedencia: medido
+    version: "1"
+
+  - id: estadia_12m
+    nombre: Estadía promedio de los últimos 12 meses
+    modulo: oferta_demanda
+    pregunta: ¿Cuántas noches se queda en promedio un turista hospedado?
+    formula: Σ turistas_noche / Σ llegadas_turistas, en la ventana de 12 meses
+    unidad: noches
+    numerador: Turistas noche
+    denominador: Llegadas de turistas
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Igual que ocupacion_12m
+    limitaciones: Solo turistas hospedados en hoteles registrados; no mide excursionistas.
+    k_minimo: null
+    decision_potencial: Identificar destinos donde una oferta de segundo día podría alargar la estancia.
+    procedencia: medido
+    version: "1"
+
+  - id: crecimiento_llegadas_12m
+    nombre: Crecimiento de llegadas contra los 12 meses previos
+    modulo: oferta_demanda
+    pregunta: ¿La llegada de turistas crece o cae respecto del año anterior?
+    formula: 100 × (Σ llegadas de la ventana / Σ llegadas de los 12 meses previos − 1)
+    unidad: porcentaje
+    numerador: Llegadas de turistas en la ventana
+    denominador: Llegadas de turistas en los 12 meses previos
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Solo destinos con 12 meses de dato en ambas ventanas; en otro caso «sin evidencia suficiente»
+    limitaciones: Una variación no explica su causa; puede reflejar cambios en el número de hoteles que reportan.
+    k_minimo: null
+    decision_potencial: Detectar destinos que pierden demanda para revisar conectividad o promoción.
+    procedencia: medido
+    version: "1"
+
+  - id: participacion_llegadas_12m
+    nombre: Participación en las llegadas de los centros turísticos
+    modulo: oferta_demanda
+    pregunta: ¿Qué parte de las llegadas a los centros turísticos recibe cada destino?
+    formula: 100 × llegadas del destino / Σ llegadas de los centros con nivel destino, en la ventana de 12 meses
+    unidad: porcentaje
+    numerador: Llegadas del destino
+    denominador: Llegadas de todos los centros con nivel destino
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Centros con nivel destino; excluye «Resto del Estado» y los subcentros de Cholula
+    limitaciones: El denominador no es el total estatal; la respuesta reporta qué porcentaje del Estado cubren los centros.
+    k_minimo: null
+    decision_potencial: Medir la concentración en el polo principal.
+    procedencia: medido
+    version: "1"
+
+  - id: hhi_llegadas
+    nombre: Índice de concentración de la demanda (Herfindahl-Hirschman)
+    modulo: oferta_demanda
+    pregunta: ¿Qué tan concentradas están las llegadas de turistas en pocos centros turísticos?
+    formula: Σ (100 × sᵢ)², con sᵢ la participación de cada centro con nivel destino en las llegadas del periodo
+    unidad: puntos (0 a 10 000)
+    numerador: Llegadas por centro turístico
+    denominador: Llegadas de todos los centros con nivel destino
+    filtros: [periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: anual y ventana de 12 meses
+    cobertura: 2017 a 2026; 2026 es un año parcial (los meses se reportan); Acatzingo y Tepeaca entran desde 2025
+    limitaciones: Excluye «Resto del Estado». Como referencia de lectura, más de 2 500 puntos suele leerse como concentración alta; el umbral es convencional, no un objetivo de política.
+    k_minimo: null
+    decision_potencial: Seguir si la promoción de destinos alternativos reduce la concentración en el tiempo.
+    procedencia: medido
+    version: "1"
+
+  - id: candidato_destino_alternativo
+    nombre: Candidato a destino alternativo
+    modulo: oferta_demanda
+    pregunta: ¿Qué destinos tienen capacidad hotelera relevante y baja ocupación para redistribuir visitantes?
+    formula: ocupacion_12m < ocupación del Estado y cuartos_libres_dia_12m ≥ mediana de los destinos
+    unidad: sí o no
+    numerador: null
+    denominador: null
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06, pv360-catalogo]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Destinos con ocupación y cuartos en la ventana; los POI del catálogo se muestran cuando existen
+    limitaciones: Regla descriptiva v1. No considera accesibilidad del camino, seguridad ni capacidad de carga; requiere validación con la Secretaría.
+    k_minimo: null
+    decision_potencial: Priorizar destinos para campañas, itinerarios y sugerencias del recomendador.
+    procedencia: medido
+    version: "1"
+
+  - id: poi_catalogo_destino
+    nombre: Lugares del catálogo por destino
+    modulo: oferta_demanda
+    pregunta: ¿Cuánta oferta de lugares visitables tiene registrada cada destino?
+    formula: Número de POI de core.point_of_interest con ese destino_id
+    unidad: lugares
+    numerador: POI del destino
+    denominador: null
+    filtros: [destino_id, corredor_id, is_synthetic]
+    fuentes: [pv360-catalogo]
+    frecuencia: cada carga del catálogo
+    cobertura: Lo que integra la spec 012; los POI sintéticos se cuentan aparte
+    limitaciones: Cobertura de registro, no inventario completo; OSM tiene más detalle en zonas urbanas.
+    k_minimo: null
+    decision_potencial: Detectar destinos con poca oferta documentada para completar el catálogo.
+    procedencia: medido
+    version: "1"
+
+  - id: afluencia_12m
+    nombre: Afluencia de visitantes de los últimos 12 meses
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos visitantes estima la fuente para cada destino?
+    formula: Σ afluencia_visitantes en la ventana de 12 meses
+    unidad: visitantes
+    numerador: Afluencia estimada
+    denominador: null
+    filtros: [destino_id]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual (ventana móvil de 12 meses)
+    cobertura: Igual que ocupacion_12m
+    limitaciones: DERIVADO por la fuente con un factor fijo sobre llegadas (2.222; 3.333 en la capital). No es una medición de excursionistas.
+    k_minimo: null
+    decision_potencial: Solo como referencia de orden de magnitud; no usar para comparar destinos entre sí.
+    procedencia: derivado
+    version: "1"
+
+  # ---------------------------------------------------------------- Serie oficial (spec 002)
+  - id: ocupacion_pct
+    nombre: Ocupación hotelera mensual publicada
+    modulo: oferta_demanda
+    pregunta: ¿Qué porcentaje de ocupación publica la fuente en el mes?
+    formula: Valor publicado por la fuente
+    unidad: porcentaje
+    numerador: Cuartos ocupados
+    denominador: Cuartos disponibles
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Seguimiento de temporada.
+    procedencia: medido
+    version: oficial-1
+  - id: cuartos_disponibles
+    nombre: Cuartos noche disponibles
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos cuartos noche ofrecieron los hoteles registrados?
+    formula: Valor publicado por la fuente
+    unidad: cuartos
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Dimensionar la oferta hotelera.
+    procedencia: medido
+    version: oficial-1
+  - id: cuartos_ocupados
+    nombre: Cuartos noche ocupados
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos cuartos noche se ocuparon?
+    formula: Valor publicado por la fuente
+    unidad: cuartos
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06; la fuente deja un mes en blanco en Atlixco
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Medir la demanda hotelera.
+    procedencia: medido
+    version: oficial-1
+  - id: llegadas_turistas
+    nombre: Llegadas de turistas hospedados
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos turistas se registraron en hoteles?
+    formula: Valor publicado por la fuente
+    unidad: turistas
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: No incluye excursionistas ni hospedaje fuera de hoteles registrados.
+    k_minimo: null
+    decision_potencial: Base de la concentración de la demanda.
+    procedencia: medido
+    version: oficial-1
+  - id: turistas_noche
+    nombre: Turistas noche
+    modulo: oferta_demanda
+    pregunta: ¿Cuántas noches sumaron los turistas hospedados?
+    formula: Valor publicado por la fuente
+    unidad: turistas noche
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Base de la estadía.
+    procedencia: medido
+    version: oficial-1
+  - id: estadia_promedio_dias
+    nombre: Estadía promedio mensual publicada
+    modulo: oferta_demanda
+    pregunta: ¿Cuántas noches publica la fuente como estadía promedio del mes?
+    formula: Valor publicado por la fuente
+    unidad: días
+    numerador: Turistas noche
+    denominador: Llegadas de turistas
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Seguimiento de estancia.
+    procedencia: medido
+    version: oficial-1
+  - id: densidad_ocupacion
+    nombre: Densidad de ocupación
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos turistas hay en promedio por cuarto ocupado?
+    formula: Valor publicado por la fuente
+    unidad: turistas por cuarto
+    numerador: Turistas noche
+    denominador: Cuartos ocupados
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: Hoteles que reportan al Observatorio.
+    k_minimo: null
+    decision_potencial: Perfil del viaje (en pareja, en familia).
+    procedencia: medido
+    version: oficial-1
+  - id: afluencia_visitantes
+    nombre: Afluencia de visitantes mensual (estimada)
+    modulo: oferta_demanda
+    pregunta: ¿Cuántos visitantes estima la fuente en el mes?
+    formula: Valor publicado por la fuente (llegadas × factor)
+    unidad: visitantes
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: DERIVADO con un factor fijo; ver data/curado/factor_afluencia_por_centro.csv.
+    k_minimo: null
+    decision_potencial: Solo orden de magnitud.
+    procedencia: derivado
+    version: oficial-1
+  - id: derrama_mxn
+    nombre: Derrama económica estimada
+    modulo: oferta_demanda
+    pregunta: ¿Cuánto gasto estima la fuente?
+    formula: Valor publicado por la fuente
+    unidad: pesos
+    numerador: null
+    denominador: null
+    filtros: [centro_ot, periodo]
+    fuentes: [sectur-ot-2026-06]
+    frecuencia: mensual
+    cobertura: 2017-01 a 2026-06
+    limitaciones: DERIVADO por la fuente con supuestos de gasto; no se usa para comparar destinos.
+    k_minimo: null
+    decision_potencial: Solo como referencia.
+    procedencia: derivado
+    version: oficial-1
+
+  # ---------------------------------------------------------------- Inclusión
+  - id: cobertura_info_accesibilidad
+    nombre: Lugares con información de accesibilidad
+    modulo: inclusion
+    pregunta: ¿De qué proporción de lugares sabemos algo sobre su accesibilidad física?
+    formula: 100 × POI con al menos un atributo con valor / POI del grupo; aparte, la cobertura verificada, parcial y sin verificar del contrato P0
+    unidad: porcentaje
+    numerador: POI con al menos un atributo con valor (cualquier estado)
+    denominador: POI del destino o corredor
+    filtros: [corredor_id, destino_id, is_synthetic]
+    fuentes: [pv360-catalogo]
+    frecuencia: cada carga del catálogo y cada decisión de moderación
+    cobertura: POI de core.point_of_interest
+    limitaciones: Mide COBERTURA DE INFORMACIÓN, no el nivel de accesibilidad del territorio. Un dato sin verificar puede ser incorrecto; la falta de dato nunca significa «accesible».
+    k_minimo: null
+    decision_potencial: Dirigir brigadas de verificación a los destinos con menos información.
+    procedencia: medido
+    version: "1"
+
+  - id: cobertura_atributo
+    nombre: Cobertura por atributo de accesibilidad
+    modulo: inclusion
+    pregunta: ¿Qué atributos de accesibilidad (baño, rampa, escalones…) tienen más huecos de información?
+    formula: Por atributo, 100 × POI con valor / POI del grupo, y distribución por estado (verificado, reportado, en moderación, sin verificar)
+    unidad: porcentaje
+    numerador: POI con valor en el atributo
+    denominador: POI del grupo
+    filtros: [corredor_id, atributo, estado, is_synthetic]
+    fuentes: [pv360-catalogo]
+    frecuencia: cada carga del catálogo y cada decisión de moderación
+    cobertura: Los nueve atributos del contrato P0
+    limitaciones: Cobertura de información; OSM documenta mejor el acceso en silla de ruedas que los baños o la pendiente.
+    k_minimo: null
+    decision_potencial: Elegir qué atributo levantar primero en campo.
+    procedencia: medido
+    version: "1"
+
+  - id: barreras_reportadas
+    nombre: Barreras reportadas y aceptadas
+    modulo: inclusion
+    pregunta: ¿Cuántas barreras reporta la comunidad y cuántas confirma la moderación?
+    formula: Casos de audit.moderation_case por estado (abierto, aceptado, rechazado); tasa de aceptación = aceptados / decididos
+    unidad: casos
+    numerador: Casos aceptados
+    denominador: Casos decididos
+    filtros: [corredor_id, tipo, is_synthetic]
+    fuentes: [pv360-moderacion]
+    frecuencia: en tiempo real
+    cobertura: Reportes enviados desde la PWA
+    limitaciones: Depende de quién usa la app y reporta; pocos reportes no significan pocas barreras.
+    k_minimo: 10
+    decision_potencial: Priorizar obras o señalización en lugares con barreras confirmadas.
+    procedencia: medido
+    version: "1"
+
+  - id: tiempo_moderacion_mediano_h
+    nombre: Tiempo mediano de moderación
+    modulo: inclusion
+    pregunta: ¿Cuánto tarda en decidirse un reporte de barrera?
+    formula: Mediana de (decidido_en − creado_en) de los casos decididos, en horas
+    unidad: horas
+    numerador: null
+    denominador: Casos decididos
+    filtros: [corredor_id, is_synthetic]
+    fuentes: [pv360-moderacion]
+    frecuencia: en tiempo real
+    cobertura: Casos decididos
+    limitaciones: No incluye los casos abiertos (se reportan aparte).
+    k_minimo: 10
+    decision_potencial: Ajustar el equipo de moderación.
+    procedencia: medido
+    version: "1"
+
+  # ---------------------------------------------------------------- Panorama
+  - id: visitas_observadas
+    nombre: Visitas observadas en la muestra
+    modulo: panorama
+    pregunta: ¿Cuántas visitas confirmadas registran las personas que usan la app en cada destino?
+    formula: Número de private.confirmed_visit con confirmada = true, por destino del POI
+    unidad: visitas
+    numerador: Visitas confirmadas
+    denominador: null
+    filtros: [destino_id, periodo, is_synthetic]
+    fuentes: [pv360-visitas]
+    frecuencia: en tiempo real
+    cobertura: Solo personas que usan la PWA y dan consentimiento
+    limitaciones: Muestra de usuarios de la app; NUNCA representa el total de turistas.
+    k_minimo: 10
+    decision_potencial: Comparar destinos dentro de la muestra.
+    procedencia: medido
+    version: "1"
+
+  - id: visitantes_distintos
+    nombre: Visitantes distintos (seudonimizados)
+    modulo: panorama
+    pregunta: ¿Cuántas personas distintas aportan las visitas del grupo?
+    formula: Número de user_id distintos en las visitas confirmadas del grupo (solo el conteo sale de la base)
+    unidad: personas
+    numerador: Personas distintas
+    denominador: null
+    filtros: [destino_id, periodo, is_synthetic]
+    fuentes: [pv360-visitas]
+    frecuencia: en tiempo real
+    cobertura: Personas con sesión consentida o check-in
+    limitaciones: Es el n de la supresión; no es un conteo de turistas.
+    k_minimo: 10
+    decision_potencial: Saber si el grupo tiene evidencia suficiente.
+    procedencia: medido
+    version: "1"
+
+  - id: permanencia_mediana_min
+    nombre: Permanencia mediana
+    modulo: panorama
+    pregunta: ¿Cuánto tiempo se queda la gente en los lugares del destino?
+    formula: Mediana de duracion_min de private.visit_candidate con estado visita_probable; cuartiles 25 y 75
+    unidad: minutos
+    numerador: null
+    denominador: Visitas probables
+    filtros: [destino_id, periodo, is_synthetic]
+    fuentes: [pv360-visitas]
+    frecuencia: en tiempo real
+    cobertura: Sesiones consentidas con GPS
+    limitaciones: Depende de la precisión del GPS y del umbral de detección (spec 017); muestra de usuarios de la app.
+    k_minimo: 10
+    decision_potencial: Detectar destinos de paso rápido donde conviene una oferta para quedarse más.
+    procedencia: medido
+    version: "1"
+
+  - id: confianza_media_visitas
+    nombre: Confianza media de las visitas
+    modulo: panorama
+    pregunta: ¿Qué tan seguras son las visitas detectadas?
+    formula: Media de confianza de las visitas confirmadas del grupo; proporción por fuente de evidencia
+    unidad: 0 a 1
+    numerador: null
+    denominador: Visitas confirmadas
+    filtros: [destino_id, is_synthetic]
+    fuentes: [pv360-visitas]
+    frecuencia: en tiempo real
+    cobertura: Visitas confirmadas
+    limitaciones: La confianza la asigna el detector o la persona; no es una probabilidad calibrada.
+    k_minimo: 10
+    decision_potencial: Decidir si un resultado es suficiente para actuar.
+    procedencia: medido
+    version: "1"
+
+  # ---------------------------------------------------------------- Experiencia
+  - id: satisfaccion_media_dimension
+    nombre: Satisfacción media por dimensión
+    modulo: experiencia
+    pregunta: ¿Cómo califican las personas la accesibilidad, limpieza, servicio, señalización y demás dimensiones?
+    formula: Media de puntaje (1 a 5) de private.review_dimension por dimensión; intervalo bootstrap percentil del 95 % (1 000 remuestreos, semilla 2026)
+    unidad: puntos (1 a 5)
+    numerador: Suma de puntajes
+    denominador: Reseñas con la dimensión
+    filtros: [destino_id, dimension, is_synthetic]
+    fuentes: [pv360-resenas]
+    frecuencia: en tiempo real
+    cobertura: Reseñas enviadas desde la PWA
+    limitaciones: Sesgo de autoselección (reseña quien quiere); muestra de usuarios de la app.
+    k_minimo: 10
+    decision_potencial: Priorizar mejoras de señalización o limpieza donde la calificación es baja con evidencia suficiente.
+    procedencia: medido
+    version: "1"
+
+  - id: proporcion_calificacion_baja
+    nombre: Proporción de calificaciones bajas
+    modulo: experiencia
+    pregunta: ¿Qué parte de las reseñas califica mal (1 o 2) una dimensión?
+    formula: Reseñas con puntaje ≤ 2 / reseñas con la dimensión; intervalo de Wilson del 95 %
+    unidad: proporción
+    numerador: Reseñas con puntaje ≤ 2
+    denominador: Reseñas con la dimensión
+    filtros: [destino_id, dimension, is_synthetic]
+    fuentes: [pv360-resenas]
+    frecuencia: en tiempo real
+    cobertura: Reseñas enviadas desde la PWA
+    limitaciones: Sesgo de autoselección; una queja no prueba la causa.
+    k_minimo: 10
+    decision_potencial: Detectar quejas recurrentes (por ejemplo, señalización).
+    procedencia: medido
+    version: "1"

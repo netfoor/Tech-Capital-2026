@@ -48,6 +48,7 @@ for router in (
     visitas.router_visitas,
     visitas.router_checkins,
     b2b.router,
+    b2b.router_metricas,
 ):
     app.include_router(router)
 
