@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Consola B2B para la Secretaría: agregados protegidos con ficha metodológica y linaje |
 | Prioridad | P0 |
-| Estado | En curso |
+| Estado | Hecha (P0): cuatro módulos, linaje, CSV, moderación y semilla de demostración; Panorama y Experiencia muestran por ahora solo datos sintéticos etiquetados |
 | Depende de | 014 (modelo y API), 002 (serie oficial); usa lo que dejen 012, 017 y 018 cuando existan |
 | Habilita | 021 (MCP), 022 (intención → visita) |
 
@@ -75,4 +75,6 @@ Dar a la Secretaría un tablero en `/admin` con cuatro módulos (§09): **Panora
 - 2026-10-16. Candidato a destino alternativo (regla v1): ocupación de 12 meses menor que la del Estado y cuartos libres por día mayores o iguales que la mediana de los destinos. Es una señal para revisar, no una recomendación causal.
 - 2026-10-16. La k se aplica a indicadores que salen de personas (visitas, reseñas, reportes). La cobertura de información de accesibilidad describe lugares, no personas: se reporta con su n de lugares y sin supresión.
 - 2026-10-16. Los agregados de Panorama y Experiencia se calculan al pedirlos en vez de guardarse en `analytics.aggregate_metric`, para no chocar con el pipeline de visitas de 017. Cuando 017 materialice la permanencia, el tablero puede leerla de ahí.
+- 2026-10-16. Los reportes de barrera y los atributos que tocan un lugar sintético se cuentan en el bloque sintético aunque la persona que reporta sea real: lo que toca algo sintético se marca sintético.
+- 2026-10-16. Pendiente (P1): selector de corredor en Inclusión (el endpoint ya acepta `corredor_id`), filtro de periodo en Panorama, mapa del tablero y exportación PDF.
 - 2026-10-16. Las pruebas pueden usar otra base con `BASE_PRUEBAS` (por omisión `pueblaviva_test`) para que varias ramas corran pruebas a la vez.
