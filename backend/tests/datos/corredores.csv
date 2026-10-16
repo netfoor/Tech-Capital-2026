@@ -1,0 +1,2 @@
+corredor_id,nombre,descripcion,lat_min,lon_min,lat_max,lon_max,is_synthetic
+demo-cholula-atlixco,Corredor de demostración Cholula–Atlixco,DATOS SINTÉTICOS DE DEMOSTRACIÓN,18.85,-98.50,19.10,-98.25,true
