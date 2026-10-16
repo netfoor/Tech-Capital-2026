@@ -12,7 +12,7 @@
 | §9.6 | Procesos de obtención, limpieza, integración, transformación y análisis | `06-procesos-de-datos.md` | Listo |
 | §9.7 | Arquitectura o metodología | `07-arquitectura.md` | Listo; base en [`../arquitectura.md`](../arquitectura.md) |
 | §9.8 | Prototipo funcional o demostrable | `08-prototipo.md` | Listo (se agrega la URL al desplegar) |
-| §9.9 | Evidencia de análisis y resultados | `09-resultados.md` | Pendiente (T011-09) |
+| §9.9 | Evidencia de análisis y resultados | `09-resultados.md` | Listo (se regenera con `radar entregables`) |
 | §9.10 | Presentación ejecutiva y demostración final | `10-pitch.md` | Pendiente (T011-10) |
 | §9.11 | Documentación de los componentes con IA | [`../ia-responsable.md`](../ia-responsable.md) | En curso |
 | §7 | Material para la mentoría | [`mentoria.md`](mentoria.md) | Listo |

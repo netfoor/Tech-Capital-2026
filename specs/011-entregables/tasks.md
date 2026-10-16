@@ -13,7 +13,7 @@
 ## Con resultados
 
 - [x] T011-08 (P1) `radar entregables`: `04-inventario-fuentes.md` y tablas de `09-resultados.md` generadas. Verificación: regenerar no cambia el archivo si los datos no cambian.
-- [~] T011-09 `03-solucion.md`, `08-prototipo.md` y `09-resultados.md` (hallazgos y limitaciones). Depende de T008-05 y T009-06. Verificación: cada hallazgo con su cifra generada.
+- [x] T011-09 `03-solucion.md`, `08-prototipo.md` y `09-resultados.md` (hallazgos y limitaciones). Depende de T008-05 y T009-06. Verificación: cada hallazgo con su cifra generada.
 - [ ] T011-10 Presentación ejecutiva de 10 a 12 diapositivas según el guion. Verificación: cifras iguales a las de `09-resultados.md`.
 - [ ] T011-11 Demostración de respaldo: capturas o video y sitio sin conexión. Depende de T009-13. Verificación: probado con el wifi apagado.
 - [ ] T011-12 Dos ensayos cronometrados con preguntas. Verificación: duración anotada y guion ajustado.

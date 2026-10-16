@@ -68,3 +68,22 @@ Con dos componentes de atención (búsqueda y asistentes), cortes en 40.9 (atenc
 - **Zacatlán** es `consolidado` con brecha −32: alta ocupación y alta visibilidad en asistentes, con búsqueda media.
 - **Pahuatlán, Tetela de Ocampo y Tlatlauquitepec** quedan `por_posicionar`, de acuerdo con las cifras de ocupación más bajas del oficial (32 a 37 %).
 - Con solo dos componentes no se puede medir la sensibilidad del cuadrante; se activa al sumar el panel o YouTube.
+
+## Hallazgos
+
+Las cifras de cada hallazgo están en las tablas generadas al inicio de este archivo.
+
+1. **La atención y la ocupación no coinciden.** Cuetzalan es el destino con mayor brecha positiva (más atención que desempeño) y Teziutlán la mayor brecha negativa. Dos destinos de ocupación similar pueden estar en cuadrantes opuestos.
+2. **La visibilidad en asistentes está concentrada.** Cholula aparece en la mayoría de las respuestas; Teziutlán y Huauchinango, en muy pocas.
+3. **El idioma cambia la visibilidad.** El promedio de los Pueblos Mágicos es distinto en cada uno de los cinco idiomas (tabla de visibilidad por idioma).
+4. **La búsqueda anticipa algunas temporadas y otras no.** La correlación con la afluencia oficial es moderada en unos destinos y débil donde hay eventos o visita de un día (sección de búsqueda).
+5. **Los dos proveedores se comportan distinto.** OpenAI busca en la web casi siempre; Gemini casi nunca en esta primera corrida, lo que afecta qué fuentes citan.
+
+## Limitaciones
+
+- El radar usa dos componentes de atención; la sensibilidad del cuadrante y el índice completo requieren el panel y YouTube.
+- La detección de menciones aún no tiene la validación manual de 60 respuestas (T006-11); sus resultados son provisionales.
+- La primera auditoría tiene 380 corridas en un solo día y dos proveedores; la variación entre fechas se mide al repetirla.
+- Los idiomas francés, coreano y chino tienen menos corridas que español e inglés porque el crédito de OpenAI se agotó antes de completarlas.
+- La afluencia y la derrama oficiales se derivan de las llegadas a hotel.
+- El cuadrante describe una posición relativa y no una causa.
