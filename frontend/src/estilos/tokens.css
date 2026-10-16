@@ -1,0 +1,66 @@
+/* Tokens del sistema visual. La fuente de verdad es docs/diseno.md. */
+:root {
+  color-scheme: light;
+
+  --color-fondo: #faf6ef;
+  --color-superficie: #ffffff;
+  --color-superficie-alta: #f3ece1;
+  --color-texto: #1c2230;
+  --color-texto-suave: #4b5263;
+  --color-borde: #e4d9c8;
+  --color-borde-control: #7d7262;
+  --color-primario: #1f4e8c;
+  --color-primario-fuerte: #173d6e;
+  --color-primario-suave: #e6eef8;
+  --color-acento: #a8431e;
+  --color-acento-fuerte: #8a3517;
+  --color-acento-suave: #fbeadf;
+  --color-verificado: #1f6e43;
+  --color-verificado-fondo: #e3f2e8;
+  --color-sin-verificar: #7a4f00;
+  --color-sin-verificar-fondo: #fff3d4;
+  --color-reportado: #a52a1e;
+  --color-reportado-fondo: #fce8e5;
+  --color-moderacion: #5a3d8f;
+  --color-moderacion-fondo: #eee8f8;
+  --color-sintetico: #ffd25e;
+  --color-sintetico-raya: #f5c13a;
+  --color-foco: #1f4e8c;
+
+  --fuente-texto: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fuente-titulos: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+
+  --texto-xs: 0.875rem;
+  --texto-s: 0.9375rem;
+  --texto-m: 1rem;
+  --texto-l: 1.25rem;
+  --texto-xl: 1.5rem;
+  --texto-2xl: 2rem;
+  --interlineado: 1.55;
+
+  --esp-1: 0.25rem;
+  --esp-2: 0.5rem;
+  --esp-3: 0.75rem;
+  --esp-4: 1rem;
+  --esp-5: 1.5rem;
+  --esp-6: 2rem;
+  --esp-7: 3rem;
+
+  --radio-s: 8px;
+  --radio-m: 14px;
+  --radio-pastilla: 999px;
+
+  --sombra-1: 0 1px 2px rgb(60 40 20 / 0.06), 0 2px 8px rgb(60 40 20 / 0.06);
+  --sombra-2: 0 4px 12px rgb(60 40 20 / 0.1), 0 12px 32px rgb(60 40 20 / 0.08);
+
+  --ancho-max: 72rem;
+  --alto-nav-movil: 4.25rem;
+  --transicion: 150ms ease;
+}
+
+:root[data-lenguaje='claro'] {
+  --texto-m: 1.125rem;
+  --texto-s: 1.0625rem;
+  --texto-xs: 1rem;
+  --interlineado: 1.7;
+}

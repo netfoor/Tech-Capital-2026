@@ -26,8 +26,11 @@ def test_lista_sin_cuenta_con_forma_del_contrato(cliente, catalogo):
     }
     assert set(poi["accesibilidad"]) == set(ATRIBUTOS_ACCESIBILIDAD)
     assert poi["is_synthetic"] is True
-    nombres = [p["nombre"] for p in cuerpo["items"]]
-    assert nombres == sorted(nombres)
+    # Orden: primero los lugares con algún dato de accesibilidad, luego por categoría y nombre.
+    con_dato = [
+        any(a["origen"] is not None for a in p["accesibilidad"].values()) for p in cuerpo["items"]
+    ]
+    assert con_dato == sorted(con_dato, reverse=True)
 
 
 def test_sin_dato_es_sin_verificar_nunca_accesible(cliente, catalogo):
