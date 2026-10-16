@@ -2,7 +2,7 @@
 
 from collections.abc import Iterable
 
-from sqlalchemy import Select, exists, func, or_, select
+from sqlalchemy import Select, case, exists, func, or_, select
 from sqlalchemy.orm import Session
 
 from app.models import DataSource, ModerationCase, POIAccessibilityAttribute, PointOfInterest
@@ -17,6 +17,24 @@ from app.schemas.catalogo import (
 )
 
 ESTADO_BARRERA = {"abierto": "en_moderacion", "aceptado": "aceptado"}
+
+# Orden por omisión de la lista: primero lo que más sirve para decidir una visita.
+PRIORIDAD_CATEGORIA = (
+    "museo",
+    "zona_arqueologica",
+    "sitio_historico",
+    "templo",
+    "centro_cultural",
+    "mirador",
+    "mercado",
+    "artesanias",
+    "parque",
+    "cafe",
+    "restaurante",
+    "banio",
+    "alojamiento",
+    "otro",
+)
 
 
 def accesibilidad(poi: PointOfInterest) -> dict[str, AtributoAcceso]:
@@ -141,8 +159,17 @@ def buscar(
     s: Session, consulta: Select, limit: int, offset: int
 ) -> tuple[list[PointOfInterest], int]:
     total = s.scalar(select(func.count()).select_from(consulta.order_by(None).subquery()))
+    P = PointOfInterest
+    con_dato = exists().where(POIAccessibilityAttribute.poi_id == P.poi_id)
+    prioridad = case(
+        {c: i for i, c in enumerate(PRIORIDAD_CATEGORIA)},
+        value=P.categoria,
+        else_=len(PRIORIDAD_CATEGORIA),
+    )
+    # Los nombres que empiezan con un número suelen ser registros incompletos.
+    nombre_numerico = P.nombre.op("~")("^[0-9]")
     pagina = s.scalars(
-        consulta.order_by(PointOfInterest.nombre, PointOfInterest.poi_id)
+        consulta.order_by(con_dato.desc(), prioridad, nombre_numerico, P.nombre, P.poi_id)
         .limit(limit)
         .offset(offset)
     ).all()
