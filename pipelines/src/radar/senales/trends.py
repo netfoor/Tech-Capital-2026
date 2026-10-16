@@ -297,3 +297,21 @@ def ejecutar(
 
 def fecha_de(texto: str) -> date:
     return datetime.strptime(texto, "%Y-%m-%d").date()
+
+
+def registros_guardados(geo: str, carpeta: Path | None = None) -> dict[str, dict]:
+    """El crudo más reciente de cada lote en `data/crudo/trends/` (rehace la tabla sin red)."""
+    carpeta = carpeta or config.ruta(config.CRUDO, "trends")
+    por_lote: dict[str, tuple[str, dict]] = {}
+    for ruta in sorted(carpeta.glob(f"trends-{geo}-*.json")):
+        registro = json.loads(ruta.read_text(encoding="utf-8"))
+        actual = por_lote.get(registro["lote"])
+        if actual is None or registro["fecha_consulta"] >= actual[0]:
+            por_lote[registro["lote"]] = (registro["fecha_consulta"], registro)
+    return {lote: r for lote, (_, r) in por_lote.items()}
+
+
+def destinos_sin_senal(tabla: pd.DataFrame) -> list[str]:
+    """Destinos cuyo interés es cero en todos los meses (señal de término mal elegido)."""
+    suma = tabla.groupby("destino_id")["interes"].sum()
+    return sorted(suma[suma == 0].index)

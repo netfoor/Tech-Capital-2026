@@ -14,6 +14,8 @@ from radar.radar import atencion, indices
 app = typer.Typer(no_args_is_help=True, add_completion=False, help=__doc__)
 analisis = typer.Typer(no_args_is_help=True, help="Índices, brecha y cuadrantes (spec 008).")
 app.add_typer(analisis, name="radar")
+senales = typer.Typer(no_args_is_help=True, help="Señales de atención digital (specs 003 y 004).")
+app.add_typer(senales, name="senales")
 
 
 def _fallar_si(problemas: list[str], titulo: str) -> None:
@@ -87,6 +89,45 @@ def ver_resumen(anio: int = typer.Option(2025, help="Año completo a resumir")) 
     typer.echo(
         f"\nCapital: {p['capital_pct']:.1f} % de la afluencia estatal. "
         f"12 Pueblos Mágicos: {pm['afluencia_visitantes'].sum() / p['estado'] * 100:.1f} %."
+    )
+
+
+@senales.command("trends")
+def senales_trends(
+    geo: str = typer.Option("MX", help="Región de Google Trends"),
+    desde: str = typer.Option("2017-01-01", help="Inicio de la serie (AAAA-MM-DD)"),
+    pausa: float = typer.Option(60.0, help="Segundos de pausa entre lotes (y base de reintentos)"),
+    desde_crudo: bool = typer.Option(
+        False,
+        "--desde-crudo",
+        help="Rehace la tabla con lo guardado en data/crudo/trends/, sin red",
+    ),
+) -> None:
+    """Consulta Google Trends y escribe `interes_busqueda_mensual.csv` (red residencial)."""
+    from radar.senales import trends
+
+    destinos = [d for d in catalogo.cargar() if d.pueblo_magico]
+    if desde_crudo:
+        lotes = trends.armar_lotes(trends.terminos_de_consulta(destinos))
+        registros = trends.registros_guardados(geo)
+        faltan = [lote.nombre for lote in lotes if lote.nombre not in registros]
+        if faltan:
+            typer.secho(f"Falta crudo de los lotes {', '.join(faltan)}", fg="red", err=True)
+            raise typer.Exit(code=1)
+        tabla = trends.tabla_curada(lotes, registros, geo)
+    else:
+        config.cargar_entorno()
+        tabla = trends.ejecutar(destinos, geo=geo, desde=desde, pausa=pausa)
+    vacios = trends.destinos_sin_senal(tabla)
+    if vacios:
+        typer.secho(f"Sin señal en todos los meses: {', '.join(vacios)}", fg="red", err=True)
+        raise typer.Exit(code=1)
+    salida = config.ruta(config.CURADO)
+    salida.mkdir(parents=True, exist_ok=True)
+    tabla.to_csv(salida / "interes_busqueda_mensual.csv", index=False, float_format="%.4f")
+    typer.echo(
+        f"{tabla['destino_id'].nunique()} destinos; periodos {tabla['periodo'].min()} "
+        f"a {tabla['periodo'].max()}; {len(tabla):,} filas"
     )
 
 

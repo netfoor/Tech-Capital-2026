@@ -181,3 +181,17 @@ def test_integracion_con_la_respuesta_guardada():
     # Ningún destino con todos los meses en cero
     suma = tabla.groupby("destino_id")["interes"].sum()
     assert (suma > 0).all()
+
+
+def test_registros_guardados_toma_el_mas_reciente_por_lote(tmp_path):
+    for fecha, lote in (("20261001", "A"), ("20261015", "A"), ("20261015", "B")):
+        r = {"consulta_id": f"trends-MX-{lote}-{fecha}", "lote": lote, "fecha_consulta": fecha}
+        (tmp_path / f"{r['consulta_id']}.json").write_text(json.dumps(r), encoding="utf-8")
+    guardados = trends.registros_guardados("MX", tmp_path)
+    assert guardados["A"]["fecha_consulta"] == "20261015"
+    assert set(guardados) == {"A", "B"}
+
+
+def test_destinos_sin_senal():
+    tabla = pd.DataFrame({"destino_id": ["a", "a", "b", "b"], "interes": [0, 0, 0, 3]})
+    assert trends.destinos_sin_senal(tabla) == ["a"]
