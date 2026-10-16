@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puebla Viva 360 · Presentación</title>
+<meta name="description" content="Experiencias turísticas inclusivas para las personas, inteligencia accionable para los destinos de Puebla.">
+<style>
+  :root {
+    --tinta: #14213d;
+    --suave: #4a5568;
+    --fondo: #fcfbf8;
+    --acento: #2a78d6;
+    --naranja: #e8603c;
+    --linea: #e6e2da;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--fondo); color: var(--tinta);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .diapo { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center;
+    padding: 6vh 8vw; gap: 3vh; }
+  .diapo.activa { display: flex; }
+  h1 { font-size: clamp(2.4rem, 6vw, 5.2rem); line-height: 1.05; margin: 0; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.8rem, 3.8vw, 3.2rem); line-height: 1.12; margin: 0; letter-spacing: -0.01em; }
+  p, li { font-size: clamp(1.05rem, 1.8vw, 1.6rem); line-height: 1.4; margin: 0; color: var(--suave); }
+  .etiqueta { font-size: clamp(0.85rem, 1.2vw, 1.05rem); font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--acento); }
+  .cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3vw; }
+  .cifra b { display: block; font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1; color: var(--tinta);
+    letter-spacing: -0.03em; }
+  .cifra span { display: block; margin-top: 0.6rem; font-size: clamp(1rem, 1.5vw, 1.35rem); color: var(--suave); }
+  .naranja { color: var(--naranja) !important; }
+  .fuente { font-size: clamp(0.75rem, 1vw, 0.95rem); color: #6b7280; border-top: 1px solid var(--linea);
+    padding-top: 1vh; }
+  .dos { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4vw; align-items: center; }
+  .dos img { width: 100%; height: auto; max-height: 62vh; object-fit: contain; }
+  .ciclo { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2vw; align-items: stretch; }
+  .paso { background: #fff; border: 1px solid var(--linea); border-radius: 14px; padding: 2.2vh 1.2vw; }
+  .paso b { display: block; font-size: clamp(1rem, 1.6vw, 1.45rem); color: var(--tinta); margin-bottom: 0.6vh; }
+  .paso p { font-size: clamp(0.85rem, 1.2vw, 1.1rem); }
+  .paso .n { font-weight: 800; color: var(--acento); }
+  .tabla { border-collapse: collapse; width: 100%; font-size: clamp(1rem, 1.6vw, 1.45rem); }
+  .tabla th, .tabla td { text-align: left; padding: 1.4vh 1vw; border-bottom: 1px solid var(--linea); }
+  .tabla th { color: var(--suave); font-weight: 600; }
+  .tabla td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+  ul { margin: 0; padding-left: 1.2em; display: grid; gap: 1.4vh; }
+  .qr { display: grid; grid-template-columns: auto 1fr; gap: 5vw; align-items: center; }
+  .qr img { width: min(38vh, 34vw); height: auto; background: #fff; padding: 12px; border-radius: 16px;
+    border: 1px solid var(--linea); }
+  .url { font-size: clamp(1.3rem, 2.6vw, 2.2rem); font-weight: 700; color: var(--acento); word-break: break-all; }
+  nav { position: fixed; bottom: 2vh; right: 3vw; display: flex; gap: 10px; align-items: center;
+    font-size: 0.95rem; color: var(--suave); }
+  nav button { min-width: 44px; min-height: 44px; border-radius: 10px; border: 1px solid var(--linea);
+    background: #fff; color: var(--tinta); font-size: 1.2rem; cursor: pointer; }
+  nav button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+  .progreso { position: fixed; top: 0; left: 0; height: 4px; background: var(--acento); transition: width .2s; }
+  @media (max-width: 760px) {
+    .dos, .qr { grid-template-columns: 1fr; }
+    .ciclo { grid-template-columns: 1fr; }
+    .diapo { padding: 5vh 6vw 10vh; justify-content: flex-start; overflow-y: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .progreso { transition: none; } }
+  @media print {
+    @page { size: 16in 9in; margin: 0; }
+    nav, .progreso { display: none; }
+    .diapo { display: flex !important; position: relative; height: 9in; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="progreso" aria-hidden="true"></div>
+<main>
+
+<section class="diapo activa" aria-label="Diapositiva 1">
+  <span class="etiqueta">Hackathon Puebla Turística 360° · Equipo DreamHack</span>
+  <h1>Puebla Viva 360</h1>
+  <p>Experiencias turísticas inclusivas para las personas.<br>Inteligencia accionable para los destinos.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 2: el problema">
+  <span class="etiqueta">El problema</span>
+  <h2>El turismo se concentra en dos polos y el resto del estado no se ve</h2>
+  <div class="dos">
+    <div class="cifras" style="grid-template-columns:1fr">
+      <div class="cifra"><b>54.2 %</b><span>de las llegadas a hotel del estado fueron a la capital y Cholula en 2025</span></div>
+      <div class="cifra"><b class="naranja">10 de 11</b><span>Pueblos Mágicos tienen oferta cultural y ocupación por debajo del promedio estatal (51.6 %)</span></div>
+    </div>
+    <img src="013_participacion_llegadas_2025.png" alt="Barras horizontales: la ciudad de Puebla recibe 46.3 % de las llegadas a hotel en 2025, Cholula 7.8 %, y cada Pueblo Mágico entre 0.5 % y 6.9 %.">
+  </div>
+  <p class="fuente">Fuente: DataTur vía Observatorio Turístico del Estado de Puebla, datos a junio de 2026; DENUE (INEGI) y Sistema de Información Cultural. Llegadas medidas en hoteles registrados.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 3: la brecha de información">
+  <span class="etiqueta">La brecha que nadie mide</span>
+  <h2>Quien viaja con una necesidad de movilidad planea a ciegas</h2>
+  <div class="dos">
+    <div class="cifras" style="grid-template-columns:1fr">
+      <div class="cifra"><b class="naranja">2.2 %</b><span>de 1,991 lugares turísticos tiene algún dato de accesibilidad</span></div>
+      <div class="cifra"><b>1 de 15</b><span>sanitarios públicos dice si su baño es accesible</span></div>
+    </div>
+    <img src="013_cobertura_accesibilidad.png" alt="Barras: el corredor Puebla–Cholula tiene 2.9 % de lugares con dato de accesibilidad, Atlixco 1.2 % y los demás Pueblos Mágicos 0 %.">
+  </div>
+  <p class="fuente">Fuente: OpenStreetMap (© OpenStreetMap contributors), SIC y DENUE, consultados el 2026-10-16. Mide cuánta información existe, no qué tan accesibles son los lugares.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 4: la solución">
+  <span class="etiqueta">La solución</span>
+  <h2>Un mismo dato sirve al visitante y a la Secretaría</h2>
+  <div class="ciclo">
+    <div class="paso"><span class="n">1</span><b>Planea</b><p>Rutas que respetan sus necesidades: sin escalones, con descansos, bajo costo.</p></div>
+    <div class="paso"><span class="n">2</span><b>Explica</b><p>Por qué recomienda cada lugar y qué datos no sabe.</p></div>
+    <div class="paso"><span class="n">3</span><b>Reporta</b><p>El visitante señala una barrera real, con su consentimiento.</p></div>
+    <div class="paso"><span class="n">4</span><b>Decide</b><p>La Secretaría ve la brecha agregada y prioriza dónde intervenir.</p></div>
+    <div class="paso"><span class="n">5</span><b>Mejora</b><p>La ficha se corrige y la siguiente ruta ya lo considera.</p></div>
+  </div>
+  <p>PWA para el visitante · Tablero para la Secretaría · Nadie es vigilado: solo agregados.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 5: datos">
+  <span class="etiqueta">Datos</span>
+  <h2>Fuentes públicas, integradas y trazables</h2>
+  <div class="cifras">
+    <div class="cifra"><b>1,991</b><span>lugares del corredor Puebla–Cholula y 11 Pueblos Mágicos</span></div>
+    <div class="cifra"><b>46,491</b><span>establecimientos turísticos del DENUE en 216 municipios</span></div>
+    <div class="cifra"><b>2017–2026</b><span>serie mensual oficial de ocupación y llegadas</span></div>
+  </div>
+  <p>INEGI (DENUE y Marco Geoestadístico) · Secretaría de Cultura (SIC) · OpenStreetMap · Observatorio Turístico. Cada fuente con URL, fecha y huella SHA-256; todo se regenera con un comando.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 6: inteligencia artificial">
+  <span class="etiqueta">IA con propósito</span>
+  <h2>Un recomendador que nunca rompe una restricción de accesibilidad</h2>
+  <table class="tabla">
+    <thead><tr><th scope="col">Método (40 perfiles, catálogo real)</th><th scope="col">Violaciones de restricciones indispensables</th></tr></thead>
+    <tbody>
+      <tr><td>Puebla Viva 360</td><td class="num" style="color:var(--acento)">0</td></tr>
+      <tr><td>Recomendar lo más popular</td><td class="num naranja">219</td></tr>
+      <tr><td>Recomendar lo más cercano</td><td class="num naranja">237</td></tr>
+    </tbody>
+  </table>
+  <p>Filtra con reglas duras, ordena por intereses, cercanía y diversidad territorial, secuencia la ruta con horarios y explica cada parada. Límite honesto: con tan poca información de accesibilidad, muchas rutas con restricciones quedan cortas. Eso es justo la brecha que hay que cerrar.</p>
+  <p class="fuente">Evaluación reproducible con perfiles de solicitud sintéticos y verificador independiente del motor.</p>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 7: impacto y viabilidad">
+  <span class="etiqueta">Impacto y siguiente paso</span>
+  <h2>Listo para un piloto rumbo al Tianguis Turístico 2027</h2>
+  <ul>
+    <li><b>Visitantes:</b> personas con discapacidad, adultos mayores, familias y presupuestos bajos encuentran rutas confiables.</li>
+    <li><b>Destinos:</b> el recomendador lleva visitantes a Pueblos Mágicos con cuartos libres.</li>
+    <li><b>Secretaría:</b> sabe dónde poner una rampa, un baño o señalética, con evidencia y fuente.</li>
+    <li><b>Escala:</b> DENUE, INEGI, SIC, OpenStreetMap y DataTur cubren todo el país; el método se replica en cualquier destino.</li>
+  </ul>
+</section>
+
+<section class="diapo" aria-label="Diapositiva 8: pruébalo">
+  <div class="qr">
+    <img src="qr.svg" alt="Código QR que abre puebla-viva-360.vercel.app">
+    <div style="display:grid; gap:2.5vh">
+      <span class="etiqueta">Pruébalo ahora</span>
+      <h2>Escanea y arma tu ruta por Puebla</h2>
+      <p class="url">puebla-viva-360.vercel.app</p>
+      <p>Visitante: <b>/</b> · Secretaría: <b>/admin</b></p>
+    </div>
+  </div>
+</section>
+
+</main>
+<nav aria-label="Navegación de la presentación">
+  <button type="button" id="anterior" aria-label="Diapositiva anterior">‹</button>
+  <span id="contador" aria-live="polite">1 / 8</span>
+  <button type="button" id="siguiente" aria-label="Diapositiva siguiente">›</button>
+</nav>
+<script>
+  const diapos = [...document.querySelectorAll('.diapo')]
+  const contador = document.getElementById('contador')
+  const progreso = document.querySelector('.progreso')
+  let actual = 0
+  function mostrar(i) {
+    actual = Math.max(0, Math.min(diapos.length - 1, i))
+    diapos.forEach((d, j) => d.classList.toggle('activa', j === actual))
+    contador.textContent = `${actual + 1} / ${diapos.length}`
+    progreso.style.width = `${((actual + 1) / diapos.length) * 100}%`
+    try { history.replaceState(null, '', `#${actual + 1}`) } catch (e) {}
+  }
+  document.getElementById('anterior').onclick = () => mostrar(actual - 1)
+  document.getElementById('siguiente').onclick = () => mostrar(actual + 1)
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); mostrar(actual + 1) }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); mostrar(actual - 1) }
+    if (e.key === 'Home') mostrar(0)
+    if (e.key === 'End') mostrar(diapos.length - 1)
+  })
+  document.querySelector('main').addEventListener('click', (e) => {
+    if (window.innerWidth > 760) mostrar(actual + (e.clientX > window.innerWidth / 3 ? 1 : -1))
+  })
+  mostrar((parseInt(location.hash.slice(1), 10) || 1) - 1)
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@ Este documento es para cualquier persona o agente que tome una tarea de este rep
 
 Lee en este orden:
 
-1. [`README.md`](README.md) y [`STATUS.md`](STATUS.md)
+1. [`CONTEXTO.md`](CONTEXTO.md), [`README.md`](README.md) y [`STATUS.md`](STATUS.md)
 2. [`specs/constitucion.md`](specs/constitucion.md)
 3. [`docs/producto/contexto-maestro.txt`](docs/producto/contexto-maestro.txt): el producto completo; las secciones se citan como §NN
 4. [`docs/plan-de-ejecucion.md`](docs/plan-de-ejecucion.md): specs, carriles y ruta crítica
@@ -22,6 +22,7 @@ Según la tarea, consulta también:
 | Accesibilidad | §06 del contexto maestro |
 | Un componente con IA | §10 del contexto maestro y `docs/ia/` |
 | Una decisión ya tomada | [`docs/decisiones/`](docs/decisiones/) |
+| Publicar en producción | [`docs/despliegue.md`](docs/despliegue.md) |
 
 ## 2. Elegir una tarea
 
@@ -48,6 +49,8 @@ Según la tarea, consulta también:
 | Regenerar datos curados | `make datos` |
 | Verificación completa | `make verificar` |
 | Demo con datos semilla | `make demo` |
+| Análisis y evaluación | `make analisis` |
+| Publicar en producción | `make desplegar` |
 
 ## 5. Código
 

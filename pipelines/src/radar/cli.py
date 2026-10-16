@@ -58,11 +58,21 @@ def indicadores() -> None:
 
     salida = config.ruta(config.CURADO)
     salida.mkdir(parents=True, exist_ok=True)
-    tabla.to_csv(salida / "indicadores_oficiales_mensual.csv", index=False, float_format="%.4f")
+    tabla.to_csv(
+        salida / "indicadores_oficiales_mensual.csv",
+        index=False,
+        lineterminator="\n",
+        float_format="%.4f",
+    )
     anual = resumen.anual(tabla)
-    anual.to_csv(salida / "indicadores_oficiales_anual.csv", index=False, float_format="%.4f")
+    anual.to_csv(
+        salida / "indicadores_oficiales_anual.csv",
+        index=False,
+        lineterminator="\n",
+        float_format="%.4f",
+    )
     factor = sectur_ot.factor_afluencia(tabla)
-    factor.to_csv(salida / "factor_afluencia_por_centro.csv", index=False)
+    factor.to_csv(salida / "factor_afluencia_por_centro.csv", index=False, lineterminator="\n")
 
     typer.echo(
         f"{len(tabla):,} valores; {tabla['centro_ot'].nunique()} centros; "
@@ -193,7 +203,12 @@ def senales_trends(
         raise typer.Exit(code=1)
     salida = config.ruta(config.CURADO)
     salida.mkdir(parents=True, exist_ok=True)
-    tabla.to_csv(salida / "interes_busqueda_mensual.csv", index=False, float_format="%.4f")
+    tabla.to_csv(
+        salida / "interes_busqueda_mensual.csv",
+        index=False,
+        lineterminator="\n",
+        float_format="%.4f",
+    )
     typer.echo(
         f"{tabla['destino_id'].nunique()} destinos; periodos {tabla['periodo'].min()} "
         f"a {tabla['periodo'].max()}; {len(tabla):,} filas"
@@ -284,7 +299,9 @@ def calcular_radar() -> None:
     universo = sorted(d.destino_id for d in catalogo.cargar() if d.pueblo_magico)
     tablas = atencion.cargar_tablas()
     tabla, cortes, disponibles = indices.calcular(mensual, tablas, universo)
-    tabla.to_csv(curado / "radar_destinos.csv", index=False, float_format="%.4f")
+    tabla.to_csv(
+        curado / "radar_destinos.csv", index=False, lineterminator="\n", float_format="%.4f"
+    )
     con_cuadrante = int(tabla["cuadrante"].notna().sum())
     typer.echo(
         f"{len(tabla)} destinos; componentes: {', '.join(disponibles) or 'ninguno'}; "

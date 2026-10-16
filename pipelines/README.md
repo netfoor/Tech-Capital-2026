@@ -47,3 +47,7 @@ src/radar/
 ```
 
 Cada módulo de contexto solo lee las tablas publicadas de otros contextos (en `data/curado/`) y no importa su código interno. Así los límites del dominio se mantienen en el código.
+
+## Módulos heredados del Radar
+
+`senales/`, `asistentes/` y `radar/`, y sus comandos `radar senales`, `radar asistentes` y `radar radar`, son del producto anterior ([ADR-0010](../docs/decisiones/0010-cambio-a-puebla-viva-360.md)). Puebla Viva 360 no los usa. Siguen con sus pruebas mientras el equipo decide si se reutilizan o se retiran (ver `STATUS.md`).
