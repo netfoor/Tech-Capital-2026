@@ -9,8 +9,11 @@ import typer
 
 from radar import catalogo, config, fuentes
 from radar.indicadores import resumen, sectur_ot
+from radar.radar import atencion, indices
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, help=__doc__)
+analisis = typer.Typer(no_args_is_help=True, help="Índices, brecha y cuadrantes (spec 008).")
+app.add_typer(analisis, name="radar")
 
 
 def _fallar_si(problemas: list[str], titulo: str) -> None:
@@ -85,6 +88,26 @@ def ver_resumen(anio: int = typer.Option(2025, help="Año completo a resumir")) 
         f"\nCapital: {p['capital_pct']:.1f} % de la afluencia estatal. "
         f"12 Pueblos Mágicos: {pm['afluencia_visitantes'].sum() / p['estado'] * 100:.1f} %."
     )
+
+
+@analisis.command("calcular")
+def calcular_radar() -> None:
+    """Calcula `radar_destinos.csv` con los componentes que existan en `data/curado/`."""
+    curado = config.ruta(config.CURADO)
+    mensual = pd.read_csv(curado / "indicadores_oficiales_mensual.csv")
+    universo = sorted(d.destino_id for d in catalogo.cargar() if d.pueblo_magico)
+    tablas = atencion.cargar_tablas()
+    tabla, cortes, disponibles = indices.calcular(mensual, tablas, universo)
+    tabla.to_csv(curado / "radar_destinos.csv", index=False, float_format="%.4f")
+    con_cuadrante = int(tabla["cuadrante"].notna().sum())
+    typer.echo(
+        f"{len(tabla)} destinos; componentes: {', '.join(disponibles) or 'ninguno'}; "
+        f"con cuadrante: {con_cuadrante}"
+    )
+    if cortes["atencion"] is not None:
+        typer.echo(
+            f"Cortes: atención {cortes['atencion']:.1f}, desempeño {cortes['desempeno']:.1f}"
+        )
 
 
 def main() -> None:  # pragma: no cover

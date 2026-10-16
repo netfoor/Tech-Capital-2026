@@ -154,20 +154,26 @@ Tamaño de la muestra, κ entre personas, κ contra el clasificador, matriz de c
 
 ### `radar_destinos.csv` · versionado: sí
 
+Una fila por Pueblo Mágico (12). La capital no entra: el exportador la calcula aparte como referencia.
+
 | Columna | Tipo | Notas |
 |---|---|---|
 | `destino_id` | texto | |
-| `periodo_ref` | texto | último periodo oficial usado |
+| `periodo_ref_desde`, `periodo_ref` | texto | primer y último mes del periodo de referencia |
 | `ocupacion_12m` | decimal | % medido |
 | `cuartos_libres_dia_12m` | decimal | |
 | `llegadas_12m` | entero | |
-| `crecimiento_llegadas_pct` | decimal | últimos 12 meses frente a los 12 previos |
-| `atencion_busqueda_pctl`, `atencion_video_pctl`, `atencion_panel_pctl`, `atencion_asistentes_pctl` | decimal 0–100 | vacío si no hay dato |
-| `componentes_disponibles` | entero | |
-| `indice_atencion`, `indice_desempeno` | decimal 0–100 | |
-| `brecha` | decimal | |
-| `cuadrante` | texto | |
-| `notas` | texto | advertencias de datos |
+| `crecimiento_llegadas_pct` | decimal | últimos 12 meses frente a los 12 previos; vacío si no hay 24 meses |
+| `atencion_busqueda_valor`, `atencion_video_valor`, `atencion_panel_valor`, `atencion_asistentes_valor` | decimal | valor bruto del componente; vacío si no hay dato |
+| `atencion_busqueda_n`, `atencion_video_n`, `atencion_panel_n`, `atencion_asistentes_n` | entero | observaciones detrás del valor (meses, resultados, sesiones, corridas) |
+| `atencion_busqueda_pctl`, `atencion_video_pctl`, `atencion_panel_pctl`, `atencion_asistentes_pctl` | decimal 0–100 | percentil entre los 12; vacío si no hay dato |
+| `componentes_disponibles` | entero | componentes con percentil para ese destino |
+| `indice_atencion` | decimal 0–100 | media de los percentiles; vacío con menos de 2 componentes |
+| `indice_desempeno` | decimal 0–100 | percentil de `ocupacion_12m` |
+| `brecha` | decimal | `indice_atencion − indice_desempeno` |
+| `cuadrante` | texto | `consolidado`, `atencion_sin_estancia`, `demanda_poco_visible`, `por_posicionar`; vacío sin índice de atención |
+| `sensible` | booleano | el cuadrante cambia al omitir algún componente (solo con 3 o más componentes) |
+| `notas` | texto | advertencias de datos separadas por `;` |
 
 ### `modelo_rezago.csv` · versionado: sí
 

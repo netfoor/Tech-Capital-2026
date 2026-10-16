@@ -20,6 +20,7 @@ datos: ## Regenera data/curado/ con las etapas que no usan red
 	$(UV) radar fuentes
 	$(UV) radar catalogo
 	$(UV) radar indicadores
+	$(UV) radar radar calcular
 
 exportar: ## Genera web/public/datos/ y su manifiesto (spec 009)
 	$(UV) radar exportar

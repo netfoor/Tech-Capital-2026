@@ -19,6 +19,7 @@ uv run ruff check .              # estilo
 | `radar catalogo` | Valida `data/referencia/destinos.csv` | 001 |
 | `radar indicadores` | Lee el PDF del Observatorio Turístico y escribe `data/curado/indicadores_oficiales_*.csv` | 002 |
 | `radar resumen --anio 2025` | Muestra el resumen anual por destino | 002 |
+| `radar radar calcular` | Escribe `data/curado/radar_destinos.csv` con los componentes disponibles | 008 |
 
 Cada spec que agrega una etapa nueva añade su comando en esta tabla.
 
