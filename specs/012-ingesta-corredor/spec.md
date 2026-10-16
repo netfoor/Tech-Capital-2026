@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Catálogo territorial: puntos de interés (POI) y su accesibilidad |
 | Prioridad | P0 |
-| Estado | En curso |
+| Estado | Hecha: catálogo, accesibilidad declarada, inventario de fuentes y reporte de calidad |
 | Depende de | 001 |
 | Habilita | 013 (análisis del problema), 014 (API y modelo), 015 (recomendador), 016 (PWA), 018 (barreras) |
 
@@ -63,3 +63,8 @@ Un catálogo único y reproducible de lugares del corredor piloto «Centro Hist�
 - 2026-10-16. `costo_rango` solo sale de la etiqueta `fee` de OSM (`fee=no` → `gratis`); todo lo demás queda `desconocido`. No se infiere el costo por categoría.
 - 2026-10-16. Las bancas de OSM se cuentan en el reporte, pero no entran como POI. Usarlas para el atributo `asientos` cercano es una inferencia que corresponde a 015.
 - 2026-10-16. Los límites municipales están simplificados al 4 %; un punto a pocos metros de un límite puede quedar en el municipio vecino.
+- 2026-10-16. `lat` y `lon` se escriben con 6 decimales (≈ 0.1 m) y no con `%.4f` (≈ 11 m), que no alcanza para enlazar a 75 m ni para detectar paradas. Sigue siendo determinista.
+- 2026-10-16. El SIC sugiere un formato de crédito, pero no encontramos una licencia formal publicada en su portal: queda «NO VERIFICADO» en el catálogo de fuentes.
+- 2026-10-16. Para no versionar datos de contacto, los extractos quitan teléfono, correo y redes (SIC), teléfono, correo, sitio web y razón social (DENUE), y usuario y conjunto de cambios (OSM). El original completo queda en `data/crudo/` con su SHA-256 en el manifiesto.
+- 2026-10-16. El DENUE completo de Puebla filtrado a las cuatro ramas pesa ≈ 11 MB; se versionan un extracto estatal compacto (para conteos) y uno detallado solo de las zonas (para POI).
+- 2026-10-16. Overpass estuvo saturado durante la descarga; se usó también el servidor público de mail.ru (mismo software y datos de OSM). La URL usada queda en el manifiesto.
