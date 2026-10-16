@@ -113,7 +113,9 @@ def escribir_csv(df: pd.DataFrame, nombre: str) -> None:
 
 
 def guardar(fig: plt.Figure, nombre: str) -> None:
-    fig.savefig(FIGURAS / f"{nombre}.svg", metadata={"Date": None, "Creator": None})
+    svg = FIGURAS / f"{nombre}.svg"
+    fig.savefig(svg, metadata={"Date": None, "Creator": None})
+    svg.write_bytes(svg.read_bytes().replace(b"\r\n", b"\n"))  # mismo archivo en todo sistema
     fig.savefig(FIGURAS / f"{nombre}.png", dpi=200, metadata={"Software": None})
     plt.close(fig)
 
