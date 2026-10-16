@@ -34,10 +34,10 @@ function ParadaPlan({ parada, indice, total, horaInicio, sugerido, alMover, alQu
         {horaDesde(horaInicio, parada.llegada_min)}
       </span>
       <article className="parada__cuerpo">
-        {parada.traslado_min > 0 && (
+        {Math.round(parada.traslado_min) > 0 && (
           <span className="parada__traslado">
             <Icono nombre="caminar" className="pastilla__icono" />
-            {t.planear.traslado(parada.traslado_min)}
+            {t.planear.traslado(Math.round(parada.traslado_min))}
           </span>
         )}
         <h4 className="parada__titulo">
@@ -48,7 +48,7 @@ function ParadaPlan({ parada, indice, total, horaInicio, sugerido, alMover, alQu
         </h4>
         <p className="tarjeta-poi__meta">
           {textoCategoria(t, poi.categoria)} · {nombreDestino(destinos, poi.destino_id)} · {t.planear.estancia}{' '}
-          {t.general.minutos(parada.estancia_min)}
+          {t.general.minutos(Math.round(parada.estancia_min))}
         </p>
         <div className="tarjeta-poi__estados">
           <PastillaCobertura cobertura={poi.cobertura_accesibilidad} />

@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Experiencia del visitante (B2C) |
 | Prioridad | P0 |
-| Estado | En curso: flujos P0 con modo de demostración; falta integrar con la API real de la spec 014 |
+| Estado | MVP implementado: flujos P0 con modo de demostración y tipos alineados al contrato de la API; falta la prueba de punta a punta con el backend real |
 | Depende de | 014 (API y modelo de datos); 015 (recomendador) para itinerarios reales |
 | Habilita | 017 (recorridos), 018 (moderación), 020 (accesibilidad y privacidad), 022 (importar y compartir) |
 
@@ -85,3 +85,6 @@ Que una persona sin cuenta descubra lugares de Puebla con información de accesi
 - 2026-10-16: el horario llega como texto de OpenStreetMap (`horario_osm`) sin fecha. La ficha muestra el texto traducido de forma simple y la fuente «OpenStreetMap»; la fecha queda pendiente del contrato.
 - 2026-10-16: en modo de demostración, las reseñas y los reportes no se envían; se avisa que quedaron solo en este dispositivo. El plan se calcula con un motor local sencillo que respeta las mismas restricciones indispensables; no sustituye al recomendador de la spec 015.
 - 2026-10-16: con «sin escalones», un lugar sin dato se excluye del plan (opción conservadora, constitución XIII) y aparece en «no incluidos» con el motivo «no sabemos si tiene acceso sin escalones».
+- 2026-10-16 (resuelto): el contrato real (`docs/api/contrato-p0.md`) fija `costo_rango` en `gratis|bajo|medio|alto|null`, valores `si|no|limitado` y números en texto. La interfaz trata «limitado» como que **no** cumple una necesidad indispensable.
+- 2026-10-16: reseñas y reportes requieren cuenta. Se agregó `/cuenta` (registro e inicio de sesión opcionales). Sin sesión, el envío queda en el dispositivo y se dice por qué; falta reenviarlo automáticamente al iniciar sesión.
+- 2026-10-16: en la reseña solo `global` es obligatoria, según el contrato. El reporte de barrera acepta una foto opcional en base64; el servidor le quita los metadatos.
