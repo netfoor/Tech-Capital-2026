@@ -8,7 +8,7 @@
 - [x] T011-04 [P] `05-justificacion-datos.md`. Verificación: una sección por familia de fuentes, con la hipótesis que atiende.
 - [ ] T011-05 [P] `modelo-de-operacion.md`: ciclo mensual, roles, piloto, medición del efecto (comparación de destinos promovidos frente a no promovidos, antes y después) y continuidad. Verificación: revisado por el equipo; los costos se completan en T010-06.
 - [ ] T011-06 [P] `preguntas-del-jurado.md` con al menos 15 preguntas y respuestas. Verificación: cada respuesta cita un archivo del repositorio.
-- [ ] T011-07 [P] `07-arquitectura.md` y `06-procesos-de-datos.md`. Verificación: diagramas y enlaces a los planes.
+- [x] T011-07 [P] `07-arquitectura.md` y `06-procesos-de-datos.md`. Verificación: diagramas y enlaces a los planes.
 
 ## Con resultados
 
