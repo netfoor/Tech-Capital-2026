@@ -1,0 +1,44 @@
+# Llaves (constitución, IX)
+.env
+.env.*
+!.env.example
+
+# Datos que no se versionan (constitución, IV)
+data/crudo/
+data/privado/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+pipelines/build/
+pipelines/dist/
+
+# Sitio
+web/node_modules/
+web/dist/
+web/.astro/
+web/capturas/
+
+# Terraform: el estado es local durante el hackathon (FR-010-06)
+infra/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+terraform.tfvars
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.obsidian/
+.vscode/
+.idea/
+
+# Configuración local de herramientas de cada integrante
+CLAUDE.md
+CLAUDE.local.md
+.claude/
