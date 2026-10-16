@@ -67,8 +67,9 @@ Suma anual de indicadores aditivos y cocientes recalculados: `ocupacion_pct`, `e
 | `geo` | texto | `MX`, `MX-PUE`, `US`… |
 | `periodo` | texto | |
 | `interes` | entero 0–100 | valor de Trends en su lote |
-| `ancla` | texto | término ancla del lote |
-| `interes_ajustado` | decimal | interés del destino entre el interés del ancla en el mismo lote y periodo, multiplicado por 100 |
+| `ancla` | texto | destino usado como ancla del lote (`cholula`, o `cuetzalan` como ancla de segundo nivel) |
+| `factor` | decimal | `media(ancla en el lote de referencia) / media(ancla en el lote)` sobre todo el rango (1 en el lote de referencia) |
+| `interes_ajustado` | decimal | `interes × factor`: todos los destinos quedan en la escala del lote de referencia |
 | `consulta_id` | texto | remite a `data/crudo/trends/` |
 | `fecha_consulta` | fecha | |
 
