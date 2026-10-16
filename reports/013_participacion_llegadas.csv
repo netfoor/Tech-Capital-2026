@@ -1,0 +1,175 @@
+anio,meses,destino_id,nombre,grupo,llegadas_turistas,llegadas_estado,participacion_estado
+2017,12,puebla,Ciudad de Puebla,capital,2284964.0000,5398433.0000,0.4233
+2017,12,resto-del-estado,Resto del Estado,resto,1194922.0000,5398433.0000,0.2213
+2017,12,tehuacan,Tehuacán,otro,393584.0000,5398433.0000,0.0729
+2017,12,cholula,Cholula,cholula,367035.0000,5398433.0000,0.0680
+2017,12,atlixco,Atlixco,pueblo_magico,259272.0000,5398433.0000,0.0480
+2017,12,zacatlan,Zacatlán,pueblo_magico,195152.0000,5398433.0000,0.0361
+2017,12,chignahuapan,Chignahuapan,pueblo_magico,132579.0000,5398433.0000,0.0246
+2017,12,cuetzalan,Cuetzalan,pueblo_magico,124180.0000,5398433.0000,0.0230
+2017,12,teziutlan,Teziutlán,pueblo_magico,98920.0000,5398433.0000,0.0183
+2017,12,san-martin-texmelucan,San Martín Texmelucan,otro,85345.0000,5398433.0000,0.0158
+2017,12,huauchinango,Huauchinango,pueblo_magico,82971.0000,5398433.0000,0.0154
+2017,12,izucar-de-matamoros,Izúcar de Matamoros,otro,74335.0000,5398433.0000,0.0138
+2017,12,xicotepec,Xicotepec,pueblo_magico,70721.0000,5398433.0000,0.0131
+2017,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,21586.0000,5398433.0000,0.0040
+2017,12,pahuatlan,Pahuatlán,pueblo_magico,12867.0000,5398433.0000,0.0024
+2017,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,5398433.0000,0.0000
+2017,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,0.0000,5398433.0000,0.0000
+2018,12,puebla,Ciudad de Puebla,capital,2969995.0000,6240233.0000,0.4759
+2018,12,resto-del-estado,Resto del Estado,resto,1173380.0000,6240233.0000,0.1880
+2018,12,tehuacan,Tehuacán,otro,417494.0000,6240233.0000,0.0669
+2018,12,cholula,Cholula,cholula,386726.0000,6240233.0000,0.0620
+2018,12,atlixco,Atlixco,pueblo_magico,239002.0000,6240233.0000,0.0383
+2018,12,zacatlan,Zacatlán,pueblo_magico,205898.0000,6240233.0000,0.0330
+2018,12,chignahuapan,Chignahuapan,pueblo_magico,203770.0000,6240233.0000,0.0327
+2018,12,cuetzalan,Cuetzalan,pueblo_magico,150389.0000,6240233.0000,0.0241
+2018,12,huauchinango,Huauchinango,pueblo_magico,112838.0000,6240233.0000,0.0181
+2018,12,teziutlan,Teziutlán,pueblo_magico,99580.0000,6240233.0000,0.0160
+2018,12,san-martin-texmelucan,San Martín Texmelucan,otro,89889.0000,6240233.0000,0.0144
+2018,12,izucar-de-matamoros,Izúcar de Matamoros,otro,79237.0000,6240233.0000,0.0127
+2018,12,xicotepec,Xicotepec,pueblo_magico,75956.0000,6240233.0000,0.0122
+2018,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,22451.0000,6240233.0000,0.0036
+2018,12,pahuatlan,Pahuatlán,pueblo_magico,13628.0000,6240233.0000,0.0022
+2018,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,6240233.0000,0.0000
+2018,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,0.0000,6240233.0000,0.0000
+2019,12,puebla,Ciudad de Puebla,capital,3053728.0000,6608202.0000,0.4621
+2019,12,resto-del-estado,Resto del Estado,resto,1373343.0000,6608202.0000,0.2078
+2019,12,cholula,Cholula,cholula,443088.0000,6608202.0000,0.0671
+2019,12,tehuacan,Tehuacán,otro,410177.0000,6608202.0000,0.0621
+2019,12,atlixco,Atlixco,pueblo_magico,252118.0000,6608202.0000,0.0382
+2019,12,chignahuapan,Chignahuapan,pueblo_magico,226610.0000,6608202.0000,0.0343
+2019,12,zacatlan,Zacatlán,pueblo_magico,208141.0000,6608202.0000,0.0315
+2019,12,cuetzalan,Cuetzalan,pueblo_magico,144045.0000,6608202.0000,0.0218
+2019,12,huauchinango,Huauchinango,pueblo_magico,117534.0000,6608202.0000,0.0178
+2019,12,teziutlan,Teziutlán,pueblo_magico,100696.0000,6608202.0000,0.0152
+2019,12,san-martin-texmelucan,San Martín Texmelucan,otro,81172.0000,6608202.0000,0.0123
+2019,12,izucar-de-matamoros,Izúcar de Matamoros,otro,80133.0000,6608202.0000,0.0121
+2019,12,xicotepec,Xicotepec,pueblo_magico,79801.0000,6608202.0000,0.0121
+2019,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,23291.0000,6608202.0000,0.0035
+2019,12,pahuatlan,Pahuatlán,pueblo_magico,14325.0000,6608202.0000,0.0022
+2019,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,6608202.0000,0.0000
+2019,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,0.0000,6608202.0000,0.0000
+2020,12,puebla,Ciudad de Puebla,capital,932760.0000,1996146.0000,0.4673
+2020,12,resto-del-estado,Resto del Estado,resto,391851.0000,1996146.0000,0.1963
+2020,12,cholula,Cholula,cholula,158956.0000,1996146.0000,0.0796
+2020,12,tehuacan,Tehuacán,otro,137683.0000,1996146.0000,0.0690
+2020,12,atlixco,Atlixco,pueblo_magico,70036.0000,1996146.0000,0.0351
+2020,12,chignahuapan,Chignahuapan,pueblo_magico,57942.0000,1996146.0000,0.0290
+2020,12,zacatlan,Zacatlán,pueblo_magico,55973.0000,1996146.0000,0.0280
+2020,12,cuetzalan,Cuetzalan,pueblo_magico,35685.0000,1996146.0000,0.0179
+2020,12,huauchinango,Huauchinango,pueblo_magico,33451.0000,1996146.0000,0.0168
+2020,12,izucar-de-matamoros,Izúcar de Matamoros,otro,31866.0000,1996146.0000,0.0160
+2020,12,teziutlan,Teziutlán,pueblo_magico,28505.0000,1996146.0000,0.0143
+2020,12,xicotepec,Xicotepec,pueblo_magico,26824.0000,1996146.0000,0.0134
+2020,12,san-martin-texmelucan,San Martín Texmelucan,otro,20590.0000,1996146.0000,0.0103
+2020,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,8047.0000,1996146.0000,0.0040
+2020,12,pahuatlan,Pahuatlán,pueblo_magico,3808.0000,1996146.0000,0.0019
+2020,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,2169.0000,1996146.0000,0.0011
+2020,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,1996146.0000,0.0000
+2021,12,puebla,Ciudad de Puebla,capital,1332392.0000,2613143.0000,0.5099
+2021,12,resto-del-estado,Resto del Estado,resto,482060.0000,2613143.0000,0.1845
+2021,12,cholula,Cholula,cholula,159281.0000,2613143.0000,0.0610
+2021,12,tehuacan,Tehuacán,otro,124155.0000,2613143.0000,0.0475
+2021,12,atlixco,Atlixco,pueblo_magico,104490.0000,2613143.0000,0.0400
+2021,12,zacatlan,Zacatlán,pueblo_magico,92336.0000,2613143.0000,0.0353
+2021,12,chignahuapan,Chignahuapan,pueblo_magico,78489.0000,2613143.0000,0.0300
+2021,12,cuetzalan,Cuetzalan,pueblo_magico,42468.0000,2613143.0000,0.0163
+2021,12,huauchinango,Huauchinango,pueblo_magico,41085.0000,2613143.0000,0.0157
+2021,12,teziutlan,Teziutlán,pueblo_magico,39003.0000,2613143.0000,0.0149
+2021,12,xicotepec,Xicotepec,pueblo_magico,33595.0000,2613143.0000,0.0129
+2021,12,izucar-de-matamoros,Izúcar de Matamoros,otro,29732.0000,2613143.0000,0.0114
+2021,12,san-martin-texmelucan,San Martín Texmelucan,otro,18936.0000,2613143.0000,0.0072
+2021,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,17806.0000,2613143.0000,0.0068
+2021,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,11534.0000,2613143.0000,0.0044
+2021,12,pahuatlan,Pahuatlán,pueblo_magico,5781.0000,2613143.0000,0.0022
+2021,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,2613143.0000,0.0000
+2022,12,puebla,Ciudad de Puebla,capital,2500822.0000,5190303.0000,0.4818
+2022,12,resto-del-estado,Resto del Estado,resto,904627.0000,5190303.0000,0.1743
+2022,12,cholula,Cholula,cholula,398586.0000,5190303.0000,0.0768
+2022,12,tehuacan,Tehuacán,otro,239153.0000,5190303.0000,0.0461
+2022,12,zacatlan,Zacatlán,pueblo_magico,238380.0000,5190303.0000,0.0459
+2022,12,chignahuapan,Chignahuapan,pueblo_magico,228025.0000,5190303.0000,0.0439
+2022,12,atlixco,Atlixco,pueblo_magico,193072.0000,5190303.0000,0.0372
+2022,12,cuetzalan,Cuetzalan,pueblo_magico,98348.0000,5190303.0000,0.0189
+2022,12,huauchinango,Huauchinango,pueblo_magico,77815.0000,5190303.0000,0.0150
+2022,12,teziutlan,Teziutlán,pueblo_magico,74407.0000,5190303.0000,0.0143
+2022,12,xicotepec,Xicotepec,pueblo_magico,69632.0000,5190303.0000,0.0134
+2022,12,izucar-de-matamoros,Izúcar de Matamoros,otro,57218.0000,5190303.0000,0.0110
+2022,12,san-martin-texmelucan,San Martín Texmelucan,otro,33674.0000,5190303.0000,0.0065
+2022,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,29338.0000,5190303.0000,0.0057
+2022,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,27933.0000,5190303.0000,0.0054
+2022,12,pahuatlan,Pahuatlán,pueblo_magico,19273.0000,5190303.0000,0.0037
+2022,12,huejotzingo,Huejotzingo,pueblo_magico,0.0000,5190303.0000,0.0000
+2023,12,puebla,Ciudad de Puebla,capital,3036209.0000,6305538.0000,0.4815
+2023,12,resto-del-estado,Resto del Estado,resto,889199.0000,6305538.0000,0.1410
+2023,12,cholula,Cholula,cholula,468791.0000,6305538.0000,0.0743
+2023,12,zacatlan,Zacatlán,pueblo_magico,417984.0000,6305538.0000,0.0663
+2023,12,tehuacan,Tehuacán,otro,289338.0000,6305538.0000,0.0459
+2023,12,chignahuapan,Chignahuapan,pueblo_magico,285166.0000,6305538.0000,0.0452
+2023,12,atlixco,Atlixco,pueblo_magico,213921.0000,6305538.0000,0.0339
+2023,12,cuetzalan,Cuetzalan,pueblo_magico,172383.0000,6305538.0000,0.0273
+2023,12,teziutlan,Teziutlán,pueblo_magico,110468.0000,6305538.0000,0.0175
+2023,12,huauchinango,Huauchinango,pueblo_magico,108439.0000,6305538.0000,0.0172
+2023,12,xicotepec,Xicotepec,pueblo_magico,70839.0000,6305538.0000,0.0112
+2023,12,izucar-de-matamoros,Izúcar de Matamoros,otro,62270.0000,6305538.0000,0.0099
+2023,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,58672.0000,6305538.0000,0.0093
+2023,12,san-martin-texmelucan,San Martín Texmelucan,otro,35808.0000,6305538.0000,0.0057
+2023,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,32805.0000,6305538.0000,0.0052
+2023,12,pahuatlan,Pahuatlán,pueblo_magico,29652.0000,6305538.0000,0.0047
+2023,12,huejotzingo,Huejotzingo,pueblo_magico,23594.0000,6305538.0000,0.0037
+2024,12,puebla,Ciudad de Puebla,capital,3141723.0000,6532749.0000,0.4809
+2024,12,resto-del-estado,Resto del Estado,resto,910902.0000,6532749.0000,0.1394
+2024,12,cholula,Cholula,cholula,484506.0000,6532749.0000,0.0742
+2024,12,zacatlan,Zacatlán,pueblo_magico,427550.0000,6532749.0000,0.0654
+2024,12,chignahuapan,Chignahuapan,pueblo_magico,309250.0000,6532749.0000,0.0473
+2024,12,tehuacan,Tehuacán,otro,282353.0000,6532749.0000,0.0432
+2024,12,atlixco,Atlixco,pueblo_magico,208512.0000,6532749.0000,0.0319
+2024,12,cuetzalan,Cuetzalan,pueblo_magico,184461.0000,6532749.0000,0.0282
+2024,12,huauchinango,Huauchinango,pueblo_magico,119705.0000,6532749.0000,0.0183
+2024,12,teziutlan,Teziutlán,pueblo_magico,108861.0000,6532749.0000,0.0167
+2024,12,xicotepec,Xicotepec,pueblo_magico,76392.0000,6532749.0000,0.0117
+2024,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,65587.0000,6532749.0000,0.0100
+2024,12,izucar-de-matamoros,Izúcar de Matamoros,otro,63086.0000,6532749.0000,0.0097
+2024,12,huejotzingo,Huejotzingo,pueblo_magico,44497.0000,6532749.0000,0.0068
+2024,12,san-martin-texmelucan,San Martín Texmelucan,otro,39251.0000,6532749.0000,0.0060
+2024,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,34614.0000,6532749.0000,0.0053
+2024,12,pahuatlan,Pahuatlán,pueblo_magico,31499.0000,6532749.0000,0.0048
+2025,12,puebla,Ciudad de Puebla,capital,3191517.0000,6889826.0000,0.4632
+2025,12,resto-del-estado,Resto del Estado,resto,890453.0000,6889826.0000,0.1292
+2025,12,cholula,Cholula,cholula,540058.0000,6889826.0000,0.0784
+2025,12,zacatlan,Zacatlán,pueblo_magico,478062.0000,6889826.0000,0.0694
+2025,12,chignahuapan,Chignahuapan,pueblo_magico,351514.0000,6889826.0000,0.0510
+2025,12,tehuacan,Tehuacán,otro,328281.0000,6889826.0000,0.0476
+2025,12,atlixco,Atlixco,pueblo_magico,213962.0000,6889826.0000,0.0311
+2025,12,cuetzalan,Cuetzalan,pueblo_magico,196014.0000,6889826.0000,0.0284
+2025,12,huauchinango,Huauchinango,pueblo_magico,124634.0000,6889826.0000,0.0181
+2025,12,teziutlan,Teziutlán,pueblo_magico,122242.0000,6889826.0000,0.0177
+2025,12,xicotepec,Xicotepec,pueblo_magico,90541.0000,6889826.0000,0.0131
+2025,12,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,69393.0000,6889826.0000,0.0101
+2025,12,izucar-de-matamoros,Izúcar de Matamoros,otro,64320.0000,6889826.0000,0.0093
+2025,12,tepeaca,Tepeaca,otro,61723.0000,6889826.0000,0.0090
+2025,12,huejotzingo,Huejotzingo,pueblo_magico,46536.0000,6889826.0000,0.0068
+2025,12,san-martin-texmelucan,San Martín Texmelucan,otro,42587.0000,6889826.0000,0.0062
+2025,12,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,34787.0000,6889826.0000,0.0050
+2025,12,pahuatlan,Pahuatlán,pueblo_magico,33365.0000,6889826.0000,0.0048
+2025,12,acatzingo,Acatzingo,otro,9837.0000,6889826.0000,0.0014
+2026,6,puebla,Ciudad de Puebla,capital,1614216.0000,3378184.0000,0.4778
+2026,6,resto-del-estado,Resto del Estado,resto,420609.0000,3378184.0000,0.1245
+2026,6,cholula,Cholula,cholula,262318.0000,3378184.0000,0.0777
+2026,6,zacatlan,Zacatlán,pueblo_magico,224150.0000,3378184.0000,0.0664
+2026,6,chignahuapan,Chignahuapan,pueblo_magico,162793.0000,3378184.0000,0.0482
+2026,6,tehuacan,Tehuacán,otro,145455.0000,3378184.0000,0.0431
+2026,6,atlixco,Atlixco,pueblo_magico,100844.0000,3378184.0000,0.0299
+2026,6,cuetzalan,Cuetzalan,pueblo_magico,99847.0000,3378184.0000,0.0296
+2026,6,teziutlan,Teziutlán,pueblo_magico,67843.0000,3378184.0000,0.0201
+2026,6,huauchinango,Huauchinango,pueblo_magico,62549.0000,3378184.0000,0.0185
+2026,6,xicotepec,Xicotepec,pueblo_magico,43340.0000,3378184.0000,0.0128
+2026,6,tlatlauquitepec,Tlatlauquitepec,pueblo_magico,34807.0000,3378184.0000,0.0103
+2026,6,izucar-de-matamoros,Izúcar de Matamoros,otro,31445.0000,3378184.0000,0.0093
+2026,6,tepeaca,Tepeaca,otro,26732.0000,3378184.0000,0.0079
+2026,6,huejotzingo,Huejotzingo,pueblo_magico,21522.0000,3378184.0000,0.0064
+2026,6,san-martin-texmelucan,San Martín Texmelucan,otro,20193.0000,3378184.0000,0.0060
+2026,6,tetela-de-ocampo,Tetela de Ocampo,pueblo_magico,17712.0000,3378184.0000,0.0052
+2026,6,pahuatlan,Pahuatlán,pueblo_magico,16579.0000,3378184.0000,0.0049
+2026,6,acatzingo,Acatzingo,otro,5230.0000,3378184.0000,0.0015

@@ -1,0 +1,6 @@
+rama,scian_prefijo,establecimientos_estado,municipios_con_al_menos_uno,part_capital,part_cholula,part_capital_cholula,part_top5_municipios,hhi_municipios
+alojamiento,7211,1436,150,0.2249,0.0467,0.2716,0.4457,0.0695
+alimentos_y_bebidas,7225,44719,215,0.3055,0.0656,0.3711,0.4667,0.1052
+museos_y_sitios_historicos,7121,118,35,0.4831,0.1271,0.6102,0.6864,0.2483
+agencias_de_viajes,5615,218,27,0.5459,0.0734,0.6193,0.7569,0.3148
+total,7211|7225|7121|5615,46491,216,0.3046,0.0652,0.3698,0.4650,0.1047
