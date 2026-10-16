@@ -5,7 +5,7 @@ Formato: `[ ]` pendiente, `[~]` en curso, `[x]` hecha. `[P]` = paralelizable con
 ## Modelo
 
 - [x] T014-01 Spec, plan, tareas, `docs/dominio/modelo-de-datos.md` y `docs/api/contrato-p0.md`. Verificación: revisión del PR.
-- [ ] T014-02 Modelos de `core`, `private`, `analytics` y `audit` con invariantes de §13.2 y migración `0002`. Verificación: `uv run alembic downgrade base && uv run alembic upgrade head`.
+- [x] T014-02 Modelos de `core`, `private`, `analytics` y `audit` con invariantes de §13.2 y migración `0002`. Verificación: `uv run alembic downgrade base && uv run alembic upgrade head`.
 - [ ] T014-03 Semilla idempotente desde `data/` y fixture sintético en `tests/datos/`. Verificación: `uv run pytest tests/test_semilla.py`.
 
 ## API
