@@ -185,6 +185,16 @@ def planear_multidia(
         NoIncluido(p.poi_id, f"{m}. No se incluye: verifícalo antes de ir")
         for p, m in clas.sin_verificar
     ]
+    clasificados = (
+        {p.poi_id for p in clas.elegibles}
+        | {p.poi_id for p, _ in clas.excluidos}
+        | {p.poi_id for p, _ in clas.sin_verificar}
+    )
+    no_incluidos += [
+        NoIncluido(p.poi_id, "No es una parada de visita (alojamiento o servicio)")
+        for p in seleccion
+        if p.poi_id not in clasificados
+    ]
     elegibles_ids = {p.poi_id for p in clas.elegibles}
     elegibles = [p for p in seleccion if p.poi_id in elegibles_ids]
 

@@ -71,15 +71,38 @@ NOMBRE_METODO = {
 }
 
 
-def cargar() -> tuple[list, str, bool]:
+def cargar() -> list[tuple[str, list, str, bool]]:
+    """Catálogos a evaluar: el curado de la spec 012 si existe y siempre el sintético."""
+    salida = []
     poi = RAIZ / "data" / "curado" / "poi.csv"
     acc = RAIZ / "data" / "curado" / "poi_accesibilidad.csv"
     if poi.exists():
         pois = cargar_catalogo(poi, acc if acc.exists() else None)
-        return pois, "data/curado/poi.csv", all(p.is_synthetic for p in pois)
+        salida.append(("curado", pois, "data/curado/poi.csv", all(p.is_synthetic for p in pois)))
     datos = RAIZ / "backend" / "tests" / "datos"
     pois = cargar_catalogo(datos / "poi_sintetico.csv", datos / "poi_accesibilidad_sintetico.csv")
-    return pois, "backend/tests/datos/poi_sintetico.csv (SINTÉTICO)", True
+    salida.append(("sintetico", pois, "backend/tests/datos/poi_sintetico.csv", True))
+    return salida
+
+
+def cobertura(pois) -> dict[str, float]:
+    """Proporción de atractivos con dato utilizable (cumple o no cumple) por atributo."""
+    from app.recommender.elegibilidad import (
+        DESCONOCIDO,
+        evaluar_banio,
+        evaluar_pendiente,
+        evaluar_sin_escalones,
+    )
+
+    atr = [p for p in pois if not es_servicio(p) and p.categoria != "alojamiento"]
+    n = max(len(atr), 1)
+    c = CONFIG_DEFECTO
+    return {
+        "n": len(atr),
+        "acceso_sin_escalones": sum(evaluar_sin_escalones(p, c)[0] != DESCONOCIDO for p in atr) / n,
+        "banio_accesible": sum(evaluar_banio(p, c)[0] != DESCONOCIDO for p in atr) / n,
+        "pendiente_pct": sum(evaluar_pendiente(p, 100, c)[0] != DESCONOCIDO for p in atr) / n,
+    }
 
 
 def anclas(pois) -> list[tuple[float, float] | None]:
@@ -343,7 +366,8 @@ def evaluar_multidia(pois):
 
 def escribir_csv(ruta: Path, filas: list[dict]) -> None:
     with ruta.open("w", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(filas[0]), lineterminator="\n")
+        campos = ["catalogo"] + [k for k in filas[0] if k != "catalogo"]
+        w = csv.DictWriter(f, fieldnames=campos, lineterminator="\n")
         w.writeheader()
         for fila in filas:
             w.writerow({k: (f"{v:.4f}" if isinstance(v, float) else v) for k, v in fila.items()})
@@ -375,14 +399,13 @@ def tabla_md(tabla: dict) -> list[str]:
     return lineas
 
 
-def main() -> None:
-    pois, fuente, sintetico = cargar()
+def seccion(nombre: str, pois, fuente: str, sintetico: bool):
     solicitudes = perfiles(pois)
     filas, respuestas = evaluar_rutas(pois, solicitudes)
     multidia = evaluar_multidia(pois)
-    REPORTES.mkdir(exist_ok=True)
-    escribir_csv(REPORTES / "eval_recomendador.csv", filas)
-    escribir_csv(REPORTES / "eval_recomendador_multidia.csv", multidia)
+    for f in filas + multidia:
+        f["catalogo"] = nombre
+    cob = cobertura(pois)
 
     total = resumen_por_metodo(filas)
     con_restr = resumen_por_metodo(filas, lambda f: f["restricciones"] != "ninguna")
@@ -394,36 +417,33 @@ def main() -> None:
     vacias = [f for f in motor if f["ruta_vacia"]]
     cortas = [f for f in motor if not f["ruta_vacia"] and f["uso_tiempo"] < 0.5]
 
+    titulo = "Catálogo curado (spec 012)" if nombre == "curado" else "Catálogo sintético"
     lineas = [
-        "# Evaluación offline del recomendador inclusivo",
+        f"## {titulo}",
         "",
-        "> **DATOS SINTÉTICOS DE DEMOSTRACIÓN.** Los perfiles de solicitud son sintéticos"
-        + (" y el catálogo también." if sintetico else "; el catálogo es real."),
-        "> No hay retroalimentación de usuarios reales todavía: estas cifras miden el"
-        " comportamiento del algoritmo, no la satisfacción de visitantes.",
-        "",
-        f"- Fecha de corrida: {date.today().isoformat()}",
-        f"- Catálogo: `{fuente}`: {n_atr} atractivos y {n_serv} servicios (baños).",
+        f"- Catálogo: `{fuente}`"
+        + (" (SINTÉTICO)" if sintetico else " (datos reales; perfiles sintéticos)")
+        + f": {n_atr} atractivos y {n_serv} servicios (baños).",
+        f"- Cobertura de datos de accesibilidad utilizables en {cob['n']} atractivos (sin"
+        f" alojamiento): acceso sin escalones {100 * cob['acceso_sin_escalones']:.1f} %,"
+        f" baño accesible {100 * cob['banio_accesible']:.1f} %, pendiente"
+        f" {100 * cob['pendiente_pct']:.1f} %.",
         f"- Perfiles de ruta: n = {len(solicitudes)} (semilla {SEMILLA}); planes multi-día:"
         f" n = {len(multidia)}.",
-        "- Generado por `analysis/02_eval_recomendador.py`. Detalle por perfil en"
-        " `reports/eval_recomendador.csv` y `reports/eval_recomendador_multidia.csv`.",
-        "- Violaciones medidas por el verificador independiente"
-        " (`backend/app/recommender/verificador.py`), el mismo para todos los métodos.",
         "",
-        "## Rutas: motor contra baselines (todos los perfiles)",
+        "### Rutas: motor contra baselines (todos los perfiles)",
         "",
         *tabla_md(total),
         "",
-        f"## Solo perfiles con alguna restricción indispensable (n = {con_restr['motor']['n']})",
+        f"### Solo perfiles con alguna restricción indispensable (n = {con_restr['motor']['n']})",
         "",
         *tabla_md(con_restr),
         "",
-        f"## Solo perfiles con «sin escalones» (n = {escalones['motor']['n']})",
+        f"### Solo perfiles con «sin escalones» (n = {escalones['motor']['n']})",
         "",
         *tabla_md(escalones),
         "",
-        "## Cómo leer las columnas",
+        "### Cómo leer las columnas",
         "",
         "- **Violaciones indispensables**: paradas sin acceso sin escalones confiable, con"
         " pendiente no confiable o mayor, tramos de más de"
@@ -443,7 +463,7 @@ def main() -> None:
         " repetir zona) en 0, o con el peso de pertinencia en 0. Miden cuánto aporta cada"
         " término; las restricciones duras siguen activas.",
         "",
-        "## Multi-día",
+        "### Multi-día",
         "",
         "| Plan | Lugares | Días × h | Restricciones | Asignados (motor / ingenuo) |"
         " Distancia por lugar m (motor / ingenuo) | Cruces entre días (motor / ingenuo) |"
@@ -474,7 +494,7 @@ def main() -> None:
         "El orden ingenuo es la lista del usuario partida en días consecutivos, con la misma"
         " simulación (horarios, descansos y baños), sin reordenar.",
         "",
-        "## Fallos y límites observados",
+        "### Fallos y límites observados",
         "",
         f"- Rutas vacías del motor: {len(vacias)} de {len(motor)}.",
     ]
@@ -501,11 +521,48 @@ def main() -> None:
         f" {p_t['paradas_media']:.2f} de la baseline de popularidad. La diferencia es el costo"
         " de no violar restricciones y de insertar descansos y baños.",
         "- La distancia es en línea recta × 1.3; la pendiente entre paradas no se mide.",
-        "- El catálogo de esta corrida es sintético: las cifras no describen lugares reales.",
+        (
+            "- Catálogo sintético: las cifras no describen lugares reales."
+            if sintetico
+            else "- Catálogo real con perfiles sintéticos: las rutas vacías reflejan la falta de"
+            " datos de accesibilidad en las fuentes abiertas, no un error del motor. Se"
+            " reportan como brecha de información (§06.7)."
+        ),
         "",
     ]
-    (REPORTES / "eval_recomendador.md").write_text("\n".join(lineas), encoding="utf-8")
+    print(f"## {titulo}")
     print("\n".join(tabla_md(total)))
+    return lineas, filas, multidia
+
+
+def main() -> None:
+    lineas = [
+        "# Evaluación offline del recomendador inclusivo",
+        "",
+        "> **DATOS SINTÉTICOS DE DEMOSTRACIÓN.** Los perfiles de solicitud son sintéticos."
+        " El catálogo sintético también; el curado viene de fuentes abiertas (spec 012).",
+        "> No hay retroalimentación de usuarios reales todavía: estas cifras miden el"
+        " comportamiento del algoritmo, no la satisfacción de visitantes.",
+        "",
+        f"- Fecha de corrida: {date.today().isoformat()}",
+        "- Generado por `analysis/02_eval_recomendador.py`. Detalle por perfil en"
+        " `reports/eval_recomendador.csv` y `reports/eval_recomendador_multidia.csv`"
+        " (columna `catalogo`).",
+        "- Violaciones medidas por el verificador independiente"
+        " (`backend/app/recommender/verificador.py`), el mismo para todos los métodos.",
+        "",
+    ]
+    filas: list[dict] = []
+    multidia: list[dict] = []
+    for nombre, pois, fuente, sintetico in cargar():
+        l_, f_, m_ = seccion(nombre, pois, fuente, sintetico)
+        lineas += l_
+        filas += f_
+        multidia += m_
+    REPORTES.mkdir(exist_ok=True)
+    escribir_csv(REPORTES / "eval_recomendador.csv", filas)
+    escribir_csv(REPORTES / "eval_recomendador_multidia.csv", multidia)
+    (REPORTES / "eval_recomendador.md").write_text("\n".join(lineas), encoding="utf-8")
     print(f"Escrito en {REPORTES}")
 
 

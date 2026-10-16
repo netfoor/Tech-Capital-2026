@@ -29,6 +29,9 @@ TAMANO_ZONA_M = 500.0
 CATEGORIAS_BANIO = frozenset({"banio", "sanitario", "toilets"})
 CATEGORIAS_SERVICIO = CATEGORIAS_BANIO | frozenset({"banca", "descanso"})
 
+# Categorías que no son paradas de una ruta de visita.
+CATEGORIAS_NO_RECOMENDABLES = frozenset({"alojamiento"})
+
 # Estancia típica por categoría (min). Supuesto de trabajo.
 ESTANCIA_POR_CATEGORIA: dict[str, int] = {
     "museo": 60,
@@ -47,6 +50,8 @@ ESTANCIA_POR_CATEGORIA: dict[str, int] = {
     "teatro": 30,
     "biblioteca": 30,
     "barrio": 40,
+    "centro_cultural": 45,
+    "sitio_historico": 30,
 }
 ESTANCIA_DEFECTO = 30
 
@@ -92,6 +97,8 @@ class Config:
     )
     max_candidatos: int = 40
     max_alternativos: int = 5
+    # Tope de «no incluidos» en la respuesta (el resto se cuenta en métricas).
+    max_no_incluidos: int = 50
     semilla: int = SEMILLA
 
 

@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from . import horarios
 from .config import (
     CATEGORIAS_BANIO,
+    CATEGORIAS_NO_RECOMENDABLES,
     CATEGORIAS_SERVICIO,
     ORDEN_PRESUPUESTO,
     Config,
@@ -38,7 +39,7 @@ ATR_PENDIENTE = "pendiente_pct"
 ATR_ASIENTOS = "asientos_descanso"
 
 _SI = {"si", "sí", "yes", "true", "designated", "1"}
-_NO = {"no", "false", "0", "limitado", "limited"}
+_NO = {"no", "false", "0", "limitado", "limited", "parcial"}
 
 NOMBRE_ATRIBUTO = {
     ATR_SIN_ESCALONES: "acceso sin escalones",
@@ -205,6 +206,8 @@ def clasificar(
             ):
                 res.banios.append(poi)
             continue
+        if (poi.categoria or "").lower() in CATEGORIAS_NO_RECOMENDABLES:
+            continue  # alojamiento: no es una parada de la ruta
         avisos: list[str] = []
         estancia = estancia_tipica(poi.categoria)
 

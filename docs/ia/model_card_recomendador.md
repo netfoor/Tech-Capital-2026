@@ -5,7 +5,7 @@
 | Componente | `backend/app/recommender/` (spec 015) |
 | Versión | `015-v1` |
 | Tipo | Optimización combinatoria con restricciones duras (orienteering con ventanas de tiempo) más ranking multiobjetivo con similitud de texto TF-IDF |
-| Estado | MVP implementado; evaluado offline con perfiles y catálogo **sintéticos** |
+| Estado | MVP implementado; evaluado offline con perfiles **sintéticos** sobre el catálogo curado (spec 012) y sobre un catálogo **sintético** |
 | Evaluación | [`reports/eval_recomendador.md`](../../reports/eval_recomendador.md), generado por `analysis/02_eval_recomendador.py` |
 
 ## 1. Propósito
@@ -34,7 +34,7 @@ No decide por la persona ni certifica accesibilidad: ordena opciones con la info
 | `popularidad`, `es_destino_alternativo` | Columnas opcionales; si faltan, regla de polos saturados (`puebla`, `cholula`) del boletín estatal citado en §02 | Término de diversidad territorial |
 | Solicitud del visitante | Formulario de la PWA (spec 016) | Horas, punto de partida opcional, intereses, presupuesto y restricciones funcionales. No se piden ni se infieren diagnósticos (§06.5) |
 
-En la evaluación de esta versión **no había catálogo curado todavía**: se usó un catálogo sintético de 40 atractivos y 7 baños con nombres inventados en zonas plausibles del corredor Centro Histórico → Cholula (`backend/tests/datos/`, `is_synthetic=true`, generado con semilla por `analysis/02a_catalogo_sintetico.py`). Las cifras no describen lugares reales.
+La evaluación usa dos catálogos: (1) el **curado** de la spec 012 (`data/curado/poi.csv`, fuentes abiertas: 1 991 POI, de ellos 1 340 atractivos sin contar alojamiento), y (2) un catálogo **sintético** de 40 atractivos y 7 baños con nombres inventados en zonas plausibles del corredor Centro Histórico → Cholula (`backend/tests/datos/`, `is_synthetic=true`, generado con semilla por `analysis/02a_catalogo_sintetico.py`) para ejercitar el algoritmo con una cobertura de datos de accesibilidad que las fuentes abiertas todavía no tienen. Las cifras del sintético no describen lugares reales.
 
 ## 4. Variables y algoritmo
 
@@ -77,7 +77,24 @@ Al construir la ruta, la utilidad se ajusta estilo MMR: −0.08 por cada parada 
 
 ## 5. Resultados de la evaluación offline
 
-Perfiles de solicitud **sintéticos**, n = 40 (semilla 2026; incluye la escena de valor §06.8), sobre el catálogo sintético. Violaciones medidas por un verificador independiente del motor. Fuente: [`reports/eval_recomendador.md`](../../reports/eval_recomendador.md).
+Perfiles de solicitud **sintéticos**, n = 40 por catálogo (semilla 2026; incluye la escena de valor §06.8). Violaciones medidas por un verificador independiente del motor. Fuente: [`reports/eval_recomendador.md`](../../reports/eval_recomendador.md).
+
+### 5.1 Catálogo curado (datos reales de fuentes abiertas)
+
+Cobertura de datos utilizables en los 1 340 atractivos: acceso sin escalones 3.0 % (todo de OSM, sin verificar, confianza 0.6), baño accesible 0.0 %, pendiente 0.0 %.
+
+| Método | Perfiles con ≥1 violación indispensable | Violaciones indispensables | Rutas vacías | Paradas (media) | Cobertura de destinos alternativos | Tiempo usado / disponible |
+|---|---|---|---|---|---|---|
+| **Motor inclusivo** | **0 de 40** | **0** | 25 | 1.32 | 0.47 | 0.26 |
+| Baseline popularidad | 32 de 40 | 219 | 0 | 5.92 | 0.60 | 0.90 |
+| Baseline cercanía | 32 de 40 | 237 | 0 | 6.00 | 0.68 | 0.91 |
+| Baseline popularidad + filtro ingenuo | 32 de 40 | 219 | 0 | 5.92 | 0.60 | 0.90 |
+
+Lectura: con los datos abiertos de hoy, **las baselines arman rutas que violan necesidades en 32 de 40 perfiles**; el motor no viola ninguna, pero en 25 perfiles (todos con alguna restricción de acceso) no encuentra una ruta, porque casi ningún lugar tiene dato confiable de escalones, baño o pendiente. Eso no es un fallo que haya que esconder: es la brecha de información que el tablero B2B mide (§06.7) y que la auditoría del equipo y los reportes de visitantes (spec 018) deben cerrar. Las baselines cubren más destinos alternativos porque arman más paradas sin filtrar. Multi-día (n = 12): 32 lugares asignados contra 26 del orden ingenuo, 670 m por lugar contra 2 453 m, 0 violaciones.
+
+### 5.2 Catálogo sintético (cobertura de datos de un corredor auditado)
+
+Cobertura: acceso sin escalones 67.5 %, baño accesible 17.5 %, pendiente 45.0 %.
 
 | Método | Perfiles con ≥1 violación indispensable | Violaciones indispensables | Paradas (media) | Cobertura de destinos alternativos | Zonas distintas | Popularidad media de las paradas | Tiempo usado / disponible |
 |---|---|---|---|---|---|---|---|
@@ -90,13 +107,13 @@ Perfiles de solicitud **sintéticos**, n = 40 (semilla 2026; incluye la escena d
 
 \* Excluye solo los lugares con `valor=no` y trata la falta de dato como «accesible», el error que la constitución (XIII) prohíbe.
 
-Latencia del motor en la última corrida: p50 3.4 ms y p95 433 ms (mínimo de 3 corridas por perfil, en una laptop de desarrollo con otros procesos activos; en corridas con la máquina menos cargada el p95 fue de 80 a 110 ms). Requisito: p95 < 1 s. La latencia cambia con la carga y no es determinista; el resto de las cifras sí.
+Latencia del motor en la última corrida: p50 6.9 ms y p95 59 ms con el catálogo sintético, y p50 19 ms y p95 154 ms con el curado de 1 991 POI (mínimo de 3 corridas por perfil, en una laptop de desarrollo; con la máquina cargada por otros procesos se llegó a ver un p95 de 433 ms). Requisito: p95 < 1 s. La latencia cambia con la carga y no es determinista; el resto de las cifras sí.
 
 Multi-día, n = 12 planes sintéticos: 101 lugares asignados contra 55 del orden ingenuo; 628 m por lugar asignado contra 2 491 m; 3 cruces entre días contra 5; 0 duplicados; 0 violaciones indispensables.
 
 Pruebas: 68 pruebas unitarias del recomendador (`backend/tests/test_recomendador_*.py`), entre ellas la propiedad «ninguna violación» sobre 240 solicitudes aleatorias en 12 catálogos aleatorios con casos frontera y 80 solicitudes sobre el catálogo sintético. Además pasan las pruebas del endpoint de la spec 014 (`tests/test_itinerarios.py`) con este motor.
 
-### Lectura honesta
+### Lectura honesta (catálogo sintético)
 
 - **La garantía funciona**: 0 violaciones indispensables contra 154 a 185 de las baselines. La baseline con filtro ingenuo aún tiene 59 paradas sin acceso sin escalones confiable: tratar la falta de dato como «accesible» es el error que el motor evita.
 - **Tiene costo**: el motor arma menos paradas (3.52 contra 5.30) y usa menos tiempo (76 % contra 87 %), porque excluye lugares sin dato confiable e inserta descansos y baños. En perfiles con muchas restricciones la ruta queda corta o vacía (1 ruta vacía y 4 que usan menos de la mitad del tiempo; detalle en el reporte).
@@ -111,7 +128,7 @@ Pruebas: 68 pruebas unitarias del recomendador (`backend/tests/test_recomendador
 - **Solo a pie**: no modela transporte. Un día que mezcla Puebla y Cholula supone caminar entre ellas.
 - **Estancias típicas** por categoría como supuesto, no medidas; la spec 017 podrá calibrarlas con permanencia observada.
 - **Pesos sin calibrar** con usuarios: son un supuesto documentado. No hay retroalimentación de usuarios reales todavía; si la hay en el hackathon se reportará aparte con su n.
-- **Evaluación sintética**: catálogo y perfiles sintéticos. Hay que repetirla con `data/curado/poi.csv` cuando la spec 012 lo publique (el script lo detecta solo).
+- **Perfiles sintéticos**: no hay solicitudes reales. Con el catálogo curado, la falta de datos de accesibilidad deja sin ruta a la mayoría de los perfiles con restricciones; el valor del motor ahí es no mentir, no armar rutas largas.
 - El parser de horarios no interpreta feriados, meses ni `sunrise`; en esos casos el horario queda «sin verificar».
 - La heurística no garantiza el óptimo global del orienteering.
 

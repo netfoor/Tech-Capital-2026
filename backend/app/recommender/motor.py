@@ -16,7 +16,7 @@ from .explicacion import (
     motivo_parada,
     resumen,
 )
-from .geo import zona
+from .geo import haversine_m, zona
 from .horarios import hora_a_minutos
 from .ranking import IndiceTfidf, origen_de_referencia, puntuar
 from .secuencia import Contexto, Plan, construir_ruta, utilidad_con_diversidad
@@ -189,6 +189,18 @@ def recomendar(
         for p, motivo in sin_verificar:
             no_incluidos.append(NoIncluido(p.poi_id, motivo))
 
+    n_no_incluidos_total = len(no_incluidos)
+    if len(no_incluidos) > config.max_no_incluidos and origen is not None:
+        # Se conservan los más cercanos: son los que la persona reconocería.
+        def distancia(n: NoIncluido) -> tuple[float, str]:
+            p = por_id.get(n.poi_id)
+            d = haversine_m(origen, (p.lat, p.lon)) if p else float("inf")
+            return (d, n.poi_id)
+
+        no_incluidos = sorted(no_incluidos, key=distancia)[: config.max_no_incluidos]
+    else:
+        no_incluidos = no_incluidos[: config.max_no_incluidos]
+
     for p in plan.secuencia:
         datos_desconocidos.extend(datos_desconocidos_poi(p, r))
     datos_desconocidos.append(LIMITACION_TRAYECTOS)
@@ -202,6 +214,7 @@ def recomendar(
             "n_elegibles": len(clas.elegibles),
             "n_excluidos": len(clas.excluidos),
             "n_sin_verificar": len(clas.sin_verificar),
+            "n_no_incluidos_total": n_no_incluidos_total,
             "alternativos_detalle": detalle_alt,
             "puntajes": {
                 pid: {
