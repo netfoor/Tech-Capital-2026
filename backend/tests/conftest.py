@@ -28,11 +28,11 @@ ajustes.cache_clear()
 
 from app.db import SesionLocal, motor  # noqa: E402
 from app.main import app  # noqa: E402
+from app.models import Base  # noqa: E402
 from app.services import semilla  # noqa: E402
 from tests.utiles import DATOS_PRUEBA, crear_usuario  # noqa: E402
 
 RAIZ_BACKEND = Path(__file__).resolve().parents[1]
-ESQUEMAS = ("core", "private", "analytics", "audit")
 
 
 def _crear_base() -> None:
@@ -65,16 +65,10 @@ def base_de_pruebas():
 
 
 def _truncar() -> None:
+    # DELETE en orden de dependencias: con tablas pequeñas es mucho más rápido que TRUNCATE.
     with motor.begin() as conexion:
-        tablas = conexion.scalars(
-            text(
-                "SELECT quote_ident(schemaname) || '.' || quote_ident(tablename) "
-                "FROM pg_tables WHERE schemaname = ANY(:esquemas)"
-            ),
-            {"esquemas": list(ESQUEMAS)},
-        ).all()
-        if tablas:
-            conexion.execute(text(f"TRUNCATE {', '.join(tablas)} RESTART IDENTITY CASCADE"))
+        for tabla in reversed(Base.metadata.sorted_tables):
+            conexion.execute(tabla.delete())
 
 
 @pytest.fixture(autouse=True)

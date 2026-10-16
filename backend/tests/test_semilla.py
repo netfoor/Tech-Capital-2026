@@ -11,8 +11,8 @@ from app.models import (
     Destination,
     MetricDefinition,
     OpeningHours,
-    PointOfInterest,
     POIAccessibilityAttribute,
+    PointOfInterest,
 )
 from app.services import semilla
 from tests.utiles import DATOS_PRUEBA
