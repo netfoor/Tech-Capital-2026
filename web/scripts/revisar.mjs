@@ -58,13 +58,18 @@ for (const v of VISTAS) {
     const contexto = await navegador.newContext({ viewport: { width: v.ancho, height: v.alto } });
     const p = await contexto.newPage();
     const errores = [];
+    const externas = [];
     p.on('console', (m) => m.type() === 'error' && errores.push(m.text()));
     p.on('pageerror', (e) => errores.push(String(e)));
+    p.on('request', (r) => {
+      if (!r.url().startsWith(url) && !r.url().startsWith('data:')) externas.push(r.url());
+    });
     await p.goto(url + ruta);
     if (ruta === '/') await p.waitForSelector('#mapa-portada .punto', { timeout: 15000 });
     else await p.waitForSelector('#radar-tabla tbody tr', { timeout: 15000 });
     await p.waitForTimeout(1500);
     const donde = `${ruta} a ${v.ancho}px`;
+    externas.forEach((u) => falla(`${ruta} a ${v.ancho}px: pide un recurso externo: ${u}`));
     errores.forEach((e) => falla(`${donde}: error de consola: ${e}`));
 
     const medidas = await p.evaluate(() => {
