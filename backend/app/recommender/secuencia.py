@@ -11,9 +11,8 @@ Dos piezas:
 
 from __future__ import annotations
 
-import copy
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from .config import Config
 from .geo import distancia_caminable_m, haversine_m, minutos_caminando, zona
@@ -66,6 +65,11 @@ class _Estado:
     distancia_m: float = 0.0
     eventos: list[Evento] = field(default_factory=list)
     paradas: list[Parada] = field(default_factory=list)
+
+    def copiar(self) -> _Estado:
+        """Copia barata: los eventos son inmutables y las paradas no se modifican
+        durante la simulación, así que basta con copiar las listas."""
+        return replace(self, eventos=list(self.eventos), paradas=list(self.paradas))
 
 
 @dataclass
@@ -215,7 +219,7 @@ class _Simulador:
     def _tramo_con_banio(self, e: _Estado, poi: POICandidato) -> _Estado | None:
         if not self.ctx.requiere_banio:
             return e if self._tramo(e, poi) else None
-        prueba = copy.deepcopy(e)
+        prueba = e.copiar()
         if self._tramo(prueba, poi):
             return prueba
         if not self.ctx.banios:
@@ -230,7 +234,7 @@ class _Simulador:
             ),
         )[:5]
         for b in opciones:
-            prueba = copy.deepcopy(e)
+            prueba = e.copiar()
             motivo = (
                 "Baño accesible verificado en el camino: pediste baño accesible "
                 f"al menos cada {self.ctx.config.intervalo_banio_min} min."
@@ -295,32 +299,74 @@ def construir_ruta(
     ctx: Contexto,
     usar_2opt: bool = True,
 ) -> tuple[Plan, list[POICandidato]]:
-    """Inserción voraz por ``utilidad / (Δt + 1)^exp`` con 2-opt tras cada paso.
+    """Inserción voraz por ``utilidad / (Δt + 1)^exp`` y luego 2-opt; si el 2-opt
+    libera tiempo, se vuelve a intentar insertar (hasta que nada cambie).
 
-    Devuelve el plan y los candidatos que no cupieron en ninguna posición.
+    Devuelve el plan y los candidatos admisibles que no cupieron en ninguna posición.
     """
-    exp = ctx.config.pesos.exponente_tiempo
     plan = simular([], ctx)
     assert plan is not None
     restantes = list(candidatos)
-    descartados: list[POICandidato] = []
+    while True:
+        plan, restantes = _insercion_voraz(plan, restantes, utilidad, ctx)
+        if not usar_2opt:
+            break
+        mejorado = _dos_opt(plan, ctx)
+        if mejorado.total_min >= plan.total_min:
+            plan = mejorado
+            break
+        plan = mejorado
+    descartados = [c for c in restantes if utilidad(c, plan.secuencia) is not None]
+    return plan, descartados
+
+
+def _cota_desvio(plan: Plan, pos: int, c: POICandidato, ctx: Contexto) -> int:
+    """Minutos de caminata que agrega insertar ``c`` en ``pos`` (sin descansos ni
+    esperas). Es una cota inferior barata para descartar posiciones."""
+    seq = plan.secuencia
+    punto = (c.lat, c.lon)
+    if pos == 0:
+        previo = ctx.origen
+    else:
+        previo = (seq[pos - 1].lat, seq[pos - 1].lon)
+    siguiente = (seq[pos].lat, seq[pos].lon) if pos < len(seq) else None
+    m = 0
+    if previo is not None:
+        m += minutos_caminando(previo, punto, ctx.config)
+    if siguiente is not None:
+        m += minutos_caminando(punto, siguiente, ctx.config)
+        if previo is not None:
+            m -= minutos_caminando(previo, siguiente, ctx.config)
+    return max(m, 0)
+
+
+def _insercion_voraz(
+    plan: Plan,
+    restantes: list[POICandidato],
+    utilidad: Callable[[POICandidato, list[POICandidato]], float | None],
+    ctx: Contexto,
+) -> tuple[Plan, list[POICandidato]]:
+    exp = ctx.config.pesos.exponente_tiempo
+    restantes = list(restantes)
     while restantes:
         mejor: tuple[float, int, str] | None = None
         mejor_plan: Plan | None = None
         mejor_poi: POICandidato | None = None
-        sin_lugar: list[POICandidato] = []
         for c in restantes:
             u_bruta = utilidad(c, plan.secuencia)
             if u_bruta is None:  # no admisible por ahora (p. ej., tope por categoría)
                 continue
             u = max(u_bruta, 0.01)
-            factible = False
+            estancia = ctx.estancias[c.poi_id]
+            if plan.total_min + estancia > ctx.limite_min:
+                continue
             for pos in range(len(plan.secuencia) + 1):
+                if plan.total_min + estancia + _cota_desvio(plan, pos, c, ctx) > ctx.limite_min:
+                    continue
                 nueva = plan.secuencia[:pos] + [c] + plan.secuencia[pos:]
                 p = simular(nueva, ctx)
                 if p is None:
                     continue
-                factible = True
                 dt = max(p.total_min - plan.total_min, 0)
                 valor = u / (dt + 1) ** exp
                 clave = (valor, -dt, c.poi_id)
@@ -330,16 +376,11 @@ def construir_ruta(
                     or (clave[:2] == mejor[:2] and c.poi_id < mejor[2])
                 ):
                     mejor, mejor_plan, mejor_poi = clave, p, c
-            if not factible:
-                sin_lugar.append(c)
-        for c in sin_lugar:
-            restantes.remove(c)
-            descartados.append(c)
         if mejor_plan is None or mejor_poi is None:
             break
         restantes.remove(mejor_poi)
-        plan = _dos_opt(mejor_plan, ctx) if usar_2opt else mejor_plan
-    return plan, descartados
+        plan = mejor_plan
+    return plan, restantes
 
 
 def utilidad_con_diversidad(
