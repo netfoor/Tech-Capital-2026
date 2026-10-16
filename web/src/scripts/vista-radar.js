@@ -1,4 +1,4 @@
-// Vista Radar: mapa por brecha, tabla de los 12 y gráfica de cuadrantes con selección compartida.
+// Vista Radar: resumen por cuadrante, mapa por brecha y gráfica; la tabla completa va plegada al final.
 import { axisBottom, axisLeft, scaleLinear, select } from 'd3';
 import { ajustarEtiquetas, cargarBase, colocarEtiquetas, lienzoBase } from './mapa.js';
 import { CUADRANTES, ESCALAS, alSeleccionar, colorDe, formato, necesitaBorde, seleccionado, seleccionar } from './comun.js';
@@ -12,6 +12,9 @@ const COLUMNAS = [
   { id: 'ocupacion_12m', titulo: 'Ocupación 12 m', valor: (d) => d.ocupacion_12m, formato: formato.porcentaje },
   { id: 'llegadas_12m', titulo: 'Llegadas 12 m', valor: (d) => d.llegadas_12m, formato: formato.entero },
 ];
+
+// Orden de lectura: primero lo que pide acción.
+const ORDEN_CUADRANTES = ['atencion_sin_estancia', 'demanda_poco_visible', 'por_posicionar', 'consolidado'];
 
 const NOMBRES_COMPONENTES = { busqueda: 'búsqueda', video: 'video', panel: 'panel', asistentes: 'asistentes' };
 
@@ -28,16 +31,46 @@ export async function montarRadar(contenedor) {
   const disponibles = enlistar(radar.componentes_disponibles.map((c) => NOMBRES_COMPONENTES[c] ?? c));
 
   contenedor.innerHTML = `
-    <p class="nota-radar">
-      Índice de atención con ${disponibles}; periodo de referencia ${radar.periodo_ref.desde} a ${radar.periodo_ref.hasta}.
-      Brecha = atención − desempeño: positiva si el destino recibe más atención que desempeño.
-    </p>
+    <p class="nota-radar">Brecha = atención − desempeño. Toca un destino para abrir su ficha.</p>
+    <div class="resumen-cuadrantes" id="radar-resumen"></div>
     <div class="rejilla-radar">
       <figure class="mapa-brecha" id="radar-mapa" aria-label="Mapa de brecha por destino"></figure>
-      <div class="tabla-radar-caja"><table class="tabla-radar" id="radar-tabla"></table></div>
+      <figure class="cuadrantes" id="radar-cuadrantes" aria-label="Gráfica de cuadrantes"></figure>
     </div>
-    <figure class="cuadrantes" id="radar-cuadrantes" aria-label="Gráfica de cuadrantes"></figure>
+    <details class="detalle-radar">
+      <summary>Ver la tabla completa de los 12 destinos</summary>
+      <p class="nota-radar">
+        Índice de atención con ${disponibles}; periodo de referencia ${radar.periodo_ref.desde} a ${radar.periodo_ref.hasta}.
+        Los índices son percentiles entre los 12 Pueblos Mágicos (0 a 100).
+      </p>
+      <div class="tabla-radar-caja"><table class="tabla-radar" id="radar-tabla"></table></div>
+    </details>
   `;
+
+  // --- resumen por cuadrante ---
+  const resumen = select(contenedor.querySelector('#radar-resumen'));
+  ORDEN_CUADRANTES.forEach((id) => {
+    const miembros = destinos.filter((d) => d.cuadrante === id).sort((a, b) => b.brecha - a.brecha);
+    const q = CUADRANTES[id];
+    const tarjeta = resumen.append('section').attr('class', 'tarjeta-cuadrante').style('border-top-color', q.color);
+    const cabeza = tarjeta.append('header');
+    cabeza.append('h2').style('color', q.color).text(q.nombre);
+    cabeza.append('span').attr('class', 'cuenta').text(miembros.length === 1 ? '1 destino' : `${miembros.length} destinos`);
+    tarjeta.append('p').attr('class', 'accion').text(q.accion);
+    const lista = tarjeta.append('ul').attr('class', 'fichas-destino');
+    if (!miembros.length) lista.append('li').attr('class', 'sin-miembros').text('Ninguno por ahora');
+    lista
+      .selectAll('li.destino')
+      .data(miembros)
+      .join('li')
+      .attr('class', 'destino')
+      .append('button')
+      .attr('type', 'button')
+      .attr('data-destino', (d) => d.destino_id)
+      .attr('aria-label', (d) => `${d.nombre}, brecha ${formato.decimal(d.brecha)}`)
+      .on('click', (_, d) => seleccionar(d.destino_id, 'resumen'))
+      .html((d) => `${d.nombre} <span class="brecha">${d.brecha > 0 ? '+' : ''}${formato.decimal(d.brecha)}</span>`);
+  });
 
   // --- mapa por brecha ---
   const figura = contenedor.querySelector('#radar-mapa');

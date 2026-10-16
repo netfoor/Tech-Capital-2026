@@ -1,0 +1,14 @@
+destino_id,consulta_id,n_videos,vistas_total,vistas_mediana,comentarios_total,antiguedad_dias_mediana,fecha_consulta
+atlixco,e-atlixco,10,1368989,62249.5000,1667,930.0000,2026-10-16
+chignahuapan,e-chignahuapan,10,1777069,78771.0000,1426,686.0000,2026-10-16
+cholula,e-cholula,10,1511357,102571.5000,795,717.5000,2026-10-16
+cuetzalan,e-cuetzalan,10,2929580,237725.0000,1431,776.0000,2026-10-16
+huauchinango,e-huauchinango,10,847576,14980.0000,353,884.0000,2026-10-16
+huejotzingo,e-huejotzingo,10,151127,6918.5000,246,1046.5000,2026-10-16
+pahuatlan,e-pahuatlan,10,394664,18223.5000,242,1213.0000,2026-10-16
+tetela-de-ocampo,e-tetela-de-ocampo,10,288815,15733.0000,233,784.0000,2026-10-16
+teziutlan,e-teziutlan,10,944905,4896.0000,686,504.0000,2026-10-16
+tlatlauquitepec,e-tlatlauquitepec,10,1016857,46820.5000,762,642.5000,2026-10-16
+xicotepec,e-xicotepec,10,974333,47893.0000,657,953.0000,2026-10-16
+zacatlan,e-zacatlan,10,2252427,80846.0000,801,829.0000,2026-10-16
+puebla,e-puebla,6,1123199,118943.0000,375,683.5000,2026-10-16
