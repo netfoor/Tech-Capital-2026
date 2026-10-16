@@ -11,7 +11,9 @@
 
 - [x] T006-05 `radar asistentes plan` y `radar asistentes correr`: reanudable, con tope, semilla y JSONL. Verificación: corrida de humo con 2 prompts × 2 proveedores × 1 repetición y su JSONL.
 - [x] T006-06 Corrida en es y en (13 prompts × 2 × 10 = 260). Depende de T006-05. Verificación: 260 líneas válidas en lo crudo.
-- [~] T006-07 Corrida en fr, ko y zh (9 prompts × 2 × 10 = 180). Depende de T006-02 y T006-05. Verificación: 180 líneas.
+- [x] T006-07 Corrida en fr, ko y zh (9 prompts × 2 × 10 = 180). Depende de T006-02 y T006-05. Verificación: 180 líneas.
+
+> 2026-10-16 · T006-07 completa: OpenAI hizo sus 60 corridas pendientes en fr, ko y zh (440 líneas en total). Tokens de OpenAI: 1 492 061 de entrada y 227 178 de salida en este lote.
 
 ## Procesamiento
 
