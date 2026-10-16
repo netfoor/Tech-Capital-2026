@@ -121,3 +121,17 @@ def test_terminos_no_verificados_no_se_usan(tmp_path):
 def test_catalogo_real_de_terminos_carga():
     terminos = catalogo.cargar_terminos_idiomas()
     assert all(isinstance(v, tuple) for v in terminos.values())
+
+
+def test_terminos_idiomas_cubren_13_destinos_en_3_idiomas_con_origen():
+    import csv
+
+    from radar import config
+
+    ruta = config.ruta(config.REFERENCIA, "terminos_idiomas.csv")
+    filas = list(csv.DictReader(ruta.open(encoding="utf-8")))
+    assert len(filas) == 39
+    assert {f["idioma"] for f in filas} == {"fr", "ko", "zh"}
+    assert {f["destino_id"] for f in filas} <= {d.destino_id for d in DESTINOS}
+    assert all(f["origen"].strip() and f["termino"].strip() for f in filas)
+    assert all(f["verificado"] in {"true", "false"} for f in filas)
