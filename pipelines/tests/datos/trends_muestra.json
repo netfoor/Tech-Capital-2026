@@ -1,0 +1,215 @@
+[
+ {
+  "consulta_id": "trends-MX-A-20261015",
+  "lote": "A",
+  "terminos": [
+   "Cholula",
+   "Zacatlan",
+   "Chignahuapan",
+   "Atlixco",
+   "Cuetzalan"
+  ],
+  "destinos": [
+   "cholula",
+   "zacatlan",
+   "chignahuapan",
+   "atlixco",
+   "cuetzalan"
+  ],
+  "geo": "MX",
+  "timeframe": "2025-01-01 2025-06-30",
+  "fecha_consulta": "2026-10-15",
+  "filas": [
+   {
+    "fecha": "2025-01-01",
+    "Cholula": 100,
+    "Zacatlan": 20,
+    "Chignahuapan": 10,
+    "Atlixco": 30,
+    "Cuetzalan": 10
+   },
+   {
+    "fecha": "2025-02-01",
+    "Cholula": 90,
+    "Zacatlan": 30,
+    "Chignahuapan": 10,
+    "Atlixco": 20,
+    "Cuetzalan": 20
+   },
+   {
+    "fecha": "2025-03-01",
+    "Cholula": 80,
+    "Zacatlan": 40,
+    "Chignahuapan": 20,
+    "Atlixco": 30,
+    "Cuetzalan": 30
+   },
+   {
+    "fecha": "2025-04-01",
+    "Cholula": 100,
+    "Zacatlan": 20,
+    "Chignahuapan": 10,
+    "Atlixco": 20,
+    "Cuetzalan": 40
+   },
+   {
+    "fecha": "2025-05-01",
+    "Cholula": 90,
+    "Zacatlan": 30,
+    "Chignahuapan": 10,
+    "Atlixco": 30,
+    "Cuetzalan": 30
+   },
+   {
+    "fecha": "2025-06-01",
+    "Cholula": 80,
+    "Zacatlan": 40,
+    "Chignahuapan": 20,
+    "Atlixco": 20,
+    "Cuetzalan": 20
+   }
+  ]
+ },
+ {
+  "consulta_id": "trends-MX-B-20261015",
+  "lote": "B",
+  "terminos": [
+   "Cholula",
+   "Huauchinango",
+   "Teziutlan",
+   "Xicotepec",
+   "Huejotzingo"
+  ],
+  "destinos": [
+   "cholula",
+   "huauchinango",
+   "teziutlan",
+   "xicotepec",
+   "huejotzingo"
+  ],
+  "geo": "MX",
+  "timeframe": "2025-01-01 2025-06-30",
+  "fecha_consulta": "2026-10-15",
+  "filas": [
+   {
+    "fecha": "2025-01-01",
+    "Cholula": 100,
+    "Huauchinango": 10,
+    "Teziutlan": 8,
+    "Xicotepec": 6,
+    "Huejotzingo": 4
+   },
+   {
+    "fecha": "2025-02-01",
+    "Cholula": 90,
+    "Huauchinango": 12,
+    "Teziutlan": 8,
+    "Xicotepec": 6,
+    "Huejotzingo": 6
+   },
+   {
+    "fecha": "2025-03-01",
+    "Cholula": 80,
+    "Huauchinango": 14,
+    "Teziutlan": 10,
+    "Xicotepec": 8,
+    "Huejotzingo": 4
+   },
+   {
+    "fecha": "2025-04-01",
+    "Cholula": 100,
+    "Huauchinango": 10,
+    "Teziutlan": 8,
+    "Xicotepec": 6,
+    "Huejotzingo": 6
+   },
+   {
+    "fecha": "2025-05-01",
+    "Cholula": 90,
+    "Huauchinango": 12,
+    "Teziutlan": 8,
+    "Xicotepec": 6,
+    "Huejotzingo": 4
+   },
+   {
+    "fecha": "2025-06-01",
+    "Cholula": 80,
+    "Huauchinango": 14,
+    "Teziutlan": 10,
+    "Xicotepec": 8,
+    "Huejotzingo": 6
+   }
+  ]
+ },
+ {
+  "consulta_id": "trends-MX-C-20261015",
+  "lote": "C",
+  "terminos": [
+   "Cholula",
+   "Cuetzalan",
+   "Tlatlauquitepec",
+   "Tetela De Ocampo",
+   "Pahuatlan"
+  ],
+  "destinos": [
+   "cholula",
+   "cuetzalan",
+   "tlatlauquitepec",
+   "tetela-de-ocampo",
+   "pahuatlan"
+  ],
+  "geo": "MX",
+  "timeframe": "2025-01-01 2025-06-30",
+  "fecha_consulta": "2026-10-15",
+  "filas": [
+   {
+    "fecha": "2025-01-01",
+    "Cholula": 0,
+    "Cuetzalan": 20,
+    "Tlatlauquitepec": 4,
+    "Tetela De Ocampo": 4,
+    "Pahuatlan": 4
+   },
+   {
+    "fecha": "2025-02-01",
+    "Cholula": 0,
+    "Cuetzalan": 40,
+    "Tlatlauquitepec": 4,
+    "Tetela De Ocampo": 8,
+    "Pahuatlan": 4
+   },
+   {
+    "fecha": "2025-03-01",
+    "Cholula": 0,
+    "Cuetzalan": 60,
+    "Tlatlauquitepec": 8,
+    "Tetela De Ocampo": 4,
+    "Pahuatlan": 8
+   },
+   {
+    "fecha": "2025-04-01",
+    "Cholula": 0,
+    "Cuetzalan": 80,
+    "Tlatlauquitepec": 4,
+    "Tetela De Ocampo": 8,
+    "Pahuatlan": 8
+   },
+   {
+    "fecha": "2025-05-01",
+    "Cholula": 0,
+    "Cuetzalan": 60,
+    "Tlatlauquitepec": 4,
+    "Tetela De Ocampo": 4,
+    "Pahuatlan": 4
+   },
+   {
+    "fecha": "2025-06-01",
+    "Cholula": 0,
+    "Cuetzalan": 40,
+    "Tlatlauquitepec": 8,
+    "Tetela De Ocampo": 8,
+    "Pahuatlan": 4
+   }
+  ]
+ }
+]

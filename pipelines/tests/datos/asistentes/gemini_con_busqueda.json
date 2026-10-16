@@ -1,0 +1,40 @@
+{
+ "model_version": "gemini-3.8-flash",
+ "candidates": [
+  {
+   "content": {
+    "role": "model",
+    "parts": [
+     {
+      "text": "Puedes visitar Chignahuapan y Huauchinango."
+     }
+    ]
+   },
+   "grounding_metadata": {
+    "web_search_queries": [
+     "pueblos magicos sierra norte puebla"
+    ],
+    "grounding_chunks": [
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AAA",
+       "title": "tripadvisor.com.mx",
+       "domain": "tripadvisor.com.mx"
+      }
+     },
+     {
+      "web": {
+       "uri": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/BBB",
+       "title": "mexicodesconocido.com.mx"
+      }
+     }
+    ]
+   }
+  }
+ ],
+ "usage_metadata": {
+  "prompt_token_count": 12,
+  "candidates_token_count": 40,
+  "total_token_count": 300
+ }
+}

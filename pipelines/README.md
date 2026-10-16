@@ -22,6 +22,8 @@ uv run ruff check .              # estilo
 | `radar corredor descargar` | Con red: consulta Overpass, el SIC y el DENUE; guarda crudo, extractos y manifiestos (`--fuente osm`, `sic` o `denue`) | 012 |
 | `radar corredor integrar` | Sin red: integra OSM, SIC y DENUE en `data/curado/poi.csv`, `poi_accesibilidad.csv`, `corredores.csv` y `oferta_denue_municipio.csv` | 012 |
 | `radar corredor reporte` | Sin red: escribe `reports/calidad_datos.md` y las cifras de `docs/corredor_piloto.md` | 012 |
+| `radar senales trends [--geo MX] [--desde 2017-01-01] [--pausa 60] [--desde-crudo]` | Consulta Google Trends desde una red residencial (requiere `uv sync --extra senales`) y escribe `interes_busqueda_mensual.csv` | 003 |
+| `radar radar calcular` | Escribe `data/curado/radar_destinos.csv` con los componentes disponibles | 008 |
 
 Cada spec que agrega una etapa nueva añade su comando en esta tabla.
 
