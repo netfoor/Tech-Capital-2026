@@ -1,0 +1,7 @@
+# Los saltos de línea se normalizan a LF en el repositorio.
+* text=auto eol=lf
+
+# Fuentes, referencia y datos curados se conservan byte a byte: su SHA-256 está registrada.
+data/** -text
+*.pdf binary
+*.png binary

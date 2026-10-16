@@ -6,39 +6,36 @@ Este documento es para cualquier persona o agente que tome una tarea de este rep
 
 Lee en este orden:
 
-1. [`README.md`](README.md)
+1. [`README.md`](README.md) y [`STATUS.md`](STATUS.md)
 2. [`specs/constitucion.md`](specs/constitucion.md)
-3. [`docs/plan-de-ejecucion.md`](docs/plan-de-ejecucion.md): ruta crítica, carriles y reglas de coordinación
-4. [`docs/dominio/lenguaje-ubicuo.md`](docs/dominio/lenguaje-ubicuo.md) y [`docs/dominio/mapa-de-contextos.md`](docs/dominio/mapa-de-contextos.md)
+3. [`docs/producto/contexto-maestro.txt`](docs/producto/contexto-maestro.txt): el producto completo; las secciones se citan como §NN
+4. [`docs/plan-de-ejecucion.md`](docs/plan-de-ejecucion.md): specs, carriles y ruta crítica
 5. La carpeta de la spec en la que vas a trabajar: `spec.md`, `plan.md` y `tasks.md`
 
 Según la tarea, consulta también:
 
 | Si la tarea toca… | Lee |
 |---|---|
-| Columnas de una tabla | [`docs/dominio/modelo-de-datos.md`](docs/dominio/modelo-de-datos.md) |
-| Los JSON del sitio | [`contracts/`](contracts/) |
-| Cualquier cosa visual | [`docs/diseno.md`](docs/diseno.md) |
-| Un componente con IA | [`docs/ia-responsable.md`](docs/ia-responsable.md) |
-| Un requisito de la convocatoria | [`docs/bases/trazabilidad.md`](docs/bases/trazabilidad.md) |
+| Un requisito de la convocatoria | [`docs/requirements.md`](docs/requirements.md) |
+| Un entregable | [`docs/ENTREGABLES.md`](docs/ENTREGABLES.md) |
+| Datos personales o ubicación | §07 y §14 del contexto maestro |
+| Accesibilidad | §06 del contexto maestro |
+| Un componente con IA | §10 del contexto maestro y `docs/ia/` |
 | Una decisión ya tomada | [`docs/decisiones/`](docs/decisiones/) |
 
 ## 2. Elegir una tarea
 
 - Las tareas están en `specs/NNN-*/tasks.md`. Estados: `[ ]` libre, `[~]` tomada, `[x]` hecha.
-- Toma la primera tarea `[ ]` de la ruta crítica cuyas dependencias estén en `[x]`. P0 va antes que P1, y P1 antes que P2 (constitución, VIII).
-- `[P]` significa que la tarea se puede hacer en paralelo con otras de la misma spec.
-- **Para tomarla:** cambia `[ ]` por `[~]`, haz commit (`chore: toma T006-05`) y push de inmediato. Si al hacer pull ya estaba tomada, elige otra.
+- P0 va antes que P1, y P1 antes que P2 (constitución, VIII).
+- Si la spec no existe todavía, la primera commit de tu rama la crea con `spec.md`, `plan.md` y `tasks.md`, a partir del contexto maestro.
 
 ## 3. Hacer la tarea
 
-1. Implementa lo que pide la tarea y su spec, nada más. Lo que veas que falta se anota en la spec; no se hace en la misma tarea.
-2. Si la spec es ambigua o ya no corresponde a la realidad (una API cambió, un dato no existe):
-   - elige la opción más conservadora que respete la constitución;
-   - anótala con fecha en «Preguntas abiertas» de la spec;
-   - si cambia una decisión de arquitectura, agrega un ADR en `docs/decisiones/` con el siguiente número y el mismo formato.
-3. Si cambian las columnas de una tabla o un contrato, el orden es: primero `docs/dominio/modelo-de-datos.md` o `contracts/`, después el código. El cuerpo del commit dice `contrato:` y qué cambió.
-4. La tarea está hecha cuando pasa su «Verificación» y `make verificar`. Entonces se marca `[x]`, se actualiza el «Estado» de la spec si cambió y se hace commit con el identificador de la tarea.
+1. Crea una rama desde `main` actualizado: `feat/NNN-nombre-corto`.
+2. Implementa lo que pide la spec, nada más. Lo que veas que falta se anota en la spec.
+3. Si la spec es ambigua, elige la opción más conservadora que respete la constitución y anótala con fecha en «Preguntas abiertas». Si cambia una decisión de arquitectura, agrega un ADR en `docs/decisiones/`.
+4. La tarea está hecha cuando pasa su verificación y `make verificar`. Se marca `[x]` y se actualiza `STATUS.md`.
+5. Abre un pull request hacia `main` con: qué cambia, cómo se verificó y qué queda pendiente. Si cambia el modelo de datos o un endpoint, la descripción lo dice con `contrato:`.
 
 ## 4. Comandos
 
@@ -46,75 +43,55 @@ Según la tarea, consulta también:
 |---|---|
 | Lista de comandos | `make ayuda` |
 | Instalar dependencias | `make instalar` |
-| Regenerar `data/curado/` (etapas sin red) | `make datos` |
+| Base de datos y migraciones | `make db` |
+| API y PWA en local | `make dev` |
+| Regenerar datos curados | `make datos` |
 | Verificación completa | `make verificar` |
-| Paquete de datos del sitio | `make exportar` |
-| Sitio en local | `make dev` |
-| Configurar el acceso con Cognito en `web/.env` | `make web-config` |
-| Compilar el sitio | `make web` |
-| Revisar y aplicar la infraestructura | `make infra-plan` y `make infra-aplicar` |
-| Desplegar | `make desplegar` |
-
-Python vive en `pipelines/` y se corre con uv: `uv run radar --help`, `uv run pytest`, `uv run ruff check .` y `uv run ruff format --check .`. Los extras se instalan con `uv sync --extra senales` o `uv sync --extra asistentes`.
-
-Las etapas con red o con costo (Trends, YouTube y asistentes) no forman parte de `make datos`. Se corren a propósito con su comando, respetan sus topes y guardan lo crudo con fecha.
+| Demo con datos semilla | `make demo` |
 
 ## 5. Código
 
-**Python (`pipelines/`)**
-- Un paquete por contexto: `catalogo`, `indicadores`, `senales`, `panel`, `asistentes`, `comentarios`, `radar` y `exportar`. Un contexto no importa a otro; lo compartido va en `radar/comun/`. La prueba de arquitectura (T008-01) lo revisa.
-- Los contextos se comunican con archivos en `data/curado/` (ADR-0003).
-- Las rutas se arman con `radar.config.ruta()` y las llaves se leen con `radar.config.cargar_entorno()`.
-- Módulos, funciones y columnas se nombran en español y con el lenguaje ubicuo.
-- Cada comando nuevo se registra en `radar/cli.py`, con ayuda en español, y en la tabla de `pipelines/README.md`.
-- Cada tabla curada nueva tiene sus columnas en `modelo-de-datos.md`, su `fuente_id` o identificador de corrida y una prueba en `tests/`.
-- Resultados deterministas: semilla fija, orden estable de filas y columnas, y `float_format="%.4f"` al escribir CSV.
-- Las pruebas no llaman a servicios externos; usan respuestas guardadas en `tests/datos/`.
+**Backend (`backend/`)**: Python 3.12 con uv, FastAPI, Pydantic v2, SQLAlchemy 2, GeoAlchemy2 y Alembic.
+- Módulos en `app/{api,models,schemas,services,pipeline,recommender,privacy}`.
+- Esquemas de base: `core` (catálogo), `private` (datos personales y trayectorias), `analytics` (agregados protegidos) y `audit`.
+- Cada cambio de modelo lleva su migración de Alembic.
+- Cada endpoint tiene prueba. Las pruebas no llaman a servicios externos.
 
-**Sitio (`web/`)**
-- Astro estático, Tailwind 4 con los tokens de `docs/diseno.md`, d3 y anime.js. Sin CDN, sin fuentes descargadas y sin llamadas a servicios externos, salvo Cognito para el inicio de sesión.
-- Dos superficies: la página pública (`/`) y la plataforma (`/plataforma/`, ADR-0009). Sin `web/.env` la plataforma corre en modo local, sin cuenta; así se desarrolla antes de tener la infraestructura.
-- Todo dato visible sale de `web/public/datos/`. En los `.astro` no se escriben cifras.
-- Antes de dar por terminada una sección, se revisa la lista de `docs/diseno.md` §12.
+**Datos (`pipelines/`)**: Python con uv. Las rutas se arman con `radar.config.ruta()`. Resultados deterministas: semilla fija, orden estable y `float_format="%.4f"` en CSV. Cada fuente se registra en `data/catalog/data_catalog.csv`.
 
-**Infraestructura (`infra/`)**
-- Terraform con el perfil AWS `Fortino-IAM-Admin`. Antes de cada commit: `terraform fmt` y `terraform validate`.
-- `terraform apply` lo corre solo quien opera la infraestructura, después de revisar el `plan`. El estado es local y no se versiona.
+**Frontend (`frontend/`)**: Vite, React y TypeScript. La lista es la vista accesible principal y el mapa es su equivalente. Objetivo WCAG 2.2 AA. Atribución «© OpenStreetMap contributors» visible en cada mapa.
+
+**Nombres**: módulos, funciones y columnas del dominio en español. Las entidades de §13.2 conservan su nombre en inglés en el código y en la API, porque así las fija el contexto maestro.
 
 ## 6. Datos
 
 | Carpeta | ¿Se versiona? | Quién la escribe |
 |---|---|---|
-| `data/fuentes/` | Sí | Personas, al registrar una fuente: archivo original más su fila en `fuentes.csv` con URL, fecha y SHA-256. Un original nunca se edita |
-| `data/referencia/` | Sí | Personas, con revisión. Cada fila dice su origen |
+| `data/fuentes/` | Sí | Personas: archivo original y su fila con URL, fecha y SHA-256. Un original nunca se edita |
+| `data/referencia/` | Sí | Personas, con revisión |
 | `data/curado/` | Sí | Solo el código |
-| `data/crudo/` | No | Las etapas con red. Se conserva en la computadora que lo generó |
-| `data/privado/` | No | Panel y comentarios, que tienen datos personales |
-| `web/public/datos/` y `web/public/descargas/` | Sí | Solo `make exportar`. Se versionan para que cualquier clon pueda compilar y desplegar |
+| `data/synthetic/` | Sí | Solo el código. Cada fila lleva `is_synthetic=true` |
+| `data/crudo/` y `data/privado/` | No | Etapas con red y datos personales |
 
-- Fuera de `data/privado/` no hay nombres, usuarios, correos, teléfonos ni texto de comentarios.
-- Las llaves solo van en `.env` (la plantilla es `.env.example`). `make verificar` busca patrones de llaves en los archivos del repositorio.
+- Todo dato sintético se muestra en la interfaz con la etiqueta «DATOS SINTÉTICOS DE DEMOSTRACIÓN».
+- Las llaves solo van en `.env`. `make verificar` busca patrones de llaves.
 
-## 7. Commits
+## 7. Commits y pull requests
 
-- Mensaje breve en español: `tipo: qué cambió (T00N-NN)`. Tipos: `feat`, `fix`, `docs`, `test`, `refactor`, `chore` y `build`.
-  - `feat: interés de búsqueda mensual por destino (T003-04)`
-  - `chore: toma T006-05`
-  - `docs: aclara el corte de los cuadrantes`
-- Una tarea, un commit, cuando se pueda.
+- Mensaje breve en español: `tipo: qué cambió (NNN)`. Tipos: `feat`, `fix`, `docs`, `test`, `refactor`, `chore` y `build`.
+- Commits pequeños. Nada se sube directo a `main`: todo entra por pull request.
 - El mensaje no lleva líneas de coautoría ni firmas generadas por herramientas.
-- `git pull --rebase` antes de cada push. En `main` no se reescribe la historia ni se usa `--force`.
 
 ## 8. Lo que no se hace
 
-- Acceder a TikTok u otras plataformas con automatización o con cuentas ajenas (ADR-0004).
-- Escribir cifras a mano en el sitio o en los entregables.
-- Publicar algo que no pasó `make verificar`.
+- Rastreo oculto, ubicación pública en vivo o un tablero con personas identificables.
+- Scraping de Instagram, TikTok u otras plataformas en contra de sus términos.
+- Inventar datos, cifras, resultados de IA, entrevistas o acuerdos. Lo no verificado se marca «NO VERIFICADO».
+- Escribir cifras a mano en la interfaz o en los entregables.
 - Subir llaves, `data/crudo/` o `data/privado/`.
-- Mencionar en el sitio o en los documentos las herramientas con que se construyó el proyecto (constitución, X).
-- Abrir una tarea P1 mientras haya una P0 libre y desbloqueada.
+- Mencionar en la interfaz o en los entregables las herramientas con que se construyó el proyecto (constitución, X).
 
 ## 9. Al cerrar una sesión de trabajo
 
 - Cada tarea tomada queda en `[x]`, o vuelve a `[ ]` con una nota en su spec sobre lo que falta.
-- Todo queda con push.
+- `STATUS.md` al día y el pull request abierto.

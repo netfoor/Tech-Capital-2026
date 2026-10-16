@@ -17,11 +17,9 @@ __pycache__/
 pipelines/build/
 pipelines/dist/
 
-# Sitio
-web/node_modules/
-web/dist/
-web/.astro/
-web/capturas/
+# Frontend
+frontend/node_modules/
+frontend/dist/
 
 # Terraform: el estado es local durante el hackathon (FR-010-06)
 infra/.terraform/
