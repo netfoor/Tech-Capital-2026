@@ -15,11 +15,17 @@ import { VISTAS } from '../../vistas';
       }
     </nav>
     <div class="flex items-center gap-4">
+      <span id="verificacion-barra" class="verificacion text-[14.5px] text-gris" hidden></span>
       <span id="sesion-correo" class="correo text-[14.5px] text-gris"></span>
       <button id="salir" type="button" class="min-h-11 font-bold text-tinta">Salir</button>
     </div>
   </div>
 </header>
+
+<script>
+  import { montarVerificacion } from '../../scripts/datos.js';
+  montarVerificacion(document.getElementById('verificacion-barra'), { compacto: true });
+</script>
 
 <style>
   .vista {
@@ -32,9 +38,15 @@ import { VISTAS } from '../../vistas';
     border-bottom-color: var(--color-tc-azul);
   }
 
+  .verificacion[data-estado='falla'] {
+    color: #b42318;
+    font-weight: 700;
+  }
+
   @media (max-width: 760px) {
     .nombre,
-    .correo {
+    .correo,
+    .verificacion[data-estado='ok'] {
       display: none;
     }
   }

@@ -5,7 +5,7 @@
 - [x] T009-01 Andamiaje de Astro con Tailwind 4, tokens de `docs/diseno.md`, layout, encabezado con riel y secciones vacías. Verificación: `npm run build` en `web/`.
 - [x] T009-15 Página pública de 6 secciones y plataforma con barra, cuatro vistas vacías, rutas por fragmento, panel de ficha y acceso con Cognito Hosted UI (PKCE) o modo local (ADR-0009). Verificación: `npm run build`; en modo local `/plataforma/#fichas` muestra la vista Fichas.
 - [x] T009-02 `radar exportar` con `destinos.json`, `geo/*`, `radar.json` parcial (desempeño), descargas y manifiesto; validación contra `contracts/`. Verificación: `uv run radar exportar --validar` pasa, se agrega a `make verificar` y `web/public/datos/manifiesto.json` existe.
-- [ ] T009-03 `datos.js` con verificación SHA-256 y el bloque de verificación en el pie de la página pública y en la barra de la plataforma. Verificación: alterar un byte de un JSON local muestra el aviso y oculta el bloque.
+- [x] T009-03 `datos.js` con verificación SHA-256 y el bloque de verificación en el pie de la página pública y en la barra de la plataforma. Verificación: alterar un byte de un JSON local muestra el aviso y oculta el bloque.
 - [ ] T009-04 Mapa de portada (proyección INEGI, puntos con relleno de ocupación) y su animación única de carga. Verificación: capturas a 1440 y 390.
 - [ ] T009-05 **Primer despliegue** con desempeño, mapa y acceso con Cognito. Depende de T010-04 y T010-08. Verificación: URL pública con HTTPS; `/plataforma/` pide iniciar sesión y entra con una cuenta de prueba.
 
