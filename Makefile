@@ -16,7 +16,7 @@ ayuda: ## Muestra esta lista
 
 instalar: ## Instala las dependencias de backend, pipelines y frontend
 	cd backend && uv sync
-	cd pipelines && uv sync
+	cd pipelines && uv sync --all-extras
 	cd frontend && npm ci
 
 db: ## Levanta PostGIS en Docker y aplica las migraciones
@@ -40,6 +40,9 @@ datos: ## Regenera data/curado/ con las etapas que no usan red
 	$(PIPE) radar fuentes
 	$(PIPE) radar catalogo
 	$(PIPE) radar indicadores
+	$(PIPE) radar corredor integrar
+	$(PIPE) radar corredor reporte
+	$(PIPE) radar radar calcular
 
 verificar: secretos ## Llaves, pruebas, estilo y compilación
 	$(BACK) pytest -q

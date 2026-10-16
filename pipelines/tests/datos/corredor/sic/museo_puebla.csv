@@ -1,0 +1,4 @@
+museo_id,museo_nombre,museo_tematica_n1,museo_fecha_fundacion,museo_adscripcion,estado_id,nom_ent,municipio_id,nom_mun,localidad_id,nom_loc,museo_calle_numero,museo_colonia,museo_cp,pagina_web,pagina_web2,pagina_web3,gmaps_longitud,gmaps_latitud,museo_salas_exhibicion_c,museo_salas_exhibicion_tmp_c,link_sic,fecha_mod
+9001,Museo Amparo,Arte,1991-02-28,Fundación Amparo,21,Puebla,114,Puebla,1,Heroica Puebla de Zaragoza,2 Sur 708,Centro,72000,,,,-98.1960,19.04105,10,1,http://sic.gob.mx/ficha.php?table=museo&table_id=9001,2026-01-01 00:00:00-06
+9002,Museo Sin Coordenadas,Historia,1990-01-01,Municipal,21,Puebla,114,Puebla,1,Heroica Puebla de Zaragoza,,,,,,,0,0,1,0,http://sic.gob.mx/ficha.php?table=museo&table_id=9002,2026-01-01 00:00:00-06
+9003,Museo del Ferrocarril,Historia,1988-01-01,INAH,21,Puebla,114,Puebla,1,Heroica Puebla de Zaragoza,11 Norte 1005,Centro,72000,,,,-98.2050,19.0500,4,0,http://sic.gob.mx/ficha.php?table=museo&table_id=9003,2026-01-01 00:00:00-06

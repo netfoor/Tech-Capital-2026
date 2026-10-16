@@ -53,3 +53,5 @@ Que cualquier dato de cualquier fuente se pueda asociar sin ambigüedad a un des
 
 - ¿Conviene separar Cholula en San Pedro y San Andrés en el radar? Por ahora no: el Pueblo Mágico es «Cholula» y el observatorio publica ese agregado.
 - Las zonas son una agrupación de trabajo. Si la Secretaría tiene una regionalización turística oficial, se adopta.
+- 2026-10-16 · T001-04: Wikipedia tiene artículo en fr, ko o zh solo para Huauchinango, Huejotzingo, Zacatlán y la capital, y transliteración al chino para Atlixco, Cholula y la capital. Los demás destinos quedan con el nombre oficial y `verificado=false`, así que `detectar` no los usa para ko y zh. Antes de la corrida multilingüe (spec 006) una persona con dominio de ko y zh debe revisarlos con una agencia o guía de viajes del país; los que confirme se pasan a `verificado=true`.
+- 2026-10-16 · T001-06 sigue pendiente: gob.mx no responde desde el entorno de trabajo. Hay que anotar en `fuentes.csv` la URL del catálogo federal de Pueblos Mágicos.

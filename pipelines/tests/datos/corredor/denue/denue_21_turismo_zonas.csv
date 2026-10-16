@@ -1,0 +1,6 @@
+id,nom_estab,codigo_act,nombre_act,per_ocu,tipo_vial,nom_vial,numero_ext,nomb_asent,cod_postal,cve_ent,cve_mun,municipio,cve_loc,localidad,latitud,longitud,fecha_alta
+5001,MUSEO AMPARO,712111,Museos del sector privado,11 a 30 personas,CALLE,2 SUR,708,CENTRO,72000,21,114,Puebla,0001,Heroica Puebla de Zaragoza,19.04085,-98.19605,2010-07
+5002,HOTEL COLONIAL DE PUEBLA,721111,Hoteles con otros servicios integrados,11 a 30 personas,CALLE,4 SUR,105,CENTRO,72000,21,114,Puebla,0001,Heroica Puebla de Zaragoza,19.0445,-98.1970,2010-07
+5003,FONDA DE SANTA CLARA,722511,Restaurantes a la carta,6 a 10 personas,CALLE,3 PONIENTE,307,CENTRO,72000,21,114,Puebla,0001,Heroica Puebla de Zaragoza,19.04405,-98.19755,2010-07
+5004,TAQUERIA LOS PRIMOS,722514,Restaurantes de tacos y tortas,0 a 5 personas,CALLE,5 PONIENTE,10,CENTRO,72000,21,114,Puebla,0001,Heroica Puebla de Zaragoza,19.0420,-98.2000,2015-01
+5005,VIAJES PUEBLA,561510,Agencias de viajes,0 a 5 personas,CALLE,2 NORTE,1,CENTRO,72000,21,114,Puebla,0001,Heroica Puebla de Zaragoza,19.0441,-98.1976,2015-01
