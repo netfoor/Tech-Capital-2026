@@ -135,3 +135,9 @@ def test_terminos_idiomas_cubren_13_destinos_en_3_idiomas_con_origen():
     assert {f["destino_id"] for f in filas} <= {d.destino_id for d in DESTINOS}
     assert all(f["origen"].strip() and f["termino"].strip() for f in filas)
     assert all(f["verificado"] in {"true", "false"} for f in filas)
+
+
+def test_nombre_ambiguo_de_puebla_no_cuenta_como_capital_con_el_catalogo_real():
+    assert catalogo.detectar("Puebla es un estado bonito", "fr", DESTINOS) == []
+    assert catalogo.detectar("普埃布拉是一个州", "zh", DESTINOS) == []
+    assert catalogo.detectar("푸에블라 Puebla", "ko", DESTINOS) == []
