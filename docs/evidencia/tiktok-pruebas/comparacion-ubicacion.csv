@@ -1,0 +1,13 @@
+destino_id,resultados_puebla,resultados_canada,autores_en_comun,jaccard_autores
+cuetzalan,11,11,6,0.4
+cholula,12,12,7,0.41
+teziutlan,10,12,3,0.17
+atlixco,11,12,8,0.57
+zacatlan,9,11,5,0.45
+pahuatlan,10,12,6,0.4
+huauchinango,11,12,8,0.62
+xicotepec,12,12,5,0.26
+chignahuapan,10,12,8,0.62
+tetela-de-ocampo,8,11,6,0.67
+tlatlauquitepec,11,12,7,0.47
+huejotzingo,12,12,7,0.44

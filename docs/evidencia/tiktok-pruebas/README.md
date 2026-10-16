@@ -15,3 +15,12 @@
 - **Cambiar de estado:** TikTok decide la ubicación por dirección IP, no por la configuración del navegador, así que simular otro estado desde el navegador no cambia lo que se ve. Hacerlo de verdad requiere una conexión desde ese estado (por ejemplo, una VPN con salida allí), que no se usó. Queda como siguiente paso, y se anota como posibilidad.
 
 **Límites.** Una búsqueda por destino, un solo día, una sola cuenta, resultados ordenados por TikTok (mezclan relevancia y popularidad), 11 o 12 resultados por búsqueda. Las cifras son descriptivas.
+
+## Comparación con otra ubicación (VPN gratuita, Canadá)
+
+Se repitieron las 12 búsquedas el mismo día, con la misma cuenta de prueba, desde una conexión VPN gratuita con salida en Montreal, Canadá. Datos: `comparacion-ubicacion.csv` (autores que aparecen en ambas búsquedas).
+
+- Los resultados cambian, pero se mantiene un núcleo: entre 3 y 8 de cada 10 a 12 autores se repiten, según el destino (en total 76 coincidencias en 12 destinos). Atlixco, Chignahuapan, Huauchinango y Tetela de Ocampo son los más estables; Teziutlán y Xicotepec los que más cambian.
+- Teziutlán es el caso notable: desde Puebla 5 de 12 resultados eran noticias de sucesos y desde Canadá solo 1. La explicación no se puede aislar: pudo ser la ubicación o el momento, porque las búsquedas se hicieron con casi una hora de diferencia en un tema noticioso. Se deja como hipótesis, no como hallazgo.
+- Con la VPN gratuita no hay salida en México, así que no se pudo probar un estado distinto de Puebla. La prueba por estado queda pendiente y requiere una conexión con salida en cada uno.
+- Interpretación: la ubicación sí influye en lo que TikTok muestra, por lo que una medición de atención con video corto tendría que fijar y registrar desde dónde se consulta, como se hace con el idioma y la semilla en los asistentes.
