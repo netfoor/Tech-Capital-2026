@@ -90,6 +90,7 @@
   font-weight: 700;
   font-size: var(--texto-l);
   min-height: 44px;
+  white-space: nowrap;
 }
 
 .marca:hover {
@@ -129,6 +130,7 @@
   text-decoration: none;
   font-weight: 600;
   font-size: var(--texto-s);
+  white-space: nowrap;
   transition: background var(--transicion), color var(--transicion);
 }
 
@@ -176,7 +178,7 @@
   font-size: 1.1em;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .app {
     padding-bottom: var(--alto-nav-movil);
   }
@@ -919,6 +921,23 @@ select.control {
   margin: 0;
 }
 
+.tarjeta-poi__claves {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--esp-2);
+  font-size: var(--texto-s);
+}
+
+.tarjeta-poi__claves li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-1) var(--esp-2);
+}
+
 .tarjeta-poi__estados {
   display: flex;
   flex-wrap: wrap;
@@ -1560,4 +1579,10 @@ select.control {
 .vacio p {
   max-width: 32rem;
   margin-inline: auto;
+}
+
+@media (max-width: 63.99rem) {
+  .nav__enlace {
+    white-space: normal;
+  }
 }

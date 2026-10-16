@@ -20,7 +20,7 @@ describe('Ficha de un lugar', () => {
     expect(fila).toHaveTextContent('No tenemos este dato todavía')
     expect(fila).toHaveTextContent('Sin verificar')
     expect(screen.queryByText(/^(accesible|sí)$/i, { selector: '.atributo__valor' })).not.toBeInTheDocument()
-    expect(screen.getByText('Accesibilidad sin verificar')).toBeInTheDocument()
+    expect(screen.getByText('Datos de accesibilidad sin verificar')).toBeInTheDocument()
   })
 
   it('muestra los 9 atributos con estado, origen y fecha', async () => {

@@ -82,9 +82,9 @@ export const es = {
     quitarDe: (nombre: string) => `Quitar ${nombre} de mi mapa`,
   },
   cobertura: {
-    verificada: 'Accesibilidad verificada',
-    parcial: 'Accesibilidad verificada en parte',
-    sin_verificar: 'Accesibilidad sin verificar',
+    verificada: 'Datos de accesibilidad verificados',
+    parcial: 'Datos de accesibilidad verificados en parte',
+    sin_verificar: 'Datos de accesibilidad sin verificar',
   } satisfies Record<string, string>,
   estados: {
     verificado: 'Verificado',

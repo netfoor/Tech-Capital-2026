@@ -1,9 +1,13 @@
 import { Link } from 'react-router'
 import type { POIResumen } from '../api/tipos'
 import { guardarPoi, quitarPoi, useAlmacen } from '../almacen/almacen'
-import { textoCategoria, textoCosto } from '../dominio/formato'
+import { datoDe } from '../dominio/accesibilidad'
+import { textoCategoria, textoCosto, textoValor } from '../dominio/formato'
 import { useTextos } from '../i18n/textos'
-import { PastillaCobertura, PastillaSintetica } from './Estados'
+import { PastillaCobertura, PastillaEstado, PastillaSintetica } from './Estados'
+
+/** Los dos datos que más deciden una visita; el resto está en la ficha. */
+const CLAVES = ['acceso_sin_escalones', 'banio_accesible'] as const
 import { Icono, IconoCategoria } from './Icono'
 
 interface PropsGuardar {
@@ -64,6 +68,24 @@ export function TarjetaPoi({ poi, destino, nivel = 3 }: Props) {
           </p>
         </div>
       </div>
+      <ul className="tarjeta-poi__claves">
+        {CLAVES.map((atributo) => {
+          const dato = datoDe(poi.accesibilidad, atributo)
+          return (
+            <li key={atributo}>
+              <span>
+                {t.atributos[atributo]}
+                {dato.valor !== null && (
+                  <>
+                    : <strong>{textoValor(t, atributo, dato)}</strong>
+                  </>
+                )}
+              </span>
+              <PastillaEstado estado={dato.estado} />
+            </li>
+          )
+        })}
+      </ul>
       <div className="tarjeta-poi__estados">
         <PastillaCobertura cobertura={poi.cobertura_accesibilidad} />
         {poi.is_synthetic && <PastillaSintetica />}
