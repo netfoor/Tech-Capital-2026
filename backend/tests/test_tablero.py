@@ -380,3 +380,38 @@ def test_csv_panorama_marca_sinteticos(cliente, sesion, catalogo, lector, k3):
     encabezado = next(linea for linea in r.text.splitlines() if not linea.startswith("#"))
     assert "is_synthetic" in encabezado.split(",")
     assert json.dumps(r.text).count("user_id") == 0
+
+
+# ---------------------------------------------------------------------------
+# Semilla de demostración
+
+
+def test_semilla_demo_idempotente_y_sintetica(cliente, sesion, catalogo, monkeypatch):
+    from app.services import demo_tablero
+
+    monkeypatch.setattr(ajustes(), "demo_analista_correo", "Analista.Demo@ejemplo.mx")
+    monkeypatch.setattr(ajustes(), "demo_analista_contrasena", "contrasena-demo")
+    for _ in range(2):
+        demo_tablero.asegurar_analista(sesion)
+        demo_tablero.borrar_conjunto(sesion)
+        cuenta = demo_tablero.crear_conjunto(sesion)
+        sesion.commit()
+    assert sesion.query(ConfirmedVisit).count() == cuenta["visitas"] > 0
+    assert sesion.query(ConfirmedVisit).filter(ConfirmedVisit.is_synthetic.is_(False)).count() == 0
+    assert sesion.query(Review).filter(Review.is_synthetic.is_(False)).count() == 0
+    r = cliente.post(
+        "/auth/login", json={"correo": "analista.demo@ejemplo.mx", "contrasena": "contrasena-demo"}
+    )
+    cabecera = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    panorama = cliente.get("/b2b/metrics?modulo=panorama", headers=cabecera).json()
+    visibles = [g for g in panorama["grupos"] if not g["suprimido"]]
+    assert visibles and all(g["is_synthetic"] for g in panorama["grupos"])
+    assert cliente.get("/moderation", headers=cabecera).json()["items"]
+
+
+def test_semilla_demo_sin_credenciales(sesion, monkeypatch):
+    from app.services import demo_tablero
+
+    monkeypatch.setattr(ajustes(), "demo_analista_correo", "")
+    with pytest.raises(demo_tablero.ErrorDemo):
+        demo_tablero.asegurar_analista(sesion)

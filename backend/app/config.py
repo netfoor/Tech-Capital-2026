@@ -21,6 +21,9 @@ class Ajustes(BaseSettings):
     jwt_minutos: int = 60 * 24
 
     directorio_datos: Path = RAIZ_REPO / "data"
+    # Cuenta de analista para la demostración del tablero (spec 019). Sin valores en el repo.
+    demo_analista_correo: str = ""
+    demo_analista_contrasena: str = ""
     # Fichas semánticas de los indicadores del tablero (spec 019).
     archivo_metricas: Path = RAIZ_REPO / "metrics" / "definitions.yaml"
     # Fotos de reportes, sin EXIF. Vive bajo data/privado/, que no se versiona.
