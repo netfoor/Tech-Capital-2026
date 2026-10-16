@@ -18,3 +18,13 @@ Datos: `asistentes_corridas.csv` (380 corridas al 2026-10-16: 160 de OpenAI con 
 - Consumo de tokens: OpenAI 3 751 668 de entrada y 537 029 de salida (23 000 de entrada por corrida en promedio, por el contexto de búsqueda); Gemini 7 190 de entrada y 307 059 de salida. El costo en pesos se calcula multiplicando por la tarifa vigente de cada proveedor al cierre de la corrida; la cifra final se anota aquí cuando se complete.
 - Tasa de búsqueda: OpenAI buscó en 94.4 % de las corridas y Gemini en 0.9 %.
 - Cholula es el destino más visible: aparece en 78 % de las respuestas. Le siguen Zacatlán, Cuetzalan y Atlixco (55 a 57 %). Teziutlán aparece en 6 % y Huauchinango en 11 %.
+
+## Revisión de sentido común del radar (T008-06)
+
+Con dos componentes de atención (búsqueda y asistentes), cortes en 40.9 (atención) y 50.0 (desempeño):
+
+- **Cuetzalan** queda en `atencion_sin_estancia` (brecha +43): es de los destinos más buscados y citados por los asistentes, pero su ocupación (42.7 %) está por debajo de la mediana. Es coherente con un destino de visita de un día o de fin de semana corto.
+- **Teziutlán** queda en `demanda_poco_visible` (brecha −50): casi no aparece en asistentes (6 % de las respuestas) y tiene una ocupación por encima de la mediana de los Pueblos Mágicos con crecimiento de llegadas de 21.6 %. Es el caso más sorprendente; la explicación probable es demanda de negocios y de servicios, no turística, que no depende de contenido digital. Se confirma con el panel y con la ficha del destino.
+- **Zacatlán** es `consolidado` con brecha −32: alta ocupación y alta visibilidad en asistentes, con búsqueda media.
+- **Pahuatlán, Tetela de Ocampo y Tlatlauquitepec** quedan `por_posicionar`, de acuerdo con las cifras de ocupación más bajas del oficial (32 a 37 %).
+- Con solo dos componentes no se puede medir la sensibilidad del cuadrante; se activa al sumar el panel o YouTube.
