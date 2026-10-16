@@ -11,6 +11,8 @@ dependencies = [
     "python-dotenv>=1.0",
     "jsonschema>=4.23",
     "referencing>=0.35",
+    "rapidfuzz>=3.14.6",
+    "httpx>=0.28.1",
 ]
 
 [project.optional-dependencies]
