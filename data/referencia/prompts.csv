@@ -1,0 +1,23 @@
+prompt_id,idioma,mercado,tono,texto,origen,revisado
+ES-C01,es,MX,casual,"Voy a ir a Puebla un fin de semana, ¿qué no me debo perder?",equipo,true
+ES-C02,es,MX,casual,¿Qué pueblos mágicos me recomiendas visitar en Puebla?,equipo,true
+ES-C03,es,MX,casual,"Quiero salir un día de la ciudad de Puebla, ¿a dónde puedo ir?",equipo,true
+ES-C04,es,MX,casual,Planea un viaje de 3 días por el estado de Puebla con lugares que no sean tan conocidos,equipo,true
+ES-C05,es,MX,casual,¿Qué hay para hacer en Puebla en noviembre?,equipo,true
+ES-K01,es,MX,concreto,¿Cuáles son los mejores pueblos de la Sierra Norte de Puebla para visitar?,equipo,true
+ES-K02,es,MX,concreto,Recomiéndame lugares con naturaleza y cascadas en Puebla,equipo,true
+ES-K03,es,MX,concreto,¿Dónde puedo hacer turismo comunitario en Puebla?,equipo,true
+ES-B01,es,MX,comprador,Soy operador turístico. ¿Qué destinos de Puebla incluirías en un paquete cultural de 5 días y por qué?,equipo,true
+EN-C01,en,US,casual,"I'm visiting Puebla, Mexico for a weekend. What shouldn't I miss?",equipo,true
+EN-C02,en,US,casual,"What are the best small towns (Pueblos Mágicos) to visit near Puebla, Mexico?",equipo,true
+EN-C03,en,US,casual,"Plan a 3-day trip around Puebla state, Mexico, with less touristy places",equipo,true
+EN-B01,en,US,comprador,"I'm a tour operator building a 5-day cultural package in Puebla, Mexico. Which destinations would you include and why?",equipo,true
+FR-C01,fr,FR,casual,Je vais à Puebla au Mexique pour un week-end. Qu'est-ce que je ne dois pas manquer ?,equipo,false
+FR-C02,fr,FR,casual,"Quels villages (Pueblos Mágicos) visiter autour de Puebla, au Mexique ?",equipo,false
+FR-B01,fr,FR,comprador,Je suis voyagiste. Quelles destinations de l'État de Puebla inclurais-tu dans un circuit culturel de 5 jours ?,equipo,false
+KO-C01,ko,KR,casual,멕시코 푸에블라에 주말 여행을 가요. 꼭 가봐야 할 곳이 어디인가요?,equipo,false
+KO-C02,ko,KR,casual,푸에블라 근처에서 가볼 만한 작은 마을(푸에블로 마히코)을 추천해 주세요.,equipo,false
+KO-B01,ko,KR,comprador,저는 여행사 직원입니다. 멕시코 푸에블라주 5일 문화 패키지에 어떤 여행지를 넣으면 좋을까요?,equipo,false
+ZH-C01,zh,CN,casual,我要去墨西哥普埃布拉过周末，有哪些地方不能错过？,equipo,false
+ZH-C02,zh,CN,casual,普埃布拉附近有哪些值得去的小镇（魔幻小镇）？,equipo,false
+ZH-B01,zh,CN,comprador,我是旅行社的产品经理，想设计墨西哥普埃布拉州五天的文化线路，你会包括哪些目的地？,equipo,false
