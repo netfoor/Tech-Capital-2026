@@ -24,6 +24,9 @@ asistentes = [
     "openai>=1.50",
     "google-genai>=1.0",
 ]
+analisis = [
+    "matplotlib>=3.9",
+]
 
 [project.scripts]
 radar = "radar.cli:app"
