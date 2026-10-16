@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ficha.schema.json",
+  "title": "Ficha de destino",
+  "description": "fichas/<destino_id>.json. Todo lo que se imprime en la ficha de un destino. Los bloques sin datos van en null y la ficha dice que están pendientes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "destino", "periodo_ref", "desempeno", "serie_mensual", "radar", "asistentes", "redes", "opinion", "escenario", "fuentes", "notas"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "destino": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["destino_id", "nombre", "tipo", "zona", "municipios"],
+      "properties": {
+        "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" },
+        "nombre": { "type": "string" },
+        "tipo": { "enum": ["pueblo_magico", "ciudad"] },
+        "zona": { "type": "string" },
+        "municipios": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "periodo_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desde", "hasta"],
+      "properties": {
+        "desde": { "$ref": "comun.schema.json#/$defs/periodo" },
+        "hasta": { "$ref": "comun.schema.json#/$defs/periodo" }
+      }
+    },
+    "desempeno": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ocupacion_12m", "cuartos_libres_dia_12m", "llegadas_12m", "crecimiento_llegadas_pct", "estadia_promedio_dias", "derrama_por_visitante_mxn", "mediana_pm_ocupacion_12m"],
+      "properties": {
+        "ocupacion_12m": { "$ref": "comun.schema.json#/$defs/porcentaje" },
+        "cuartos_libres_dia_12m": { "type": "number", "minimum": 0 },
+        "llegadas_12m": { "type": "integer", "minimum": 0 },
+        "crecimiento_llegadas_pct": { "type": ["number", "null"] },
+        "estadia_promedio_dias": { "type": ["number", "null"], "minimum": 0 },
+        "derrama_por_visitante_mxn": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "Indicador derivado por la Secretaría; la ficha lo marca como estimación"
+        },
+        "mediana_pm_ocupacion_12m": { "$ref": "comun.schema.json#/$defs/porcentaje" }
+      }
+    },
+    "serie_mensual": {
+      "description": "Últimos 36 meses publicados, para la gráfica pequeña de la ficha",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["periodo", "llegadas_turistas", "ocupacion_pct"],
+        "properties": {
+          "periodo": { "$ref": "comun.schema.json#/$defs/periodo" },
+          "llegadas_turistas": { "type": ["number", "null"], "minimum": 0 },
+          "ocupacion_pct": { "$ref": "comun.schema.json#/$defs/porcentaje_o_nulo" }
+        }
+      }
+    },
+    "radar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["indice_atencion", "indice_desempeno", "brecha", "cuadrante", "recomendacion", "sensible", "componentes"],
+      "properties": {
+        "indice_atencion": { "$ref": "comun.schema.json#/$defs/porcentaje_o_nulo" },
+        "indice_desempeno": { "$ref": "comun.schema.json#/$defs/porcentaje_o_nulo" },
+        "brecha": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+        "cuadrante": { "$ref": "comun.schema.json#/$defs/cuadrante" },
+        "recomendacion": { "type": ["string", "null"] },
+        "sensible": { "type": "boolean" },
+        "componentes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "busqueda": { "$ref": "comun.schema.json#/$defs/componente" },
+            "video": { "$ref": "comun.schema.json#/$defs/componente" },
+            "panel": { "$ref": "comun.schema.json#/$defs/componente" },
+            "asistentes": { "$ref": "comun.schema.json#/$defs/componente" }
+          }
+        }
+      }
+    },
+    "asistentes": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["por_idioma", "dominios"],
+      "properties": {
+        "por_idioma": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "comun.schema.json#/$defs/proporcion_con_intervalo" },
+              {
+                "type": "object",
+                "required": ["idioma"],
+                "properties": { "idioma": { "$ref": "comun.schema.json#/$defs/idioma" } }
+              }
+            ]
+          }
+        },
+        "dominios": {
+          "description": "Dominios más citados en las respuestas que mencionan el destino (máximo 5)",
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dominio", "tipo_dominio", "n_citas"],
+            "properties": {
+              "dominio": { "type": "string" },
+              "tipo_dominio": { "enum": ["gobierno", "medio", "blog", "agencia_viajes", "red_social", "enciclopedia", "otro"] },
+              "n_citas": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "redes": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "panel": {
+          "anyOf": [
+            { "type": "null" },
+            { "$ref": "comun.schema.json#/$defs/proporcion_con_intervalo" }
+          ]
+        },
+        "youtube": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["n_videos", "vistas_mediana", "antiguedad_mediana_dias"],
+          "properties": {
+            "n_videos": { "type": "integer", "minimum": 0 },
+            "vistas_mediana": { "type": ["integer", "null"], "minimum": 0 },
+            "antiguedad_mediana_dias": { "type": ["integer", "null"], "minimum": 0 }
+          }
+        }
+      }
+    },
+    "opinion": {
+      "description": "Fricciones y elogios más frecuentes (P1). Solo categorías con n ≥ 5.",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["categoria", "subcategoria", "n", "proporcion"],
+        "properties": {
+          "categoria": { "type": "string" },
+          "subcategoria": { "type": ["string", "null"] },
+          "n": { "type": "integer", "minimum": 5 },
+          "proporcion": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "escenario": {
+      "description": "Escenario de derrama si el destino alcanzara la mediana de ocupación de los Pueblos Mágicos (P1). Null si ya está en la mediana o arriba.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["supuesto_pp", "cuartos_adicionales_mes", "visitantes_adicionales_mes", "derrama_adicional_mes_mxn", "derrama_adicional_anual_mxn", "metodo"],
+      "properties": {
+        "supuesto_pp": { "type": "number", "exclusiveMinimum": 0 },
+        "cuartos_adicionales_mes": { "type": "number", "minimum": 0 },
+        "visitantes_adicionales_mes": { "type": "number", "minimum": 0 },
+        "derrama_adicional_mes_mxn": { "type": "number", "minimum": 0 },
+        "derrama_adicional_anual_mxn": { "type": "number", "minimum": 0 },
+        "metodo": { "type": "string" }
+      }
+    },
+    "fuentes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "comun.schema.json#/$defs/fuente_id" }
+    },
+    "notas": { "type": "array", "items": { "type": "string" } }
+  }
+}

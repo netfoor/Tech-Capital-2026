@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "manifiesto.schema.json",
+  "title": "Manifiesto del paquete de datos",
+  "description": "Lista de archivos que consume el sitio, con su huella SHA-256. El navegador la usa para verificar cada archivo antes de dibujarlo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "commit", "archivos"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "commit": { "type": "string", "description": "Commit del repositorio con que se generó el paquete" },
+    "archivos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ruta", "sha256", "bytes", "fuentes"],
+        "properties": {
+          "ruta": { "type": "string", "description": "Ruta relativa a /datos/" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "bytes": { "type": "integer", "minimum": 0 },
+          "fuentes": { "type": "array", "items": { "$ref": "comun.schema.json#/$defs/fuente_id" } }
+        }
+      }
+    }
+  }
+}

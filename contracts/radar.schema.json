@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "radar.schema.json",
+  "title": "Radar: atención frente a desempeño por destino",
+  "description": "Los índices y componentes pueden ser nulos mientras no existan las fuentes correspondientes (primera versión del sitio solo con desempeño).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "periodo_ref", "cortes", "componentes_disponibles", "destinos", "referencia"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "periodo_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desde", "hasta"],
+      "properties": {
+        "desde": { "$ref": "comun.schema.json#/$defs/periodo" },
+        "hasta": { "$ref": "comun.schema.json#/$defs/periodo" }
+      }
+    },
+    "cortes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["atencion", "desempeno"],
+      "properties": {
+        "atencion": { "type": "number" },
+        "desempeno": { "type": "number" }
+      }
+    },
+    "componentes_disponibles": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["busqueda", "video", "panel", "asistentes"] }
+    },
+    "destinos": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": { "$ref": "#/$defs/fila" }
+    },
+    "referencia": {
+      "description": "La capital, mostrada como referencia; no entra en los percentiles",
+      "$ref": "#/$defs/fila"
+    }
+  },
+  "$defs": {
+    "fila": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "destino_id", "ocupacion_12m", "cuartos_libres_dia_12m", "llegadas_12m",
+        "crecimiento_llegadas_pct", "componentes", "indice_atencion", "indice_desempeno",
+        "brecha", "cuadrante", "sensible", "notas"
+      ],
+      "properties": {
+        "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" },
+        "ocupacion_12m": { "$ref": "comun.schema.json#/$defs/porcentaje" },
+        "cuartos_libres_dia_12m": { "type": "number", "minimum": 0 },
+        "llegadas_12m": { "type": "integer", "minimum": 0 },
+        "crecimiento_llegadas_pct": { "type": ["number", "null"] },
+        "componentes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "busqueda": { "$ref": "comun.schema.json#/$defs/componente" },
+            "video": { "$ref": "comun.schema.json#/$defs/componente" },
+            "panel": { "$ref": "comun.schema.json#/$defs/componente" },
+            "asistentes": { "$ref": "comun.schema.json#/$defs/componente" }
+          }
+        },
+        "indice_atencion": { "$ref": "comun.schema.json#/$defs/porcentaje_o_nulo" },
+        "indice_desempeno": { "$ref": "comun.schema.json#/$defs/porcentaje_o_nulo" },
+        "brecha": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+        "cuadrante": { "$ref": "comun.schema.json#/$defs/cuadrante" },
+        "sensible": { "type": "boolean" },
+        "notas": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

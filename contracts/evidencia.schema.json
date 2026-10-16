@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidencia.schema.json",
+  "title": "Evidencia del problema",
+  "description": "Hallazgos de la sección «El problema». Cada cifra sale de un archivo de data/curado/ o de una fuente registrada en fuentes.csv; ninguna se escribe en el sitio a mano.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "hallazgos"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "hallazgos": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "titulo", "cifra", "unidad", "texto", "periodo", "fuente_id", "origen"],
+        "properties": {
+          "id": { "enum": ["redes", "medicion", "concentracion", "tianguis", "capacidad"] },
+          "titulo": { "type": "string" },
+          "cifra": { "type": ["number", "string"] },
+          "unidad": { "type": "string" },
+          "texto": { "type": "string" },
+          "periodo": { "type": "string" },
+          "fuente_id": { "$ref": "comun.schema.json#/$defs/fuente_id" },
+          "origen": { "type": "string", "description": "Archivo de data/curado/ y cálculo, o página del documento fuente" },
+          "serie": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["etiqueta", "valor"],
+              "properties": {
+                "etiqueta": { "type": "string" },
+                "valor": { "type": "number" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

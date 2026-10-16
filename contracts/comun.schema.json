@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "comun.schema.json",
+  "title": "Definiciones comunes",
+  "$defs": {
+    "destino_id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "periodo": { "type": "string", "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$" },
+    "fecha_hora": { "type": "string", "format": "date-time" },
+    "fecha": { "type": "string", "format": "date" },
+    "fuente_id": { "type": "string", "minLength": 1 },
+    "porcentaje": { "type": "number", "minimum": 0, "maximum": 100 },
+    "porcentaje_o_nulo": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "idioma": { "enum": ["es", "en", "fr", "ko", "zh"] },
+    "proveedor": { "enum": ["openai", "google"] },
+    "cuadrante": {
+      "enum": ["consolidado", "atencion_sin_estancia", "demanda_poco_visible", "por_posicionar", null]
+    },
+    "componente": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valor", "pctl", "n"],
+      "properties": {
+        "valor": { "type": ["number", "null"] },
+        "pctl": { "$ref": "#/$defs/porcentaje_o_nulo" },
+        "n": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "proporcion_con_intervalo": {
+      "type": "object",
+      "required": ["n", "k", "pct", "ic95_bajo", "ic95_alto"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 0 },
+        "k": { "type": "integer", "minimum": 0 },
+        "pct": { "$ref": "#/$defs/porcentaje" },
+        "ic95_bajo": { "$ref": "#/$defs/porcentaje" },
+        "ic95_alto": { "$ref": "#/$defs/porcentaje" }
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "metodo.schema.json",
+  "title": "Cómo se hizo",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "fuentes", "procesos", "formulas", "componentes_ia", "limitaciones"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "fuentes": {
+      "description": "Copia de data/fuentes/fuentes.csv más las fuentes generadas por el equipo",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fuente_id", "titulo", "institucion", "tipo", "url", "fecha_consulta", "uso_en_el_proyecto"],
+        "properties": {
+          "fuente_id": { "$ref": "comun.schema.json#/$defs/fuente_id" },
+          "titulo": { "type": "string" },
+          "institucion": { "type": "string" },
+          "tipo": { "type": "string" },
+          "url": { "type": ["string", "null"] },
+          "fecha_consulta": { "type": ["string", "null"] },
+          "uso_en_el_proyecto": { "type": "string" }
+        }
+      }
+    },
+    "procesos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["etapa", "descripcion", "spec"],
+        "properties": {
+          "etapa": { "type": "string" },
+          "descripcion": { "type": "string" },
+          "spec": { "type": "string", "pattern": "^0[0-9]{2}$" }
+        }
+      }
+    },
+    "formulas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["nombre", "expresion", "descripcion"],
+        "properties": {
+          "nombre": { "type": "string" },
+          "expresion": { "type": "string" },
+          "descripcion": { "type": "string" }
+        }
+      }
+    },
+    "componentes_ia": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "nombre", "funcion", "modelo", "validacion", "resultado"],
+        "properties": {
+          "id": { "type": "integer", "minimum": 1 },
+          "nombre": { "type": "string" },
+          "funcion": { "type": "string" },
+          "modelo": { "type": "string" },
+          "validacion": { "type": "string" },
+          "resultado": { "type": ["string", "null"], "description": "Métrica obtenida; null mientras no se haya validado" }
+        }
+      }
+    },
+    "limitaciones": { "type": "array", "items": { "type": "string" } }
+  }
+}

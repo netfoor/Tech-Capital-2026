@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asistentes.schema.json",
+  "title": "Visibilidad en asistentes conversacionales",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "corridas", "segmentos", "dominios", "ejemplos", "validacion_deteccion"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "corridas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "desde", "hasta", "modelos", "prompts_por_idioma", "repeticiones"],
+      "properties": {
+        "n": { "type": "integer", "minimum": 0 },
+        "desde": { "$ref": "comun.schema.json#/$defs/fecha" },
+        "hasta": { "$ref": "comun.schema.json#/$defs/fecha" },
+        "modelos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["proveedor", "modelo", "herramienta"],
+            "properties": {
+              "proveedor": { "$ref": "comun.schema.json#/$defs/proveedor" },
+              "modelo": { "type": "string" },
+              "herramienta": { "type": "string" }
+            }
+          }
+        },
+        "prompts_por_idioma": {
+          "type": "object",
+          "propertyNames": { "$ref": "comun.schema.json#/$defs/idioma" },
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "repeticiones": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "segmentos": {
+      "description": "Un segmento por combinación publicada. 'todos' significa sin filtrar esa dimensión.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["proveedor", "idioma", "destinos"],
+        "properties": {
+          "proveedor": { "enum": ["openai", "google", "todos"] },
+          "idioma": { "enum": ["es", "en", "fr", "ko", "zh", "todos"] },
+          "tono": { "enum": ["casual", "concreto", "comprador", "todos"] },
+          "destinos": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "$ref": "comun.schema.json#/$defs/proporcion_con_intervalo" },
+                {
+                  "type": "object",
+                  "required": ["destino_id"],
+                  "properties": { "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" } }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "dominios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["idioma", "dominio", "tipo_dominio", "n_citas", "pct_corridas"],
+        "properties": {
+          "idioma": { "enum": ["es", "en", "fr", "ko", "zh", "todos"] },
+          "dominio": { "type": "string" },
+          "tipo_dominio": { "enum": ["gobierno", "medio", "blog", "agencia_viajes", "red_social", "enciclopedia", "otro"] },
+          "n_citas": { "type": "integer", "minimum": 1 },
+          "pct_corridas": { "$ref": "comun.schema.json#/$defs/porcentaje" }
+        }
+      }
+    },
+    "ejemplos": {
+      "description": "Una respuesta de ejemplo por idioma, elegida con semilla fija (ver spec 006). Fragmento de máximo 600 caracteres.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["corrida_id", "idioma", "proveedor", "prompt", "fragmento", "destinos_mencionados", "dominios"],
+        "properties": {
+          "corrida_id": { "type": "string" },
+          "idioma": { "$ref": "comun.schema.json#/$defs/idioma" },
+          "proveedor": { "$ref": "comun.schema.json#/$defs/proveedor" },
+          "prompt": { "type": "string" },
+          "fragmento": { "type": "string", "maxLength": 600 },
+          "destinos_mencionados": { "type": "array", "items": { "$ref": "comun.schema.json#/$defs/destino_id" } },
+          "dominios": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "validacion_deteccion": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["n_revisadas", "precision", "exhaustividad"],
+      "properties": {
+        "n_revisadas": { "type": "integer", "minimum": 0 },
+        "precision": { "type": "number", "minimum": 0, "maximum": 1 },
+        "exhaustividad": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

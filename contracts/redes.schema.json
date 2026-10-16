@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "redes.schema.json",
+  "title": "Lo que se ve en redes: panel de TikTok, YouTube y opinión agregada",
+  "description": "Sin campos de identidad personal: ni usuarios, ni autores, ni texto de comentarios (mapa de contextos, regla 4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generado", "panel", "youtube", "opinion"],
+  "properties": {
+    "generado": { "$ref": "comun.schema.json#/$defs/fecha_hora" },
+    "panel": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["version_protocolo", "n_participantes", "n_sesiones", "desde", "hasta", "presencia", "por_edad"],
+      "properties": {
+        "version_protocolo": { "type": "string" },
+        "n_participantes": { "type": "integer", "minimum": 0 },
+        "n_sesiones": { "type": "integer", "minimum": 0 },
+        "desde": { "$ref": "comun.schema.json#/$defs/fecha" },
+        "hasta": { "$ref": "comun.schema.json#/$defs/fecha" },
+        "presencia": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              { "$ref": "comun.schema.json#/$defs/proporcion_con_intervalo" },
+              {
+                "type": "object",
+                "required": ["destino_id"],
+                "properties": { "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" } }
+              }
+            ]
+          }
+        },
+        "por_edad": {
+          "description": "Solo grupos con n ≥ 5 (FR-005-08)",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rango_edad", "n_sesiones"],
+            "properties": {
+              "rango_edad": { "enum": ["18-24", "25-34", "35-44", "45+"] },
+              "n_sesiones": { "type": "integer", "minimum": 5 }
+            }
+          }
+        }
+      }
+    },
+    "youtube": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["fecha_consulta", "presencia", "videos"],
+      "properties": {
+        "fecha_consulta": { "$ref": "comun.schema.json#/$defs/fecha" },
+        "presencia": {
+          "description": "Proporción de resultados de las consultas genéricas que mencionan el destino",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destino_id", "n_resultados", "k_menciones", "proporcion"],
+            "properties": {
+              "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" },
+              "n_resultados": { "type": "integer", "minimum": 0 },
+              "k_menciones": { "type": "integer", "minimum": 0 },
+              "proporcion": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destino_id", "n_videos", "vistas_mediana", "comentarios_total", "antiguedad_mediana_dias"],
+            "properties": {
+              "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" },
+              "n_videos": { "type": "integer", "minimum": 0 },
+              "vistas_mediana": { "type": ["integer", "null"], "minimum": 0 },
+              "comentarios_total": { "type": ["integer", "null"], "minimum": 0 },
+              "antiguedad_mediana_dias": { "type": ["integer", "null"], "minimum": 0 }
+            }
+          }
+        }
+      }
+    },
+    "opinion": {
+      "description": "P1. Celdas con n ≥ 5 y la validación del clasificador.",
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["celdas", "validacion"],
+      "properties": {
+        "celdas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["destino_id", "fuente", "categoria", "subcategoria", "n", "proporcion"],
+            "properties": {
+              "destino_id": { "$ref": "comun.schema.json#/$defs/destino_id" },
+              "fuente": { "enum": ["youtube", "tiktok"] },
+              "categoria": { "type": "string" },
+              "subcategoria": { "type": ["string", "null"] },
+              "n": { "type": "integer", "minimum": 5 },
+              "proporcion": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "validacion": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["n_muestra", "kappa_personas", "kappa_clasificador", "version_prompt"],
+          "properties": {
+            "n_muestra": { "type": "integer", "minimum": 0 },
+            "kappa_personas": { "type": "number", "minimum": -1, "maximum": 1 },
+            "kappa_clasificador": { "type": "number", "minimum": -1, "maximum": 1 },
+            "version_prompt": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
