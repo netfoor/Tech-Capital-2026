@@ -181,6 +181,10 @@ def asistentes_correr(
     repeticiones: Annotated[int, typer.Option(help="Repeticiones por prompt y proveedor")] = 10,
     semilla: Annotated[int, typer.Option(help="Semilla del orden aleatorio")] = 2026,
     tope: Annotated[int | None, typer.Option(help="Máximo de corridas de esta ejecución")] = None,
+    concurrencia: Annotated[int, typer.Option(help="Llamadas simultáneas")] = 1,
+    max_segundos: Annotated[
+        float | None, typer.Option(help="No iniciar corridas nuevas pasado este tiempo")
+    ] = None,
 ) -> None:
     """Ejecuta las corridas pendientes y las guarda en data/crudo/asistentes/ (reanudable)."""
     from radar.asistentes import corridas
@@ -190,7 +194,14 @@ def asistentes_correr(
     destino = min(len(pendientes), tope) if tope else len(pendientes)
     typer.echo(f"{destino} corridas por ejecutar de {total} en el plan")
     hechas = 0
-    for linea in corridas.ejecutar(pendientes, prov, tope=tope, semilla=semilla):
+    for linea in corridas.ejecutar(
+        pendientes,
+        prov,
+        tope=tope,
+        semilla=semilla,
+        concurrencia=concurrencia,
+        limite_segundos=max_segundos,
+    ):
         hechas += 1
         typer.echo(
             f"[{hechas}/{destino}] {linea['prompt_id']} {linea['proveedor']} "

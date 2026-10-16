@@ -12,8 +12,10 @@ import hashlib
 import json
 import random
 import re
+import threading
 import time
 from collections.abc import Callable, Iterable, Iterator
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -154,6 +156,26 @@ def registro(corrida: Corrida, proveedor: Proveedor, respuesta: RespuestaAsisten
     }
 
 
+def _una(
+    corrida: Corrida,
+    proveedores: dict[str, Proveedor],
+    carpeta: Path,
+    candado: threading.Lock,
+    dormir: Callable[[float], None],
+    hoy: Callable[[], date],
+    pausa: tuple[float, float],
+    azar: random.Random,
+) -> dict:
+    proveedor = proveedores[corrida.proveedor]
+    respuesta = consultar_con_reintentos(proveedor, corrida.prompt.texto, dormir=dormir)
+    fecha = hoy().isoformat()
+    linea = registro(corrida, proveedor, respuesta, fecha)
+    with candado, (carpeta / f"{fecha}.jsonl").open("a", encoding="utf-8") as f:
+        f.write(json.dumps(linea, ensure_ascii=False) + "\n")
+    dormir(azar.uniform(*pausa))
+    return linea
+
+
 def ejecutar(
     pendientes: list[Corrida],
     proveedores: dict[str, Proveedor],
@@ -163,19 +185,38 @@ def ejecutar(
     dormir: Callable[[float], None] = time.sleep,
     hoy: Callable[[], date] = date.today,
     semilla: int = SEMILLA_POR_DEFECTO,
+    concurrencia: int = 1,
+    limite_segundos: float | None = None,
+    reloj: Callable[[], float] = time.monotonic,
 ) -> Iterator[dict]:
-    """Ejecuta las corridas, agrega cada respuesta al JSONL del día y la entrega a quien itera."""
+    """Ejecuta las corridas, agrega cada respuesta al JSONL del día y la entrega a quien itera.
+
+    Con `concurrencia > 1` se hacen varias llamadas a la vez. `limite_segundos` evita iniciar
+    corridas nuevas pasado ese tiempo; las que van en curso terminan y se guardan.
+    """
     carpeta = carpeta or config.ruta(config.CRUDO, "asistentes")
     carpeta.mkdir(parents=True, exist_ok=True)
-    espera = random.Random(semilla + 1)
-    for n, corrida in enumerate(pendientes):
-        if tope is not None and n >= tope:
-            return
-        proveedor = proveedores[corrida.proveedor]
-        respuesta = consultar_con_reintentos(proveedor, corrida.prompt.texto, dormir=dormir)
-        fecha = hoy().isoformat()
-        linea = registro(corrida, proveedor, respuesta, fecha)
-        with (carpeta / f"{fecha}.jsonl").open("a", encoding="utf-8") as f:
-            f.write(json.dumps(linea, ensure_ascii=False) + "\n")
-        yield linea
-        dormir(espera.uniform(*pausa))
+    seleccion = pendientes if tope is None else pendientes[:tope]
+    candado = threading.Lock()
+    azar = random.Random(semilla + 1)
+    inicio = reloj()
+
+    def fuera_de_tiempo() -> bool:
+        return limite_segundos is not None and reloj() - inicio >= limite_segundos
+
+    def trabajo(corrida: Corrida) -> dict | None:
+        if fuera_de_tiempo():
+            return None
+        return _una(corrida, proveedores, carpeta, candado, dormir, hoy, pausa, azar)
+
+    if concurrencia <= 1:
+        for corrida in seleccion:
+            linea = trabajo(corrida)
+            if linea is None:
+                return
+            yield linea
+        return
+    with ThreadPoolExecutor(max_workers=concurrencia) as pool:
+        for linea in pool.map(trabajo, seleccion):
+            if linea is not None:
+                yield linea

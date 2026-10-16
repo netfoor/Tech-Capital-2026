@@ -136,3 +136,34 @@ def test_corpus_real_tiene_22_prompts_revisados():
 
 def test_estimacion_de_tokens():
     assert corridas.estimar_tokens(10) == (15000, 5000)
+
+
+def test_concurrencia_guarda_todo_sin_duplicar(tmp_path):
+    p = proveedores()
+    pendientes, total = corridas.plan(PROMPTS, p, 3, carpeta=tmp_path)
+    lineas = list(corridas.ejecutar(pendientes, p, tmp_path, concurrencia=4, dormir=lambda s: None))
+    assert len(lineas) == total
+    escritas = [
+        json.loads(x)
+        for archivo in tmp_path.glob("*.jsonl")
+        for x in archivo.read_text(encoding="utf-8").splitlines()
+    ]
+    assert len(escritas) == total
+    assert len({(x["prompt_id"], x["proveedor"], x["repeticion"]) for x in escritas}) == total
+
+
+def test_limite_de_tiempo_no_inicia_corridas_nuevas(tmp_path):
+    p = proveedores()
+    pendientes, _ = corridas.plan(PROMPTS, p, 3, carpeta=tmp_path)
+    tiempo = iter([0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100])
+    lineas = list(
+        corridas.ejecutar(
+            pendientes,
+            p,
+            tmp_path,
+            dormir=lambda s: None,
+            limite_segundos=50,
+            reloj=lambda: next(tiempo),
+        )
+    )
+    assert 0 < len(lineas) < len(pendientes)
