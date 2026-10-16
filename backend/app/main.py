@@ -3,8 +3,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import (
+    auth,
+    b2b,
+    catalogo,
+    contenidos,
+    guardados,
+    itinerarios,
+    moderacion,
+    privacidad,
+    sesiones,
+    visitas,
+)
 from app.config import ajustes
 from app.db import base_disponible
+from app.privacy import registros
+
+registros.configurar()
 
 app = FastAPI(
     title="Puebla Viva 360",
@@ -18,6 +33,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.middleware("http")(registros.registrar_peticion)
+
+for router in (
+    catalogo.router,
+    itinerarios.router,
+    auth.router,
+    guardados.router,
+    contenidos.router,
+    moderacion.router,
+    privacidad.router,
+    # Reservados: specs 017 (recorridos y visitas) y 019 (tablero).
+    sesiones.router,
+    visitas.router_visitas,
+    visitas.router_checkins,
+    b2b.router,
+):
+    app.include_router(router)
 
 
 @app.get("/health", tags=["sistema"])

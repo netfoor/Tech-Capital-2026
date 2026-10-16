@@ -10,10 +10,10 @@ Formato: `[ ]` pendiente, `[~]` en curso, `[x]` hecha. `[P]` = paralelizable con
 
 ## API
 
-- [ ] T014-04 [P] Autenticación: registro, inicio de sesión, JWT y roles. Verificación: `tests/test_auth.py`.
-- [ ] T014-05 [P] `GET /pois`, `GET /pois/{poi_id}` y `GET /destinos`. Verificación: `tests/test_pois.py`.
-- [ ] T014-06 Tipos del recomendador, motor provisional, `POST /itineraries/recommend` y `POST /itineraries/from-saved`. Verificación: `tests/test_itinerarios.py`.
-- [ ] T014-07 [P] Guardados y listas. Verificación: `tests/test_guardados.py`, con autorización horizontal.
-- [ ] T014-08 Reseñas, reporte de barrera y moderación que actualiza la ficha. Verificación: `tests/test_barreras.py`, con autorización vertical y el circuito de §06.8.
-- [ ] T014-09 Consentimientos, `GET /me/export` y `DELETE /me`. Verificación: `tests/test_privacidad.py`.
-- [ ] T014-10 Routers vacíos de 017 y 019, registros sin coordenadas y prueba de que `/pois*` no expone `private`. Verificación: `tests/test_privacidad.py`.
+- [x] T014-04 [P] Autenticación: registro, inicio de sesión, JWT y roles. Verificación: `tests/test_auth.py`.
+- [x] T014-05 [P] `GET /pois`, `GET /pois/{poi_id}` y `GET /destinos`. Verificación: `tests/test_pois.py`.
+- [x] T014-06 Tipos del recomendador, motor provisional, `POST /itineraries/recommend` y `POST /itineraries/from-saved`. Verificación: `tests/test_itinerarios.py`.
+- [x] T014-07 [P] Guardados y listas. Verificación: `tests/test_guardados.py`, con autorización horizontal.
+- [x] T014-08 Reseñas, reporte de barrera y moderación que actualiza la ficha. Verificación: `tests/test_barreras.py`, con autorización vertical y el circuito de §06.8.
+- [x] T014-09 Consentimientos, `GET /me/export` y `DELETE /me`. Verificación: `tests/test_privacidad.py`.
+- [x] T014-10 Routers vacíos de 017 y 019, registros sin coordenadas y prueba de que `/pois*` no expone `private`. Verificación: `tests/test_privacidad.py`.

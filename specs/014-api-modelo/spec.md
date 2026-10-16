@@ -4,7 +4,7 @@
 |---|---|
 | Contexto | Núcleo del backend: catálogo, datos personales, agregados y auditoría |
 | Prioridad | P0 |
-| Estado | En curso: modelo, migraciones, semilla y endpoints P0 |
+| Estado | Hecha: modelo, migraciones, semilla y endpoints P0; motor del recomendador provisional hasta la spec 015 |
 | Depende de | Fundación (ADR-0010) |
 | Habilita | 015 (recomendador), 016 (PWA), 017 (recorridos), 018 (barreras), 019 (tablero) |
 
