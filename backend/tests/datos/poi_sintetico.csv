@@ -1,0 +1,48 @@
+poi_id,nombre,categoria,subcategoria,destino_id,corredor_id,municipio_cvegeo,lat,lon,direccion,horario_osm,costo_rango,descripcion,fuentes,osm_id,denue_id,sic_id,match_score,is_synthetic,popularidad,es_destino_alternativo
+syn-cen-01,Mercado Centro 1 (sintético),mercado,,puebla,centro-cholula,21114,19.039536,-98.198074,,Mo-Su 09:00-18:00,gratis,dulces típicos y antojitos,sintetico,,,,,true,0.7791,false
+syn-cen-02,Taller Centro 2 (sintético),artesanias,,puebla,centro-cholula,21114,19.045949,-98.195470,,24/7,gratis,artesanías de talavera,sintetico,,,,,true,0.8053,false
+syn-cen-03,Café Centro 3 (sintético),cafe,,puebla,centro-cholula,21114,19.045130,-98.196221,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",bajo,cocina tradicional,sintetico,,,,,true,0.6736,false
+syn-cen-04,Restaurante Centro 4 (sintético),restaurante,,puebla,centro-cholula,21114,19.043868,-98.200278,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",gratis,cocina de antojitos,sintetico,,,,,true,0.7601,false
+syn-cen-05,Jardín Centro 5 (sintético),parque,,puebla,centro-cholula,21114,19.043285,-98.202118,,Mo-Su sunrise-sunset,bajo,jardín al aire libre,sintetico,,,,,true,0.7772,false
+syn-cen-06,Plaza Centro 6 (sintético),plaza,,puebla,centro-cholula,21114,19.043428,-98.194903,,Mo-Sa 08:00-20:00; Su 09:00-14:00,,plaza tradicional del barrio,sintetico,,,,,true,0.8014,false
+syn-cen-07,Mirador Centro 7 (sintético),mirador,,puebla,centro-cholula,21114,19.045447,-98.198840,,24/7,,mirador con vista panorámica,sintetico,,,,,true,0.6498,false
+syn-cen-08,Museo Centro 8 (sintético),museo,,puebla,centro-cholula,21114,19.043751,-98.197474,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",medio,talavera y artesanía,sintetico,,,,,true,0.8344,false
+syn-cen-09,Callejón Centro 9 (sintético),barrio,,puebla,centro-cholula,21114,19.038686,-98.196469,,Mo-Su sunrise-sunset,,callejón tradicional con vecinos y fachadas,sintetico,,,,,true,0.8090,false
+syn-cen-10,Museo Centro 10 (sintético),museo,,puebla,centro-cholula,21114,19.042650,-98.196383,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",bajo,arte y pintura,sintetico,,,,,true,0.6118,false
+syn-cen-11,Templo Centro 11 (sintético),templo,,puebla,centro-cholula,21114,19.046117,-98.197941,,Mo-Sa 08:00-20:00; Su 09:00-14:00,bajo,capilla colonial,sintetico,,,,,true,0.7585,false
+syn-cen-12,Galería Centro 12 (sintético),galeria,,puebla,centro-cholula,21114,19.042017,-98.201300,,Mo-Sa 08:00-20:00; Su 09:00-14:00,bajo,galería de arte contemporáneo,sintetico,,,,,true,0.8998,false
+syn-cen-13,Mercado Centro 13 (sintético),mercado,,puebla,centro-cholula,21114,19.044388,-98.201256,,Tu-Su 10:00-17:00,,dulces típicos y antojitos,sintetico,,,,,true,0.6423,false
+syn-cen-14,Taller Centro 14 (sintético),artesanias,,puebla,centro-cholula,21114,19.045963,-98.193386,,Mo-Sa 08:00-20:00; Su 09:00-14:00,medio,artesanías de talavera,sintetico,,,,,true,0.7722,false
+syn-cen-b1,Sanitario público Centro 1 (sintético),banio,sanitario,puebla,centro-cholula,21114,19.041645,-98.198789,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-cen-b2,Sanitario público Centro 2 (sintético),banio,sanitario,puebla,centro-cholula,21114,19.040613,-98.201156,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-nor-01,Mercado Barrio Norte 1 (sintético),mercado,,puebla,centro-cholula,21114,19.051776,-98.189926,,,,mercado de comida tradicional y mole,sintetico,,,,,true,0.2523,true
+syn-nor-02,Taller Barrio Norte 2 (sintético),artesanias,,puebla,centro-cholula,21114,19.049038,-98.191477,,Tu-Su 10:00-17:00,gratis,tienda de artesanos locales,sintetico,,,,,true,0.3309,true
+syn-nor-03,Café Barrio Norte 3 (sintético),cafe,,puebla,centro-cholula,21114,19.051918,-98.192807,,,medio,cocina tradicional,sintetico,,,,,true,0.2559,true
+syn-nor-04,Restaurante Barrio Norte 4 (sintético),restaurante,,puebla,centro-cholula,21114,19.047946,-98.189512,,Tu-Su 10:00-17:00,bajo,comida poblana y mole,sintetico,,,,,true,0.3793,true
+syn-nor-05,Jardín Barrio Norte 5 (sintético),parque,,puebla,centro-cholula,21114,19.048231,-98.187949,,Mo-Sa 08:00-20:00; Su 09:00-14:00,gratis,parque con árboles y bancas,sintetico,,,,,true,0.3684,true
+syn-nor-06,Plaza Barrio Norte 6 (sintético),plaza,,puebla,centro-cholula,21114,19.048512,-98.190516,,,bajo,plaza con vista a la catedral,sintetico,,,,,true,0.3341,true
+syn-nor-b1,Sanitario público Barrio Norte 1 (sintético),banio,sanitario,puebla,centro-cholula,21114,19.047960,-98.192024,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-sur-01,Mercado Barrio Sur 1 (sintético),mercado,,puebla,centro-cholula,21114,19.033387,-98.195213,,Tu-Su 10:00-17:00; PH off,bajo,mercado de comida tradicional y mole,sintetico,,,,,true,0.2362,true
+syn-sur-02,Taller Barrio Sur 2 (sintético),artesanias,,puebla,centro-cholula,21114,19.036741,-98.195102,,24/7,medio,tienda de artesanos locales,sintetico,,,,,true,0.3148,true
+syn-sur-03,Café Barrio Sur 3 (sintético),cafe,,puebla,centro-cholula,21114,19.033962,-98.192926,,Tu-Su 10:00-17:00,,cocina tradicional,sintetico,,,,,true,0.1318,true
+syn-sur-04,Restaurante Barrio Sur 4 (sintético),restaurante,,puebla,centro-cholula,21114,19.036542,-98.193988,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",bajo,comida poblana y mole,sintetico,,,,,true,0.3512,true
+syn-sur-05,Jardín Barrio Sur 5 (sintético),parque,,puebla,centro-cholula,21114,19.038240,-98.193070,,Mo-Su 09:00-18:00,gratis,parque con árboles y bancas,sintetico,,,,,true,0.1046,true
+syn-sur-b1,Sanitario público Barrio Sur 1 (sintético),banio,sanitario,puebla,centro-cholula,21114,19.038298,-98.193487,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-cho-01,Mercado Cholula Centro 1 (sintético),mercado,,cholula,centro-cholula,21140,19.062845,-98.304722,,Tu-Su 10:00-17:00,bajo,dulces típicos y antojitos,sintetico,,,,,true,0.8500,false
+syn-cho-02,Taller Cholula Centro 2 (sintético),artesanias,,cholula,centro-cholula,21140,19.062183,-98.305789,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",bajo,tienda de artesanos locales,sintetico,,,,,true,0.9410,false
+syn-cho-03,Café Cholula Centro 3 (sintético),cafe,,cholula,centro-cholula,21140,19.062689,-98.309883,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",alto,café de especialidad,sintetico,,,,,true,0.8434,false
+syn-cho-04,Restaurante Cholula Centro 4 (sintético),restaurante,,cholula,centro-cholula,21140,19.059612,-98.301539,,Mo-Su 09:00-18:00,gratis,comida poblana y mole,sintetico,,,,,true,0.6567,false
+syn-cho-05,Jardín Cholula Centro 5 (sintético),parque,,cholula,centro-cholula,21140,19.059390,-98.305130,,,bajo,parque con árboles y bancas,sintetico,,,,,true,0.7246,false
+syn-cho-06,Plaza Cholula Centro 6 (sintético),plaza,,cholula,centro-cholula,21140,19.060641,-98.309842,,,bajo,plaza tradicional del barrio,sintetico,,,,,true,0.8510,false
+syn-cho-07,Mirador Cholula Centro 7 (sintético),mirador,,cholula,centro-cholula,21140,19.064225,-98.309319,,Tu-Su 10:00-17:00,alto,cerro con vista,sintetico,,,,,true,0.6628,false
+syn-cho-08,Zona arqueológica Cholula Centro 8 (sintético),zona_arqueologica,,cholula,centro-cholula,21140,19.061121,-98.309586,,Mo-Sa 08:00-20:00; Su 09:00-14:00,alto,pirámide prehispánica y ruinas,sintetico,,,,,true,0.6776,false
+syn-cho-09,Callejón Cholula Centro 9 (sintético),barrio,,cholula,centro-cholula,21140,19.063698,-98.307722,,Tu-Su 10:00-17:00; PH off,bajo,callejón tradicional con vecinos y fachadas,sintetico,,,,,true,0.9014,false
+syn-cho-10,Museo Cholula Centro 10 (sintético),museo,,cholula,centro-cholula,21140,19.060677,-98.304703,,Tu-Su 10:00-17:00,bajo,talavera y artesanía,sintetico,,,,,true,0.6538,false
+syn-cho-b1,Sanitario público Cholula Centro 1 (sintético),banio,sanitario,cholula,centro-cholula,21140,19.060511,-98.306672,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-cho-b2,Sanitario público Cholula Centro 2 (sintético),banio,sanitario,cholula,centro-cholula,21140,19.064694,-98.308283,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
+syn-ton-01,Mercado Cholula Sur 1 (sintético),mercado,,cholula,centro-cholula,21119,19.035221,-98.292200,,24/7,,dulces típicos y antojitos,sintetico,,,,,true,0.1055,true
+syn-ton-02,Taller Cholula Sur 2 (sintético),artesanias,,cholula,centro-cholula,21119,19.033619,-98.294903,,Mo-Su 09:00-18:00,gratis,artesanías de talavera,sintetico,,,,,true,0.1474,true
+syn-ton-03,Café Cholula Sur 3 (sintético),cafe,,cholula,centro-cholula,21119,19.035564,-98.298574,,"Mo-Fr 10:00-14:00,16:00-19:00; Sa 10:00-14:00; Su off",bajo,café de especialidad,sintetico,,,,,true,0.1879,true
+syn-ton-04,Restaurante Cholula Sur 4 (sintético),restaurante,,cholula,centro-cholula,21119,19.029975,-98.295193,,,bajo,comida poblana y mole,sintetico,,,,,true,0.2440,true
+syn-ton-05,Jardín Cholula Sur 5 (sintético),parque,,cholula,centro-cholula,21119,19.030745,-98.294722,,Tu-Su 10:00-17:00,,jardín al aire libre,sintetico,,,,,true,0.3113,true
+syn-ton-b1,Sanitario público Cholula Sur 1 (sintético),banio,sanitario,cholula,centro-cholula,21119,19.032052,-98.298400,,Mo-Su 08:00-20:00,bajo,sanitario público,sintetico,,,,,true,0.0000,false
