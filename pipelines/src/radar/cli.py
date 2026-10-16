@@ -21,6 +21,8 @@ senales = typer.Typer(no_args_is_help=True, help="Señales de atención digital 
 app.add_typer(senales, name="senales")
 asistentes = typer.Typer(no_args_is_help=True, help="Auditoría de asistentes (spec 006).")
 app.add_typer(asistentes, name="asistentes")
+comentarios = typer.Typer(no_args_is_help=True, help="Clasificación de comentarios (spec 007).")
+app.add_typer(comentarios, name="comentarios")
 
 
 def _fallar_si(problemas: list[str], titulo: str) -> None:
@@ -322,3 +324,95 @@ def main() -> None:  # pragma: no cover
 
 if __name__ == "__main__":  # pragma: no cover
     main()
+
+
+def _leer_comentarios() -> list[dict]:
+    import json
+
+    ruta = config.ruta(config.PRIVADO, "comentarios", "youtube.jsonl")
+    if not ruta.exists():
+        typer.secho("Falta data/privado/comentarios/youtube.jsonl", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=1)
+    return [json.loads(x) for x in ruta.read_text(encoding="utf-8").splitlines() if x.strip()]
+
+
+@comentarios.command("muestra")
+def comentarios_muestra(
+    n: int = typer.Option(120, help="Tamaño de la muestra de validación"),
+) -> None:
+    """Crea `validacion.csv` (privado) estratificado por destino, para etiquetar a mano."""
+    import random
+
+    todos = _leer_comentarios()
+    por_destino: dict[str, list[dict]] = {}
+    for c in todos:
+        por_destino.setdefault(c["destino_id"], []).append(c)
+    azar = random.Random(7)
+    cuota = max(1, n // len(por_destino))
+    filas = []
+    for _destino, items in sorted(por_destino.items()):
+        filas += azar.sample(items, min(cuota, len(items)))
+    ruta = config.ruta(config.PRIVADO, "comentarios", "validacion.csv")
+    cols = ["video_id", "destino_id", "texto", "etiqueta_a", "etiqueta_b", "consenso"]
+    pd.DataFrame(
+        [
+            {**{k: c[k] for k in cols[:3]}, "etiqueta_a": "", "etiqueta_b": "", "consenso": ""}
+            for c in filas
+        ]
+    ).to_csv(ruta, index=False)
+    typer.echo(f"{len(filas)} comentarios en {ruta.relative_to(config.raiz())}")
+
+
+@comentarios.command("clasificar")
+def comentarios_clasificar(
+    solo_muestra: bool = typer.Option(False, help="Solo la muestra de validación"),
+) -> None:
+    """Clasifica con Gemini (reanudable) y escribe `opinion_agregada.csv` (n ≥ 5 por celda)."""
+    from radar.asistentes import extractor
+    from radar.comentarios import agregar, clasificar
+
+    config.cargar_entorno()
+    todos = _leer_comentarios()
+    if solo_muestra:
+        ruta_v = config.ruta(config.PRIVADO, "comentarios", "validacion.csv")
+        claves = set(pd.read_csv(ruta_v)["texto"])
+        todos = [c for c in todos if c["texto"] in claves]
+    cache = clasificar.clasificar(
+        todos,
+        extractor.llamar_gemini(),
+        config.ruta(config.PRIVADO, "comentarios", "clasificados.jsonl"),
+    )
+    hechos = [cache[clasificar.clave(c)] for c in todos if clasificar.clave(c) in cache]
+    typer.echo(f"{len(hechos)} de {len(todos)} comentarios clasificados")
+    if solo_muestra:
+        return
+    tabla = agregar.opinion_agregada(hechos)
+    salida = config.ruta(config.CURADO, "opinion_agregada.csv")
+    tabla.to_csv(salida, index=False, float_format="%.4f")
+    typer.echo(f"{len(tabla)} filas en {salida.relative_to(config.raiz())}")
+
+
+@comentarios.command("validar")
+def comentarios_validar() -> None:
+    """Calcula κ entre personas y del clasificador contra el consenso."""
+    import json
+
+    from radar.comentarios import clasificar, validar
+
+    df = pd.read_csv(config.ruta(config.PRIVADO, "comentarios", "validacion.csv")).fillna("")
+    df = df[df["consenso"] != ""]
+    if len(df) < 30:
+        typer.secho(
+            "Faltan etiquetas: se necesitan al menos 30 filas", fg=typer.colors.RED, err=True
+        )
+        raise typer.Exit(code=1)
+    cache = clasificar.cargar_cache(
+        config.ruta(config.PRIVADO, "comentarios", "clasificados.jsonl")
+    )
+    pred = [cache[clasificar.clave(r)]["categoria"] for r in df.to_dict("records")]
+    informe = validar.informe(
+        list(df["etiqueta_a"]), list(df["etiqueta_b"]), list(df["consenso"]), pred
+    )
+    ruta = config.ruta(config.CURADO, "validacion_clasificador.json")
+    ruta.write_text(json.dumps(informe, ensure_ascii=False, indent=2), encoding="utf-8")
+    typer.echo(f"κ clasificador {informe['kappa_clasificador']} (umbral 0.6)")
