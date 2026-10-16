@@ -1,5 +1,5 @@
-import { Link, Route, Routes } from 'react-router'
-import { EstadoApi } from './componentes/EstadoApi'
+import { Route, Routes } from 'react-router'
+import { Tablero } from './admin/Tablero'
 import { Marco } from './componentes/Marco'
 import { Cuenta } from './paginas/Cuenta'
 import { Descubrir } from './paginas/Descubrir'
@@ -9,20 +9,6 @@ import { MiRecorrido, NoEncontrado } from './paginas/MiRecorrido'
 import { Planear } from './paginas/Planear'
 import { Reportar } from './paginas/Reportar'
 import { Resena } from './paginas/Resena'
-
-// La ruta /admin pertenece a la spec del tablero institucional; aquí solo se conserva su punto de entrada.
-function Tablero() {
-  return (
-    <main id="contenido">
-      <h1>Tablero institucional</h1>
-      <p>Indicadores agregados para la Secretaría de Desarrollo Turístico.</p>
-      <EstadoApi />
-      <p>
-        <Link to="/">Volver a la app del visitante</Link>
-      </p>
-    </main>
-  )
-}
 
 export default function App() {
   return (

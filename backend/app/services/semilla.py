@@ -34,6 +34,7 @@ from app.models import (
     PointOfInterest,
 )
 from app.models.core import ATRIBUTOS_ACCESIBILIDAD, ESTADOS_ATRIBUTO, RANGOS_COSTO
+from app.services import definiciones
 
 registro = logging.getLogger("puebla_viva.semilla")
 
@@ -411,6 +412,15 @@ def cargar_indicadores(sesion: Session, ruta: Path, reporte: Reporte) -> None:
     reporte.cargados["aggregate_metric"] = len(filas)
 
 
+def cargar_definiciones(sesion: Session, reporte: Reporte) -> None:
+    """Fichas de `metrics/definitions.yaml` (spec 019); van después de la serie oficial."""
+    ruta = ajustes().archivo_metricas
+    if not ruta.exists():
+        reporte.omitidos.append(f"{ruta} no existe (spec 019)")
+        return
+    reporte.cargados["metric_definition (fichas)"] = definiciones.cargar(sesion, ruta)
+
+
 def cargar(
     sesion: Session,
     datos: Path | None = None,
@@ -428,6 +438,7 @@ def cargar(
     cargar_accesibilidad(sesion, curado / "poi_accesibilidad.csv", pois, reporte)
     if indicadores:
         cargar_indicadores(sesion, datos / "curado" / "indicadores_oficiales_mensual.csv", reporte)
+    cargar_definiciones(sesion, reporte)
     sesion.commit()
     return reporte
 

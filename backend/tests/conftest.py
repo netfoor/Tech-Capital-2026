@@ -11,7 +11,8 @@ from sqlalchemy import make_url
 from app.config import Ajustes
 
 URL_BASE = make_url(Ajustes().database_url)
-URL_PRUEBAS = URL_BASE.set(database="pueblaviva_test")
+# BASE_PRUEBAS permite que varias ramas corran pruebas a la vez sin pisarse.
+URL_PRUEBAS = URL_BASE.set(database=os.environ.get("BASE_PRUEBAS", "pueblaviva_test"))
 os.environ["DATABASE_URL"] = URL_PRUEBAS.render_as_string(hide_password=False)
 os.environ.setdefault("JWT_SECRETO", "secreto-solo-para-pruebas-" + "x" * 32)
 os.environ.setdefault("DIRECTORIO_MEDIA", str(Path(__file__).parent / ".media"))
