@@ -1,10 +1,10 @@
 # Constitución del proyecto
 
-Principios que toda especificación, plan, tarea y línea de código debe respetar. Si una tarea choca con un principio, se detiene y se registra el conflicto en la sección «Preguntas abiertas» de su spec; no se resuelve en silencio.
+Principios de Puebla Viva 360 que toda especificación, plan, tarea y línea de código debe respetar. Si una tarea choca con un principio, se detiene y se registra el conflicto en la sección «Preguntas abiertas» de su spec; no se resuelve en silencio.
 
 ## I. Las bases mandan
 
-La convocatoria (`docs/bases/convocatoria-hackathon-puebla-turistica-360.pdf`) es el requisito de mayor jerarquía. Cada funcionalidad declara qué requisito de las bases atiende, y la matriz `docs/bases/trazabilidad.md` se mantiene al día.
+La convocatoria (`docs/bases/convocatoria-hackathon-puebla-turistica-360.pdf`) es el requisito de mayor jerarquía. Cada funcionalidad declara qué requisito de las bases atiende, y la matriz `docs/requirements.md` se mantiene al día.
 
 - Verificación: toda spec tiene la sección «Bases que atiende» con referencias a `§` de la convocatoria.
 
@@ -18,7 +18,7 @@ Nada se implementa sin `spec.md` → `plan.md` → `tasks.md`. Un cambio de comp
 
 Todo dato publicado se puede rastrear hasta una fuente registrada en `data/fuentes/fuentes.csv`: URL, fecha de consulta y SHA-256 cuando hay archivo. Los indicadores distinguen entre **medido** (registro directo, por ejemplo DataTur) y **derivado** (calculado por la fuente con un factor o supuesto). Ninguna cifra se escribe a mano en el sitio ni en los documentos de entrega: se genera desde `data/curado/`.
 
-- Verificación: el exportador falla si un valor publicado no tiene `fuente_id`; el sitio comprueba la SHA-256 de cada archivo contra el manifiesto.
+- Verificación: cada indicador de `metrics/definitions.yaml` declara su fuente y cada tabla curada tiene su fila en `data/catalog/data_catalog.csv`.
 
 ## IV. Recolección legítima y respeto a las personas
 
@@ -40,9 +40,9 @@ Se reporta el tamaño de muestra, la incertidumbre y las limitaciones de cada re
 
 ## VII. IA con propósito y explicable
 
-La IA se usa donde aporta algo que no se lograría sin ella: como **objeto de estudio** (qué recomiendan los asistentes) y como **herramienta de clasificación o extracción** validada contra una muestra revisada por personas. Para cada componente con IA se documenta su función, modelo, parámetros, validación y límites en `docs/ia-responsable.md`. Un chatbot genérico no es parte de la solución.
+La IA se usa donde aporta algo que no se lograría sin ella: como **objeto de estudio** (qué recomiendan los asistentes) y como **herramienta de clasificación o extracción** validada contra una muestra revisada por personas. Para cada componente con IA se documenta su función, modelo, parámetros, validación y límites en `docs/ia/`. Un chatbot genérico no es parte de la solución.
 
-- Verificación: ningún componente con IA se integra sin su entrada en `docs/ia-responsable.md` y su métrica de validación.
+- Verificación: ningún componente con IA se integra sin su ficha en `docs/ia/` y su comparación contra una línea base.
 
 ## VIII. Lo mínimo demostrable primero
 
@@ -52,10 +52,28 @@ Se construye en orden de prioridad: P0 (indispensable para la demostración), lu
 
 ## IX. Seguridad de llaves y datos
 
-Las llaves viven en `.env` (local) o en un gestor de secretos; nunca en el repositorio, en registros ni en el sitio. El sitio es estático y no expone llaves. Los buckets son privados y el contenido se sirve solo por CloudFront.
+Las llaves viven en `.env` (local) o en un gestor de secretos; nunca en el repositorio, en registros ni en el sitio. El sitio es estático y no expone llaves. Los datos personales viven en el esquema `private` y nunca salen en una respuesta pública.
 
 - Verificación: `make verificar` busca patrones de llaves en los archivos versionados.
 
 ## X. Escritura clara
 
 Todo en español de México, con voz activa y frases cortas. Los documentos y el sitio no hablan de las herramientas con que se construyó el proyecto; hablan del problema, los datos y la solución.
+
+## XI. Nadie es objeto de vigilancia
+
+La ubicación se registra solo con consentimiento específico y durante una sesión que la persona inicia, pausa y detiene. No hay rastreo oculto ni ubicación pública en vivo. La Secretaría ve agregados, nunca personas: cada indicador publicado suprime los grupos con menos de k observaciones.
+
+- Verificación: una prueba comprueba que ninguna respuesta pública ni del tablero contiene coordenadas crudas, y otra que los agregados con n < k se suprimen.
+
+## XII. Lo sintético se nota
+
+Todo dato sintético vive en archivos o filas con `is_synthetic=true` y se muestra con la etiqueta «DATOS SINTÉTICOS DE DEMOSTRACIÓN». Se separan siempre cuatro estados: producto objetivo, MVP implementado, demo sintética y resultado medido.
+
+- Verificación: las pruebas del tablero fallan si un agregado mezcla filas sintéticas y reales sin marcarlo.
+
+## XIII. Accesibilidad de primera clase
+
+La falta de un dato de accesibilidad se muestra como «sin verificar», nunca como «accesible». Una restricción indispensable del visitante nunca se viola. La interfaz busca WCAG 2.2 AA y la lista es la vista principal, no un extra del mapa.
+
+- Verificación: pruebas unitarias del recomendador con 0 violaciones de restricciones indispensables, y axe sin errores en los flujos P0.

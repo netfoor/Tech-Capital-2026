@@ -1,0 +1,518 @@
+PUEBLA VIVA 360
+CONTEXTO MAESTRO PARA AGENTE DE DESARROLLO (MODO AUTÓNOMO)
+Versión 3.1 | 16 de octubre de 2026 | Producto, problema, datos, inclusión, arquitectura, plan de ejecución y entregables
+Cambios v3.1: se integran las funcionalidades del referente Latera aportadas por el equipo (sección 04) y su traducción a Puebla Viva 360 en B2C (05), recomendador (10), métricas B2B (09), entidades/endpoints (13), privacidad (14), plan (16) y demo (17).
+Base del concurso: «Convocatoria Hackathon Puebla Turística 360°: Datos que transforman experiencias» (Tech Capital Puebla 2026, SECIHTI Puebla + Secretaría de Desarrollo Turístico, con Intelligentia).
+
+==========================================================================================
+00. LEE ESTO PRIMERO (INSTRUCCIONES DE ARRANQUE PARA EL AGENTE)
+==========================================================================================
+
+00.1 Situación real de tiempo
+- El hackathon se desarrolla del 15 al 17 de octubre de 2026, 11:00–17:00, en el Centro Expositor (Sala de Rueda de Prensa). La evaluación final ocurre durante Tech Capital 2026. Este documento se entrega el 16 de octubre en la madrugada: hay que asumir que quedan aproximadamente 30–36 horas de trabajo hasta la presentación final.
+- Consecuencia: construye primero un VERTICAL SLICE que funcione de punta a punta y sea demostrable, y solo después amplía. Un flujo completo pequeño gana a muchas funciones a medias. Si algo no se termina, se documenta como hoja de ruta, nunca se finge.
+
+00.2 Orden de autoridad
+1) La convocatoria (requisitos, entregables y rúbrica) manda sobre todo lo demás.
+2) Este documento define el producto objetivo y el alcance del MVP.
+3) Las decisiones técnicas cerradas de la sección 12 no se rediscuten salvo bloqueo real; si cambias algo, escribe un ADR corto en docs/adr/.
+
+00.3 Reglas de oro (no negociables)
+- No inventar: datasets obtenidos, cifras, resultados de IA, entrevistas, acuerdos con instituciones, licencias ni capacidades de apps de referencia. Si no lo verificaste, se marca «NO VERIFICADO».
+- Separar siempre cuatro estados: PRODUCTO OBJETIVO / MVP IMPLEMENTADO / DEMO SINTÉTICA / RESULTADO MEDIDO.
+- Todo dato sintético vive en tablas/archivos con sufijo o columna is_synthetic=true y se muestra con etiqueta visible «DATOS SINTÉTICOS DE DEMOSTRACIÓN» en la UI.
+- Nada de tracking oculto, ubicación pública en vivo, ni panel B2B con personas identificables.
+- Cada URL de la sección 08 marcada [VERIFICAR] debe abrirse y confirmarse (licencia, fecha, campos) antes de integrarla; registra el resultado en data/catalog/data_catalog.csv.
+- Si una descarga falla o la red del entorno la bloquea, no la eludas: registra el pendiente en STATUS.md, pide el archivo al equipo y continúa con lo demás.
+
+00.4 Cómo reportar avance
+- Mantén en la raíz un STATUS.md con: hecho / en curso / bloqueado / decisiones / próximos pasos, actualizado al cerrar cada bloque.
+- Mantén docs/ENTREGABLES.md mapeando cada entregable de la convocatoria (sección 22) al archivo que lo cumple.
+- Haz commits pequeños con mensajes claros. Nunca subas tokens ni .env al repositorio.
+
+00.5 Primeras acciones concretas (en este orden)
+1) Crear el repositorio con la estructura de la sección 13.1, docker-compose con PostGIS, backend y frontend vacíos que arranquen.
+2) Crear STATUS.md, docs/ENTREGABLES.md y docs/requirements.md (matriz requisito de convocatoria → funcionalidad → criterio de aceptación).
+3) Ejecutar la ingesta de datos P0 (sección 08.3) para el corredor piloto.
+4) Producir el notebook/script de análisis del problema (sección 02.3); sus resultados alimentan el pitch y el tablero.
+5) Construir el vertical slice (sección 16).
+
+==========================================================================================
+01. IDENTIDAD Y TESIS DEL PROYECTO
+==========================================================================================
+
+Nombre de trabajo: Puebla Viva 360. Categoría: plataforma de experiencias turísticas inclusivas e inteligencia territorial participativa.
+Mercado: B2C para visitantes, residentes exploradores y comunidades; B2B institucional para la Secretaría de Desarrollo Turístico de Puebla.
+
+Tesis: Puebla Viva 360 convierte experiencias turísticas consentidas y fuentes públicas verificables en dos productos complementarios: (1) una PWA que ayuda a descubrir, planear, vivir y recordar recorridos, con accesibilidad como criterio de primera clase; y (2) un observatorio institucional que convierte señales agregadas en evidencia trazable para decidir dónde mejorar accesos, señalización, servicios y promoción de destinos alternativos. Promesa: mejor turismo para más personas, en más lugares y con menos barreras, sin convertir a nadie en objeto de vigilancia.
+
+Diferenciador central (circuito cerrado): la MISMA señal de accesibilidad sirve para personalizar la ruta de un visitante y para revelar una brecha territorial a la Secretaría; la corrección de esa brecha mejora las siguientes recomendaciones.
+
+Frase de presentación: «Una Puebla que se descubre entre todos y se comprende con datos: experiencias inclusivas para las personas, inteligencia accionable para sus destinos».
+
+==========================================================================================
+02. EL PROBLEMA (EJE PRINCIPAL DEL PROYECTO)
+==========================================================================================
+
+02.1 Enunciado del problema (versión para jurado)
+La visita turística en Puebla está concentrada en pocos polos (capital y Cholula) mientras otros destinos con oferta cultural y natural reciben poca demanda; al mismo tiempo, el visitante no encuentra información confiable y unificada sobre costo, horarios y, sobre todo, accesibilidad física de los lugares. Quien tiene una necesidad de movilidad, viaja con personas mayores o con poco presupuesto, planea a ciegas o se queda en los sitios más conocidos. La Secretaría, por su parte, dispone de indicadores hoteleros agregados pero no de señales finas sobre permanencia, satisfacción y barreras por destino o corredor, lo que dificulta decidir dónde intervenir.
+
+02.2 Evidencia pública ya identificada (citar con fuente en el pitch; el agente debe abrir y verificar cada documento)
+- El boletín estatal de turismo del primer trimestre de 2026 (CEIGEP/SEI Puebla, con base en DataTur) reporta ocupación hotelera estatal superior al 47%, pero con fuerte heterogeneidad: San Pedro Cholula y Puebla capital por encima de 55% frente a Tepeaca y Acatzingo por debajo de 30%; además, unos pocos recintos (entre ellos el Museo Regional de Puebla) concentran cerca de tres cuartas partes de las visitas a recintos turísticos y culturales reportados, y el propio boletín señala la necesidad de diversificar la oferta y distribuir de forma más equilibrada los beneficios.
+  URL: https://sei.puebla.gob.mx/docs/boletines/turismo-2026-1.pdf  [VERIFICAR cifras exactas y página]
+- Serie de boletines trimestrales anteriores (2021–2025) con ocupación y estadía por centro turístico y Pueblos Mágicos: https://ceigep.puebla.gob.mx/docs/boletines/turismo-2024-4.pdf , https://ceigep.puebla.gob.mx/docs/boletines/turismo-2025-1.pdf , https://ceigep.puebla.gob.mx/docs/boletines/turismo-2025-2.pdf  [VERIFICAR]
+- Observatorio Turístico del Estado de Puebla (Secretaría de Turismo estatal), incluye un informe de encuestas a visitantes 2024 elaborado con la BUAP (procedencia, sitios visitados, gasto, medio por el que conocieron el destino, recomendación): https://sectur.puebla.gob.mx/observatorioturistico/ y https://sectur.puebla.gob.mx/observatorioturistico/documentospdf/RESULTADOS-OBSERVATORIO-TURISTICO.pdf  [VERIFICAR]
+- Brecha de información de accesibilidad: se medirá directamente (sección 02.3) como proporción de POI del corredor sin atributo de accesibilidad en fuentes abiertas (OSM wheelchair=*, toilets:wheelchair=*).
+- Demanda potencial con necesidades de movilidad: Censo de Población y Vivienda 2020 por AGEB y manzana urbana incluye población con discapacidad para caminar, subir o bajar (PCDISC_MOT), para ver (PCDISC_VIS), oír (PCDISC_AUD), etc. Se usa SOLO como contexto agregado de población residente, nunca para perfilar usuarios.
+
+02.3 Análisis de problema que el agente DEBE producir con datos reales (entregable «Evidencia de análisis y resultados»)
+Crear analysis/01_problema.ipynb (o script reproducible equivalente con salida en reports/) que calcule:
+A) Concentración de la demanda hotelera: participación por centro turístico y un índice de concentración (Herfindahl-Hirschman y/o Gini) a partir de DataTur o de las tablas de los boletines CEIGEP; serie temporal de ocupación y estadía por centro turístico del estado.
+B) Concentración de la oferta: conteo de establecimientos turísticos por municipio y por corredor usando DENUE (códigos SCIAN de alojamiento 7211xx, preparación de alimentos 7225xx, museos y sitios históricos 7121xx, agencias 5615xx; confirmar códigos en el catálogo SCIAN 2023 de INEGI) y museos/zonas arqueológicas del SIC.
+C) Desajuste oferta–demanda: municipios/corredores con oferta cultural relevante (SIC + DENUE + Pueblos Mágicos) y baja ocupación/estadía (DataTur). Estos son candidatos a «destinos alternativos».
+D) Brecha de información de accesibilidad: % de POI del corredor piloto con wheelchair=yes/limited/no frente a sin etiqueta en OSM; % de baños públicos con toilets:wheelchair; mostrar como «cobertura de información», no como «nivel de accesibilidad».
+E) Contexto de demanda local con discapacidad motriz: población PCDISC_MOT por AGEB en un radio del corredor (agregado, con supresión de celdas pequeñas tal como las publica INEGI).
+F) Pendiente del entorno: pendiente media de tramos peatonales del corredor a partir de un modelo digital de elevación (sección 08), como atributo de esfuerzo físico del recorrido.
+Cada resultado lleva: fuente, fecha de consulta, denominador, limitaciones. Las gráficas resultantes se usan en el pitch y en el tablero B2B.
+
+02.4 Hipótesis a validar (no son hechos)
+H1: Los visitantes con restricciones de movilidad, edad o presupuesto no encuentran información suficiente para planear y, por tanto, se concentran en pocos sitios o renuncian.
+H2: Una recomendación explicable que respete restricciones e incluya destinos alternativos aumenta la aceptación de rutas fuera de los polos principales.
+H3: Las barreras reportadas por visitantes, agregadas y moderadas, permiten priorizar intervenciones concretas (rampa, baño, señalética) en corredores específicos.
+Validación mínima posible durante el hackathon: 5–10 entrevistas cortas o encuesta breve a visitantes/participantes (guion en docs/validacion/guion_entrevista.md), documentando consentimiento y resultados sin datos personales. Si no se logra, decirlo explícitamente.
+
+02.5 Beneficiarios
+Visitantes (incluyendo personas con discapacidad, mayores, familias con carriola, presupuestos bajos, primerizos); prestadores pequeños y comunitarios; comunidades receptoras; Secretaría de Desarrollo Turístico y municipios.
+
+02.6 Fuera de alcance de la afirmación
+La muestra de usuarios de la app NO representa al turismo de Puebla. Solo se reporta comportamiento observado de participantes; las inferencias poblacionales requieren calibración externa (p. ej., contra DataTur) y no forman parte del MVP.
+
+==========================================================================================
+03. ALCANCE FUNCIONAL CERRADO
+==========================================================================================
+
+Cinco subsistemas: (A) exploración y planeación inclusiva; (B) bitácora geográfica y capa social; (C) captura y curación de datos; (D) inteligencia turística institucional; (E) asistencia analítica mediante MCP. B2C y B2B comparten catálogo territorial y métricas, pero NO comparten acceso a datos personales. Rutas públicas, reseñas y fotos requieren acción expresa del usuario.
+
+Matriz de prioridad (obligatoria para planear el trabajo):
+P0 (debe funcionar en la demo): catálogo del corredor con fuentes reales; ficha de POI con accesibilidad y estado de verificación; vista lista + mapa; recomendador de ruta con restricciones y explicación; sesión de recorrido consentida o traza de demo etiquetada; check-in manual; detección y confirmación de visita; reseña/reporte de barrera; agregado protegido; tablero B2B con 4 módulos (Panorama, Experiencia, Inclusión, Oferta–demanda); análisis del problema; documentación de fuentes.
+P0 adicional (inspirado en Latera, bajo costo): botón «Guardar en mi mapa» en cada ficha, con listas/etiquetas propias y nota; itinerario multi-día generado a partir de los lugares guardados (reutiliza el motor del recomendador).
+P1 (si hay tiempo tras P0 estable): servidor MCP con 2–3 herramientas; extracción de temas de reseñas; publicación selectiva con foto; perfil y mapa personal; exportación de reporte PDF/CSV desde el tablero; importación por enlace (pegar URL de Google Maps, Instagram, TikTok o web) y Web Share Target de la PWA; compartir plan o lista por enlace web de solo lectura; métrica B2B de «intención de visita» agregada.
+P2 (hoja de ruta, solo diseño/documentación): seguidores, comunidades, audio, pronóstico de visitas, app nativa (necesaria para el menú Compartir en iOS), clonar guías de otros usuarios y edición colaborativa en tiempo real, alianzas, panel para prestadores.
+
+==========================================================================================
+04. REFERENTE DE EXPERIENCIA (BENCHMARKING RESPONSABLE)
+==========================================================================================
+
+04.1 Ficha del referente
+App «Latera» en Google Play, paquete com.popenstudio.latera (ficha: https://play.google.com/store/apps/details?id=com.popenstudio.latera). Según la descripción aportada por el equipo, es desarrollada por Gregoire Girard [VERIFICAR nombre del desarrollador contra la ficha; el paquete indica «popenstudio»].
+Propósito declarado: organizador para viajeros que acumulan recomendaciones en redes sociales (capturas, enlaces, notas dispersas) y necesitan convertirlas en planes de viaje accionables.
+
+04.2 Funcionalidades declaradas (estado: DECLARADO POR EL EQUIPO a partir de la descripción pública; el agente debe confirmarlas en la ficha y marcarlas OBSERVADO/NO VERIFICADO en docs/benchmark.md)
+L1. Importación en un toque desde el menú «Compartir» de Instagram, TikTok, Google Maps y Safari: la app identifica el establecimiento y lo agrega automáticamente.
+L2. Mapa global limpio con todos los lugares guardados («spots»), agrupados por ciudad o país; permite buscar y filtrar geográficamente, a diferencia de las carpetas de guardados de las redes sociales.
+L3. Generador automático de itinerarios: el usuario selecciona lugares guardados y define la duración (p. ej., 3 días); el algoritmo arma una ruta día por día que agrupa atracciones cercanas y evita desplazamientos innecesarios o cruzar la ciudad repetidamente.
+L4. Listas maestras y notas de contexto: etiquetas personalizadas (miradores, cafés, cenas, «gemas ocultas»); guarda el enlace al post o video original para recordar por qué se guardó el sitio; notas propias sobre precios, horarios o qué pedir.
+L5. Colaboración: compartir mapas o planes con amigos mediante enlace web; clonar o duplicar guías de otros usuarios.
+
+04.3 Qué toma Puebla Viva 360 y qué la hace distinta
+Latera resuelve «organizar lo que ya quiero visitar». Puebla Viva 360 adopta ese patrón (guardar → mapa → itinerario → compartir) porque reduce la fricción de planear, pero agrega tres capas que Latera no declara y que son el núcleo del concurso:
+(a) Información verificable del lugar: cada lugar guardado se vincula al catálogo integrado (DENUE + SIC + OSM + auditoría propia) con horario, costo, accesibilidad y estado de verificación; el itinerario no solo agrupa por cercanía, sino que respeta restricciones indispensables (escalones, descansos, baños, presupuesto, pendiente) y horarios.
+(b) Descubrimiento territorial: el recomendador sugiere destinos alternativos fuera de los polos saturados junto a lo que el usuario ya guardó («si guardaste X, a 20 min está Y con menos afluencia»).
+(c) Inteligencia institucional: los lugares guardados son una señal de INTENCIÓN de visita (antes del viaje), complementaria a la visita observada (durante) y la reseña (después). Agregada y protegida, permite a la Secretaría ver qué destinos generan interés y cuáles no se convierten en visita (brecha intención → visita), algo que no existe en DataTur.
+
+04.4 Mapeo funcionalidad Latera → Puebla Viva 360
+L1 Importación → P1. En PWA: (i) campo «Pegar enlace» universal; (ii) Web Share Target API declarado en el manifest, que permite recibir enlaces desde el menú Compartir en Android/Chrome cuando la PWA está instalada (en iOS/Safari no está soportado: documentar la limitación; app nativa = P2). Resolución del lugar: enlaces de Google Maps → extraer coordenadas o nombre de la URL; otros enlaces → leer solo metadatos públicos permitidos (título/Open Graph) o el texto que el usuario pegue, y proponer candidatos del catálogo por coincidencia difusa de nombre + municipio; el usuario confirma. Nunca hacer scraping que viole términos de Instagram/TikTok ni descargar su contenido; solo se guarda la URL como referencia.
+L2 Mapa de guardados → P0. «Mi mapa»: lugares guardados agrupados por municipio/corredor, con vista lista equivalente (accesibilidad) y filtros por etiqueta, accesibilidad y estado de verificación.
+L3 Itinerario multi-día → P0 (reutiliza el motor de la sección 10.1). Entrada: lugares guardados seleccionados + número de días + restricciones. Agrupación por día mediante clustering espacial con capacidad (horas por día), luego secuenciación con ventanas de horario; reporta lugares que no caben o que no cumplen restricciones y por qué.
+L4 Listas y notas → P0 (listas/etiquetas y nota privada) y P1 (enlace de origen). Etiquetas propias más etiquetas sugeridas del catálogo. Las notas son privadas por defecto.
+L5 Colaboración → P1: enlace web de solo lectura a una lista o plan (sin ubicación ni datos personales; revocable). P2: clonar guías de otros y edición colaborativa.
+
+04.5 Reglas del benchmarking
+Inspeccionar solo lo públicamente visible o usado con autorización; no descompilar, no extraer recursos ni usar endpoints privados; identidad propia (marca, componentes, textos, ilustraciones, nombres de funciones). Prohibido afirmar «incluye todo Latera»; en el pitch decir «tomamos el patrón de organizar recomendaciones y le agregamos datos verificados, accesibilidad e inteligencia territorial». Producir en docs/benchmark.md una tabla L1–L5 con estado, decisión (adoptar/adaptar/descartar), prioridad y diferencia. Tiempo máximo: 30 minutos.
+
+==========================================================================================
+05. EXPERIENCIA B2C DE PUNTA A PUNTA
+==========================================================================================
+
+Ingreso: se explora sin cuenta. Para guardar bitácora o publicar, registro simple con explicación de qué datos son opcionales. No se exige GPS para navegar ni para consultar accesibilidad.
+
+Descubrimiento: mapa y lista equivalentes (la lista es la vista accesible principal, no un extra). Filtros: intereses, municipio, distancia, duración, rango de costo, horario, transporte, esfuerzo físico (incluye pendiente), accesibilidad y «solo atributos verificados». Ficha de POI: descripción, ubicación, horario con fuente y fecha, costo estimado, cómo llegar, imágenes con texto alternativo, servicios, barreras conocidas y estado de verificación por atributo. Ausencia de dato = «sin verificar», nunca «accesible».
+
+Guardar y organizar (patrón referente, sección 04): botón «Guardar en mi mapa» en cada ficha y en cada recomendación; listas/etiquetas propias; nota privada; «Pegar enlace» para importar un lugar visto en redes o en Google Maps (P1) con confirmación del usuario contra el catálogo; si el lugar no existe en el catálogo, se guarda como «lugar propio sin verificar» y puede proponerse como alta (moderada). «Mi mapa» muestra guardados por municipio/corredor y se puede compartir como enlace de solo lectura (P1). Guardar funciona sin cuenta en almacenamiento local y se sincroniza al registrarse.
+
+Planificación: dos modos. (1) Desde cero: tiempo disponible, punto de partida opcional, intereses, presupuesto, transporte y necesidades de acceso (todas opcionales). El recomendador devuelve un itinerario explicable con alternativas, distancias, tiempos, descansos, baños y horarios cuando haya datos fiables; marca tramos sin información verificada. (2) Desde mis guardados: el usuario selecciona lugares de «Mi mapa», indica número de días y restricciones, y obtiene un plan día por día agrupado por cercanía y horario, con la lista de lugares que no caben o no cumplen restricciones y el motivo; el sistema puede sugerir 1–2 destinos alternativos cercanos, claramente marcados como sugerencia. En ambos modos el usuario edita, reordena y guarda (caché offline parcial).
+
+Durante el recorrido: sesión de viaje iniciada voluntariamente, indicador persistente de captura, botones pausar/detener y precisión estimada. Registro de posiciones solo mientras la app está activa (limitación real de las PWA). Detección de paradas → el usuario confirma, corrige o rechaza. Check-ins manuales sin GPS. Notas, fotos y valoraciones privadas por defecto.
+
+Después: diario cronológico y mapa personal (lugares, tiempo observado, distancia estimada, recuerdos). Publicación por elemento con audiencia y nivel de detalle territorial. Reseña estructurada por dimensiones: accesibilidad, limpieza, servicio, precio percibido, señalización, comodidad, inclusión, experiencia global. Reporte de barrera con tipo, descripción y foto opcional (sin EXIF).
+
+Capa social (P1/P2): perfiles, publicaciones, colecciones, comentarios, reportes de información incorrecta, moderación, bloqueo y denuncia. El mapa público solo muestra destinos expresamente compartidos; jamás historial continuo ni posición en vivo.
+
+==========================================================================================
+06. INCLUSIÓN COMO EJE TRANSVERSAL
+==========================================================================================
+
+6.1 Accesibilidad digital: objetivo WCAG 2.2 AA (https://www.w3.org/TR/WCAG22/). Teclado completo, lector de pantalla, HTML semántico, foco visible, contraste, texto escalable, objetivos táctiles de al menos 24×24 px, errores comprensibles, nada dependiente solo del color o de gestos, lista alternativa al mapa, texto alternativo, prefers-reduced-motion. Pruebas: axe-core/Lighthouse automatizadas en CI más prueba manual con NVDA o TalkBack/VoiceOver en los flujos P0 (documentar en docs/accesibilidad.md).
+
+6.2 Accesibilidad física: atributos verificables por POI: acceso sin escalones, rampa, pendiente, ancho de paso, elevador, baño accesible, superficie, asientos de descanso, estacionamiento reservado, transporte accesible cercano, distancia caminable, obstáculos temporales. Cada atributo guarda origen (prestador / equipo verificador / comunidad / OSM), fecha, confianza y estado. Una sola opinión no certifica.
+Mapeo inicial desde OSM: wheelchair=yes|limited|no|designated, toilets:wheelchair=*, ramp=*, step_count=*, incline=*, surface=*, smoothness=*, kerb=*, tactile_paving=*, highway=elevator, amenity=toilets, amenity=bench. Referencia: https://wiki.openstreetmap.org/wiki/Key:wheelchair
+
+6.3 Inclusión sensorial, cognitiva y comunicativa: modo lenguaje claro, instrucciones paso a paso en texto, interfaz no sobrecargada, transcripciones/subtítulos para audio publicado. Español inicialmente con i18n preparado (inglés como segundo idioma si sobra tiempo). No prometer traducción a lenguas indígenas sin colaboración comunitaria.
+
+6.4 Inclusión económica y territorial: filtros por presupuesto, actividades gratuitas, costo de transporte y prestadores pequeños. El ranking incluye un término de diversidad territorial; se mide exposición de destinos alternativos sin imponer cuotas que sacrifiquen pertinencia o seguridad.
+
+6.5 Inclusión social: sin declarar diagnósticos. Las preferencias son funcionales («evitar escaleras», «descansos cada 30 min», «necesito baño accesible») y opcionales, editables y privadas. Nunca inferir discapacidad, religión, nivel socioeconómico o salud a partir de trayectorias o fotos.
+
+6.6 Participación comunitaria: correcciones de fichas y reportes de barreras con trazabilidad (quién, cuándo, estado de moderación). No publicar automáticamente sitios culturalmente sensibles, privados o ecológicamente frágiles.
+
+6.7 Inclusión institucional: módulo B2B «Mapa de barreras y brechas de información»: % de fichas verificadas, distribución de servicios accesibles, reportes de obstáculos, brechas por corredor y prioridades sugeridas. Siempre distinguir cobertura de información vs. realidad territorial.
+
+6.8 Escena de valor (debe ser reproducible en la demo): ruta de 4 horas, pocas escaleras, descansos frecuentes, costo bajo → el sistema filtra con atributos confiables, marca tramos sin verificar y propone alternativa → tras la visita, un reporte confirma una barrera → moderación → la ficha cambia → el tablero B2B muestra la brecha → la siguiente recomendación ya la considera.
+
+==========================================================================================
+07. GEOLOCALIZACIÓN, VISITAS Y MOVILIDAD
+==========================================================================================
+
+Tracking desactivado por defecto; solo con consentimiento específico y sesión explícita. Cada muestra: timestamp, lat, lon, precisión, id seudónimo de sesión, versión de consentimiento. Retención breve de muestras crudas (p. ej., 30 días en producción; en el MVP, purga configurable) y almacenamiento de resúmenes.
+
+Pipeline (implementar en backend/app/pipeline/ con pruebas):
+ingestión → validación temporal/espacial → eliminación de duplicados y saltos imposibles (velocidad > umbral) → agrupamiento espacio-temporal (p. ej., ST-DBSCAN o detección de paradas por radio y duración mínima) → detección de paradas → duración observada y huecos → asociación probabilística a POI o zona (distancia, precisión, horario de apertura) → confirmación voluntaria → confianza → resumen → agregación protegida.
+Estados de visita: «visita probable», «visita confirmada», «paso cercano», «desconocido». Un punto cerca de un hotel no demuestra hospedaje; un punto dentro de un restaurante no demuestra compra.
+Parámetros iniciales EXPERIMENTALES y configurables (no reglas universales): radio de parada 50–100 m, duración mínima 5–10 min, velocidad máxima peatonal plausible 2.5 m/s. Documentar su calibración en docs/calibracion_gps.md con una prueba real del equipo en el corredor si es posible.
+Traza de demo: generar en data/synthetic/ trazas simuladas etiquetadas (con ruido gaussiano de 5–20 m y huecos) para probar el pipeline y para la demo.
+
+==========================================================================================
+08. SISTEMA DE DATOS: FUENTES, ENLACES Y QUÉ DESCARGAR
+==========================================================================================
+
+08.1 Datos de primera parte (con propósito específico): preferencias opcionales; eventos de descubrimiento y guardado; sesiones de recorrido opt-in; visitas confirmadas y check-ins; reseñas estructuradas; fotos compartidas voluntariamente; atributos y correcciones de accesibilidad; respuestas a encuesta breve; gasto autodeclarado en rangos (nunca inferido); interacción con recomendaciones; información de prestadores.
+
+08.2 Fuentes externas (catálogo con enlaces). Para cada una: abrir, confirmar licencia/términos, fecha de actualización, cobertura y campos; registrar en data/catalog/data_catalog.csv y una ficha en docs/source_cards.md.
+
+[F1] INEGI – DENUE (Directorio Estadístico Nacional de Unidades Económicas). Uso: catálogo base de establecimientos turísticos (alojamiento, alimentos, museos, agencias, artesanías) con coordenadas, SCIAN y tamaño de personal ocupado.
+  - API (requiere token gratuito por correo): https://www.inegi.org.mx/app/api/denue/v1/tokenVerify.aspx  Métodos útiles: Buscar (por coordenadas y radio), BuscarEntidad, BuscarAreaAct. Ejemplo de forma: https://www.inegi.org.mx/app/api/denue/v1/consulta/BuscarEntidad/{condicion}/21/{registro_inicial}/{registro_final}/{token} (21 = clave de Puebla) [VERIFICAR firma exacta en la documentación oficial].
+  - Alternativa sin token: descarga masiva del DENUE por entidad (CSV/SHP) en la sección de descargas de inegi.org.mx [VERIFICAR URL vigente]. Recomendado para reproducibilidad: descargar Puebla completo y filtrar localmente.
+  - Licencia: Términos de Libre Uso de la Información del INEGI [VERIFICAR].
+  - Guardar token en .env como INEGI_DENUE_TOKEN (pedirlo al equipo si no existe).
+
+[F2] INEGI – Marco Geoestadístico (límites estatales, municipales, AGEB, localidades, manzanas). Uso: unidades territoriales para agregación y joins con Censo. https://www.inegi.org.mx/temas/mg/  Descargar la versión más reciente disponible para Puebla (entidad 21) [VERIFICAR versión]. Catálogo de claves: https://www.inegi.org.mx/app/ageeml/
+
+[F3] INEGI – Censo de Población y Vivienda 2020, principales resultados por AGEB y manzana urbana (Puebla). Uso: contexto agregado de población con discapacidad (PCON_DISC, PCDISC_MOT, PCDISC_VIS, PCDISC_AUD, etc.) y población de 60+ en torno a corredores. Descriptor de campos: https://www.inegi.org.mx/contenidos/programas/ccpv/2020/doc/fd_agebmza_urbana_cpv2020.pdf  Descarga desde https://www.inegi.org.mx/programas/ccpv/2020/ (sección de datos abiertos/descargas) [VERIFICAR]. Nota: INEGI ya enmascara con asterisco valores menores a 3; tratar «*» como suprimido, no como cero.
+
+[F4] DataTur (SECTUR federal) – actividad hotelera por centro turístico (ocupación, cuartos ocupados, llegada de turistas, estadía, densidad), incluyendo centros de Puebla. Portal: https://www.datatur.sectur.gob.mx/  Buscar «Monitoreo hotelero / Actividad hotelera / datos abiertos» y descargar series para centros turísticos de Puebla (Puebla, Cholula, Atlixco, Zacatlán, Cuetzalan, Chignahuapan, Huauchinango, Huejotzingo, Tehuacán, Tepeaca, Acatzingo, etc., según disponibilidad) [VERIFICAR rutas y formato]. Si el portal no ofrece descarga directa, extraer tablas de los boletines CEIGEP [F5] documentando la transformación.
+
+[F5] CEIGEP / SEI Puebla – Boletines trimestrales de turismo (con base en DataTur). Uso: series por centro turístico, Pueblos Mágicos, precios de servicios turísticos y concentración de visitas en recintos. Ejemplos: https://sei.puebla.gob.mx/docs/boletines/turismo-2026-1.pdf , https://ceigep.puebla.gob.mx/docs/boletines/turismo-2025-2.pdf , https://ceigep.puebla.gob.mx/docs/boletines/turismo-2025-1.pdf , https://ceigep.puebla.gob.mx/docs/boletines/turismo-2024-4.pdf  Portal: https://ceigep.puebla.gob.mx/  Extraer tablas con pdfplumber/camelot y validar manualmente una muestra.
+
+[F6] Observatorio Turístico del Estado de Puebla. Uso: perfil del visitante, sitios visitados, gasto promedio, satisfacción, medios de información (contexto y calibración de supuestos). https://sectur.puebla.gob.mx/observatorioturistico/  Informe de encuestas: https://sectur.puebla.gob.mx/observatorioturistico/documentospdf/RESULTADOS-OBSERVATORIO-TURISTICO.pdf  [VERIFICAR]
+
+[F7] Secretaría de Cultura – Sistema de Información Cultural (SIC), datos abiertos. Uso: museos, zonas arqueológicas, centros culturales, teatros, galerías y casas de artesanías con ubicación; su licencia permite reutilización con crédito. https://sic.cultura.gob.mx/datos.php  Descargar tablas: museo, zona_arqueologica, centro_cultural, teatro, galeria, casa_artesania (filtrar estado Puebla). Formato de crédito sugerido por el SIC: «"Directorio de museos", publicado por el Sistema de Información Cultural/Secretaría de Cultura. Consultado en <url> el <fecha>».
+
+[F8] OpenStreetMap vía Geofabrik. Uso: red peatonal y vial, POI, atributos de accesibilidad (wheelchair, toilets:wheelchair, ramp, step_count, incline, surface, kerb), baños, bancas, paradas de transporte y relaciones de rutas RUTA. Descarga: https://download.geofabrik.de/north-america/mexico.html (extracto de México en .osm.pbf; recortar al estado/corredor con osmium o pyrosm). Para consultas pequeñas: Overpass API (https://overpass-api.de/) respetando límites de uso. Licencia ODbL 1.0: atribución «© OpenStreetMap contributors» visible en mapas y documentación. Ruteo peatonal: OSMnx/networkx sobre el recorte, o un motor local (OSRM/Valhalla) solo si sobra tiempo.
+
+[F9] Modelo digital de elevación para pendiente. Opciones: Continuo de Elevaciones Mexicano (CEM) de INEGI [VERIFICAR URL en inegi.org.mx] o Copernicus DEM GLO-30 (acceso abierto) [VERIFICAR licencia y punto de descarga]. Uso: calcular pendiente por tramo peatonal y esfuerzo físico de la ruta. Advertir que la resolución de 30 m no capta escalones ni banquetas.
+
+[F10] Programa Pueblos Mágicos (SECTUR). Uso: lista oficial de Pueblos Mágicos de Puebla como capa de destinos alternativos (incluye, entre otros, Atlixco, Chignahuapan, Cholula, Cuetzalan, Huauchinango, Huejotzingo, Pahuatlán, Tetela de Ocampo, Teziutlán, Tlatlauquitepec, Zacatlán y Zoquiapan) [VERIFICAR lista vigente en fuente oficial de SECTUR; la clasificación por categorías fue modificada en 2025].
+
+[F11] Datos abiertos del Gobierno de Puebla (histórico): «Atractivos turísticos» (2017) e «Inventarios turísticos» (2014), espejo en https://datamx.io/dataset/atractivos-turisticos y https://datamx.io/dataset/inventarios-turisticos-en-puebla  Advertencia: datos antiguos y sin licencia declarada; usar solo como referencia cruzada y marcar su antigüedad. Buscar también en https://www.datos.gob.mx/ conjuntos de turismo y de Puebla [VERIFICAR].
+
+[F12] Clima: Open-Meteo (pronóstico y clima histórico, sin clave, atribución CC BY 4.0) https://open-meteo.com/ [VERIFICAR términos] y avisos oficiales del Servicio Meteorológico Nacional (https://smn.conagua.gob.mx/) para advertencias. Uso: ajustar recomendaciones (lluvia/calor) y explicar variaciones en el tablero. P1.
+
+[F13] Marginación / rezago a nivel AGEB (CONAPO Índice de Marginación Urbana 2020; CONEVAL Grado de Rezago Social por AGEB urbana 2020) [VERIFICAR descarga]. Uso opcional P2: contexto de distribución territorial de beneficios. No usar para perfilar personas.
+
+[F14] Transporte público: no se encontró un GTFS público oficial de Puebla [NO VERIFICADO]. Alternativa: estaciones y líneas de RUTA desde OSM (relaciones route=bus / public_transport=stop_position). Documentar la limitación; no inventar horarios.
+
+[F15] Datos propios: encuesta corta y entrevistas durante el hackathon (con consentimiento), auditoría de accesibilidad hecha por el equipo en 8–15 POI del corredor con formulario estructurado y fotos (sin personas identificables). Esta es la fuente «verificada por equipo».
+
+08.3 Prioridad de ingesta
+P0: F1 DENUE (o descarga masiva), F2 Marco Geoestadístico, F7 SIC, F8 OSM, F5/F4 series hoteleras, F10 Pueblos Mágicos.
+P1: F3 Censo AGEB, F6 Observatorio, F9 DEM, F12 clima.
+P2: F11, F13.
+Mínimo exigible para la rúbrica: al menos 4 fuentes externas legítimas documentadas + datos propios.
+
+08.4 Inventario obligatorio por fuente (columnas de data_catalog.csv)
+id, nombre, propietario, url, licencia, url_licencia, fecha_consulta, fecha_actualizacion_fuente, alcance_espacial, alcance_temporal, granularidad, formato, campos_usados, calidad_observada, faltantes, sesgos, terminos_uso, transformaciones, script_ingesta, responsable, estado (verificada/pendiente/descartada).
+
+08.5 Pipeline de datos (reproducible, scripts en data/pipelines/, un comando: make data)
+descarga → validación de esquema (pandera o pydantic) → limpieza (normalización de nombres, codificación UTF-8, coordenadas válidas dentro de Puebla, deduplicación) → integración (match DENUE–OSM–SIC por nombre difuso + distancia < 50–100 m con rapidfuzz; registrar score de match) → enriquecimiento (municipio/AGEB por join espacial; pendiente; distancia a parada de transporte; baño accesible más cercano) → carga a PostGIS → vistas agregadas.
+Registrar linaje en la tabla data_lineage (fuente → transformación → tabla destino → métrica).
+Reporte de calidad automático: reports/calidad_datos.md (conteos, nulos, duplicados, matches, cobertura de accesibilidad).
+
+08.6 Selección del corredor piloto (decisión basada en datos, no en preferencia)
+Criterio: disponibilidad de datos, posibilidad de verificación presencial por el equipo y relevancia para el problema (contraste polo saturado vs. alternativa). Propuesta por defecto (confirmar con el análisis 02.3): corredor «Centro Histórico de Puebla → San Pedro/San Andrés Cholula», con 8–15 POI documentados, más una capa comparativa de Pueblos Mágicos con baja ocupación como destinos alternativos de escala estatal. Documentar la justificación en docs/corredor_piloto.md.
+
+==========================================================================================
+09. MODELO ANALÍTICO Y MÉTRICAS B2B
+==========================================================================================
+
+Módulos del tablero:
+A. Panorama: visitas observadas en la muestra por destino/periodo, visitantes únicos seudonimizados, permanencia mediana y distribución, número de observaciones, cobertura y confianza.
+B. Flujos (P1): transiciones agregadas entre zonas, combinaciones frecuentes, destinos alternativos; solo con k suficiente y ventanas amplias.
+C. Experiencia: satisfacción por dimensión, quejas, señalización, precio percibido, temas de reseñas; siempre con n y advertencia de sesgo.
+D. Inclusión: % de POI con accesibilidad verificada, baños/rampas conocidos, barreras reportadas, cobertura de opciones de bajo costo, brechas de información por destino.
+E. Oferta–demanda (alimentado por fuentes públicas, no por la app): concentración hotelera por centro turístico, oferta cultural por municipio, candidatos a destinos alternativos. Este módulo es el que da valor desde el día 1 aunque la app no tenga usuarios.
+F. Economía local (P1): diversidad de prestadores visibles, exposición de negocios pequeños, gasto autodeclarado por rangos. Nunca llamar «derrama» al gasto autodeclarado ni inferir causalidad.
+G. Sostenibilidad (P1): distribución de visitas fuera de polos, presión respecto a aforo cuando exista dato confiable, advertencias de áreas frágiles.
+H. Evaluación de intervenciones (P2): antes/después y grupos comparables; no confundir correlación con efecto.
+I. Intención y conversión (P1, derivado del patrón de guardados): número de usuarios distintos que guardaron cada destino por periodo (intención), proporción que después registra visita confirmada (conversión intención→visita), destinos con alta intención y baja conversión (posibles barreras de acceso, transporte u horario) y lugares propuestos por usuarios que no existen en el catálogo (brecha de oferta visible). Solo agregados con k mínimo; nunca listas de guardados individuales.
+
+Ficha semántica obligatoria por indicador (metrics/definitions.yaml): id, nombre, pregunta que responde, fórmula, unidad, numerador, denominador, filtros permitidos, fuente(s), frecuencia, cobertura, limitaciones, umbral de privacidad (k mínimo), decisión potencial, versión.
+Mostrar incertidumbre (intervalos por bootstrap o binomiales para proporciones) y aviso de muestra pequeña. Nunca presentar usuarios de la PWA como total de turistas.
+
+Indicadores adicionales: tasa de itinerarios completados, distancia entre oferta accesible y demanda declarada agregada, % de fichas sin verificación, permanencia por categoría, proporción de destinos alternativos en rutas aceptadas, motivos de abandono declarados, tasa de violación de restricciones del recomendador, tiempo de corrección de reportes, tasa de correcciones comunitarias aceptadas.
+
+==========================================================================================
+10. INTELIGENCIA ARTIFICIAL (JUSTIFICADA, NO DECORATIVA)
+==========================================================================================
+
+La convocatoria exige justificar la pertinencia de la IA y advierte que un chatbot genérico o el simple consumo de una API no basta. Documentar todo en docs/ia/model_card_recomendador.md y docs/ia/model_card_temas.md (propósito, datos, variables, configuración, resultados, limitaciones, riesgos).
+
+10.1 Caso 1 (P0): Recomendador de itinerarios inclusivos
+- Etapa 1, elegibilidad dura: horario abierto en la ventana, presupuesto, duración total, restricciones indispensables (p. ej., «sin escalones»: solo POI con atributo verificado compatible; los no verificados se ofrecen solo como alternativa marcada).
+- Etapa 2, ranking: puntuación multiobjetivo = pertinencia por intereses (similitud entre intereses y categorías/etiquetas del POI; embeddings de texto opcionales) + cercanía/tiempo de traslado + diversidad territorial (penaliza saturación, premia destinos alternativos) + calidad de información (confianza de atributos) – esfuerzo (pendiente, distancia).
+- Etapa 3, secuenciación: construcción de ruta como problema de orienteering/TSP con ventanas de tiempo (heurística greedy + 2-opt, u OR-Tools si está disponible) usando tiempos peatonales de la red OSM e inserción de descansos/baños.
+- Etapa 4, explicación: «te lo recomendamos porque…», lista de datos desconocidos y alternativa.
+- Modo multi-día desde guardados (patrón referente L3): las etapas 1 y 4 se aplican igual; la etapa 2 se sustituye por la selección del usuario (más hasta 2 sugerencias alternativas opcionales); la partición por días usa clustering espacial con restricción de capacidad (horas disponibles por día, considerando horarios de apertura) antes de secuenciar cada día. Métricas adicionales: distancia total recorrida vs. orden ingenuo, número de cruces de la ciudad entre días, lugares no asignados y su motivo.
+- Baselines: (a) popularidad; (b) cercanía pura.
+- Evaluación offline reproducible (analysis/02_eval_recomendador.ipynb): conjunto de 30–50 perfiles de solicitud sintéticos etiquetados (rotulados como sintéticos) → métricas: violaciones de restricciones indispensables (objetivo 0), cobertura de destinos alternativos, diversidad (número de zonas distintas), tiempo total vs. disponible, latencia p95. Comparar contra baselines en una tabla. Si hay retroalimentación de usuarios reales en el hackathon, reportarla aparte con n.
+- Pruebas unitarias que garanticen que una restricción indispensable nunca se viola.
+
+10.2 Caso 2 (P1): Extracción de temas de reseñas y clasificación de reportes de barreras
+- Clasificación en taxonomía fija (señalización, limpieza, acceso físico, baños, precio, seguridad percibida, atención, aglomeración, otro). Opción A: LLM con salida estructurada (JSON con esquema) y revisión humana; Opción B: modelo ligero (embeddings + clasificador o reglas). Medir precisión contra un pequeño conjunto etiquetado a mano (marcar si es sintético). Nunca inferir identidad ni condiciones de salud.
+
+10.3 Caso 3 (P2): Pronóstico de ocupación por centro turístico con series DataTur (baseline estacional ingenuo vs. modelo; validación temporal; MAE; bandas). Solo si las series descargadas lo permiten; si no, analítica descriptiva rigurosa.
+
+10.4 Asistente institucional vía MCP (P1): no es un chatbot genérico; es una interfaz de consulta tipada sobre indicadores protegidos con linaje (sección 11).
+
+10.5 Límites: la IA no sustituye información validada sobre rampas, horarios o seguridad. Toda recomendación debe poder explicar por qué y qué no sabe. Declarar en el pitch qué componentes usan IA, su función y sus limitaciones (requisito de la sección 16 de la convocatoria).
+
+==========================================================================================
+11. EXPERIENCIA B2B Y MCP
+==========================================================================================
+
+Consola B2B separada: autenticación por roles (viewer, analista, admin), mapa, filtros, comparadores, series de tiempo, panel de inclusión, fichas metodológicas visibles junto a cada gráfico y exportación (CSV con metadatos; PDF P1). Vista ejecutiva (tendencias y decisiones posibles) y vista técnica (denominadores, procedencia, sesgos, calidad).
+
+Servidor MCP (P1), implementado con el SDK oficial de Python del Model Context Protocol (https://modelcontextprotocol.io/), como servicio independiente que solo lee vistas agregadas autorizadas:
+- get_destination_metrics(destination_id, period, metrics[])
+- compare_destinations(destination_ids[], metric, period)
+- get_accessibility_gaps(corridor_id)
+- get_review_themes(destination_id, period) (P1)
+- get_aggregated_flows(corridor_id, period) (P2)
+- get_recommendation_opportunities(corridor_id) (P2)
+- get_data_lineage(metric_id)
+- generate_policy_brief(corridor_id, period) (P2; produce borrador sujeto a validación humana)
+Reglas: parámetros tipados y validados, permisos, límite de granularidad, supresión de grupos con k < umbral, auditoría de cada llamada, respuesta con periodo, fuente, cobertura, n y enlace al gráfico/tabla de respaldo. Prohibido SQL arbitrario, GPS crudo o búsqueda de personas. Mínimo para la demo: get_destination_metrics, get_accessibility_gaps y get_data_lineage.
+
+Ejemplo de consulta: «¿Qué destinos del corredor piloto tienen estancias cortas, quejas de señalización y poca información de accesibilidad?» → respuesta con comparaciones de muestra suficiente, incertidumbre, enlaces y recomendaciones sujetas a validación humana.
+
+==========================================================================================
+12. ARQUITECTURA Y DECISIONES TÉCNICAS CERRADAS
+==========================================================================================
+
+Monolito modular + servicio MCP aparte. No microservicios ni Kubernetes.
+
+- Backend: Python 3.12, gestor uv, FastAPI, Pydantic v2, SQLAlchemy 2 + GeoAlchemy2, Alembic para migraciones, OpenAPI autogenerado. Pruebas con pytest.
+- Base de datos: PostgreSQL 16 + PostGIS 3 (imagen postgis/postgis) en docker compose. Esquemas separados: core (catálogo), private (datos personales y trayectorias, acceso restringido), analytics (agregados protegidos), audit.
+- Procesamiento: scripts Python (pandas/geopandas, shapely, pyrosm u osmium, osmnx, rapidfuzz, rasterio para DEM), orquestados con Makefile; sin colas en el MVP.
+- Frontend B2C: Vite + React + TypeScript, PWA con vite-plugin-pwa (service worker y caché controlada), MapLibre GL JS con tiles de proveedor de términos compatibles (p. ej., OpenFreeMap [VERIFICAR términos]) y atribución OSM visible; componentes accesibles (p. ej., Radix UI o React Aria). Vista lista como ruta principal accesible.
+- Frontend B2B: mismo stack, app separada (o ruta /admin con layout propio) con gráficos accesibles (Recharts/ECharts con tabla de datos alternativa).
+- Archivos: almacenamiento local en desarrollo (carpeta con URLs firmadas simuladas); S3 o compatible en producción. Eliminar EXIF al subir (Pillow).
+- Autenticación: sesiones con JWT simple para el MVP y RBAC; OIDC como hoja de ruta.
+- MCP: servicio Python independiente en mcp_server/ con credencial de solo lectura sobre el esquema analytics.
+- Observabilidad: logs estructurados (sin coordenadas), endpoint /health, métricas básicas de latencia.
+- CI: GitHub Actions con lint (ruff, eslint), pruebas, axe/Lighthouse en el build del frontend.
+- Despliegue: demo local reproducible con docker compose up + datos semilla; respaldo offline (video de la demo y capturas). Despliegue en nube (AWS con Terraform) solo si P0 y P1 están estables; documentar costos estimados por escenario en docs/viabilidad.md.
+
+Flujo E2E:
+fuentes externas + auditoría propia → pipeline → catálogo en PostGIS;
+PWA → eventos consentidos y contenidos → API → validación → esquema private → pipeline de visitas → visitas con confianza → agregados en analytics (con supresión) → tablero B2B → MCP y reportes;
+recomendador ← catálogo verificado + preferencias opcionales + señales agregadas (nunca posiciones de terceros).
+
+==========================================================================================
+13. ESTRUCTURA DEL REPOSITORIO, ENTIDADES Y CONTRATOS
+==========================================================================================
+
+13.1 Estructura
+/README.md (cómo levantar todo en < 5 comandos)
+/STATUS.md
+/Makefile (setup, data, seed, test, demo)
+/docker-compose.yml
+/.env.example
+/backend/app/{api,models,schemas,services,pipeline,recommender,privacy}/
+/backend/alembic/
+/backend/tests/
+/frontend/b2c/
+/frontend/b2b/
+/mcp_server/
+/data/{raw,interim,processed,synthetic,catalog}/   (raw y processed fuera de git si son pesados; dejar scripts de descarga)
+/data/pipelines/
+/analysis/ (notebooks del problema y evaluación)
+/metrics/definitions.yaml
+/reports/ (salidas de análisis y calidad)
+/docs/ (requirements.md, ENTREGABLES.md, source_cards.md, corredor_piloto.md, privacidad.md, accesibilidad.md, calibracion_gps.md, viabilidad.md, benchmark.md, adr/, ia/, validacion/, pitch/)
+
+13.2 Entidades mínimas
+User, PrivacyPreference, ConsentGrant, UserAccessibilityPreference (opcional y privada), Destination, Corridor, PointOfInterest, POIAccessibilityAttribute, AccessibilityEvidence, Provider, OpeningHours, TripSession, LocationSample (retención breve), VisitCandidate, ConfirmedVisit, CheckIn, MediaAsset, Post, Review, ReviewDimension, CommunityReport, Itinerary, ItineraryDay, ItineraryStop, SavedPlace (usuario, POI o lugar propio, nota privada, url_origen opcional, plataforma_origen, fecha), PlaceList (nombre, etiquetas), PlaceListItem, ShareLink (recurso, token, solo lectura, expiración, revocado), ImportAttempt (url, candidatos, elección del usuario, estado), Recommendation, RecommendationFeedback, AggregateMetric, MetricDefinition, DataSource, DataLineage, ModerationCase, AuditEvent.
+Invariantes: toda visita guarda fuente de evidencia, precisión, confianza y si fue confirmada; todo atributo de accesibilidad guarda fuente, fecha, alcance y estado; toda métrica guarda versión de fórmula y fecha de cálculo; perfiles públicos sin referencias a LocationSample; toda fila sintética con is_synthetic=true.
+
+13.3 Endpoints mínimos (P0)
+GET /pois (filtros) · GET /pois/{id} · POST /itineraries/recommend · POST /sessions · POST /sessions/{id}/samples · POST /sessions/{id}/pause|stop · GET /sessions/{id}/visit-candidates · POST /visits/confirm · POST /checkins · POST /reviews · POST /reports/barrier · POST /moderation/{id}/decision · GET /b2b/metrics · GET /b2b/accessibility-gaps · GET /b2b/supply-demand · GET /metrics/{id}/lineage · POST /consents · DELETE /me (borrado) · GET /me/export · POST /saved-places · GET /saved-places · POST /lists · POST /lists/{id}/items · POST /itineraries/from-saved (multi-día).
+Endpoints P1: POST /imports/resolve (URL o texto → candidatos del catálogo) · POST /share-links · GET /shared/{token} (vista pública de solo lectura) · DELETE /share-links/{id} · GET /b2b/intent-conversion.
+Manifest de la PWA (P1): declarar share_target (action /share, method GET o POST, params title/text/url) para recibir enlaces del menú Compartir en Android.
+
+==========================================================================================
+14. PRIVACIDAD, SEGURIDAD Y PROTECCIÓN DE PERSONAS
+==========================================================================================
+
+Principios: minimización, consentimiento granular, finalidad específica, transparencia, control del usuario, retención limitada, acceso mínimo. Explorar sin GPS; bitácora privada por defecto; publicación separada de la captura; nunca ubicación en vivo automática. Borrar EXIF; difuminar coordenadas en publicaciones (precisión configurable a nivel de lugar o zona); evitar revelar domicilios y rutinas. Exportación y eliminación de datos (derechos ARCO).
+Marco legal a revisar antes de producción (no en el hackathon): legislación mexicana vigente de protección de datos personales en posesión de particulares (nueva LFPDPPP publicada en 2025) y, si el operador fuera una dependencia, la ley general aplicable a sujetos obligados; reglas para menores [VERIFICAR versión vigente]. Redactar docs/privacidad.md con aviso de privacidad simplificado de prototipo.
+Guardados, importaciones y enlaces compartidos: los lugares guardados y las notas son privados por defecto; de un enlace importado solo se almacena la URL y la plataforma, nunca el contenido del post ni datos de su autor; no se usan APIs privadas ni scraping contrario a los términos de las plataformas; los enlaces compartidos son de solo lectura, revocables, con expiración opcional y sin datos de ubicación del usuario ni historial; la métrica de intención se publica solo agregada.
+Agregados B2B: umbral k (p. ej., k ≥ 10 en producción; en demo, configurable y documentado), supresión de celdas pequeñas, control de filtros combinables, redondeo cuando proceda y prevención de reconstrucción por diferencias. El MCP hereda estas restricciones.
+Seguridad: cifrado en tránsito, secretos fuera del repo, logs sin coordenadas, límites de tamaño y tipo en subidas, rate limiting, análisis de dependencias, pruebas de autorización horizontal y vertical, y prueba explícita de que ninguna respuesta pública contiene GPS crudo.
+
+==========================================================================================
+15. REGLAS OPERATIVAS DE INCLUSIÓN EN DATOS Y EVALUACIÓN
+==========================================================================================
+
+No confundir cantidad de reseñas con calidad de accesibilidad. «Pendiente de verificación» en vez de «no accesible» cuando falta información. No crear rankings públicos que estigmaticen comunidades con menor conectividad. Captura offline parcial y formularios breves. La plataforma debe seguir siendo útil si el usuario niega todos los permisos.
+Indicadores de éxito inclusivo (metas a medir, no resultados): % de tareas P0 completadas con teclado/lector de pantalla, criterios WCAG verificados, % de POI con datos verificables, cobertura de rutas de bajo costo, tasa de recomendaciones que respetan restricciones, tiempo de corrección de reportes.
+
+==========================================================================================
+16. MVP DEL HACKATHON Y PLAN POR BLOQUES DE TIEMPO
+==========================================================================================
+
+Alcance comprometido (P0): corredor piloto con 8–15 POI documentados; B2C: lista + mapa, ficha con accesibilidad y estado de verificación, preferencias opcionales, recomendación con explicación, sesión GPS activa o traza de demo, check-in manual, confirmación de parada, bitácora, reseña/reporte de barrera; B2B: Panorama, Experiencia, Inclusión y Oferta–demanda; datos: ≥4 fuentes externas documentadas + auditoría propia + datos sintéticos rotulados; IA: recomendador con baselines y evaluación; análisis del problema con gráficas.
+
+Plan por bloques (ajustar a la hora real; si un bloque se excede, recortar alcance, no calidad):
+B0 (≈1.5 h) Repo, docker compose, esquemas, CI mínima, STATUS.md, requirements.md, ENTREGABLES.md.
+B1 (≈4 h) Ingesta P0 y catálogo: DENUE/SIC/OSM/Pueblos Mágicos/series hoteleras → PostGIS; reporte de calidad; data_catalog.csv; selección justificada del corredor.
+B2 (≈3 h) Análisis del problema (02.3) con gráficas exportadas a reports/ y docs/pitch/.
+B3 (≈5 h) Vertical slice B2C: lista/mapa/ficha → guardar en mi mapa → recomendación (desde cero y multi-día desde guardados) → sesión/traza → visita confirmada → reseña/reporte.
+B4 (≈3 h) Pipeline de visitas + agregados protegidos + tablero B2B (4 módulos) con fichas metodológicas.
+B5 (≈2 h) Evaluación del recomendador vs. baselines; model card.
+B6 (≈2 h) Accesibilidad (axe + prueba manual) y pruebas de seguridad/privacidad básicas.
+B7 (≈2–3 h, P1) MCP con 3 herramientas; temas de reseñas; importación por enlace + share_target; enlace compartido de solo lectura; módulo B2B de intención→visita.
+B8 (≈3 h) Documentación de entregables, pitch, guion de demo, ensayo, video/capturas de respaldo, datos semilla y comando make demo.
+
+==========================================================================================
+17. DEMOSTRACIÓN END-TO-END PARA EL JURADO (≈5 min)
+==========================================================================================
+
+Escena 0 (30 s): el problema con datos reales (gráfica de concentración + brecha de información de accesibilidad).
+Escena 1: visitante sin cuenta pega un enlace de Google Maps o guarda 5–6 lugares desde las fichas (P1: enlace de redes) y pide «2 días, presupuesto bajo, evitar escaleras» → plan día por día agrupado por cercanía, con motivos, fuentes, advertencias de datos no verificados, lugares que no cumplen la restricción y una sugerencia de destino alternativo cercano.
+Escena 2: inicia sesión consentida o reproduce traza de demo etiquetada; confirma una parada.
+Escena 3: registra reseña y reporte de barrera (privado hasta publicar).
+Escena 4: el pipeline calcula permanencia observada y actualiza un agregado (si n < k, mostrar la supresión correctamente y usar el conjunto sintético separado para ilustrar).
+Escena 5: tablero B2B muestra la brecha y una intervención sugerida con n, fuente y limitación; módulo Oferta–demanda muestra destinos alternativos; (P1) módulo Intención→visita muestra un destino muy guardado con baja conversión.
+Escena 6 (P1): consulta vía MCP con enlaces a métricas y linaje, sin revelar usuarios.
+Escena 7: tras moderar la corrección, la siguiente recomendación cambia.
+Etiqueta visible «DATOS SINTÉTICOS» siempre que se usen. Preparar respaldo offline (video y capturas) por si falla la red.
+
+==========================================================================================
+18. CRITERIOS DE ACEPTACIÓN Y PRUEBAS
+==========================================================================================
+
+Producto: explorar sin registro; usar lista sin mapa; guardar bitácora privada; pausar GPS; corregir POI; publicar sin ruta exacta; retirar consentimiento; borrar contenido.
+Inclusión: flujos P0 con teclado y lector de pantalla; alt en imágenes; filtros que respetan restricciones indispensables; atributos «no verificados» explícitos.
+Datos: pipeline reproducible con un comando; control de duplicados; evidencia de asociación de visitas; métricas con denominador y linaje.
+B2B: agregados no identificables; supresión por privacidad; exportación con metadatos.
+IA: baselines, métricas, ejemplos de fallo documentados.
+Seguridad: autorización horizontal/vertical, subidas, rate limiting, ausencia de GPS en respuestas públicas.
+Métricas cuantitativas a reportar (lo que se logre medir, con n): precisión de asociación POI en trazas de prueba, error de permanencia vs. observación manual, tasa de visitas indeterminadas, violaciones del recomendador, errores axe, cobertura de POI verificados, latencia p95 del tablero. Reportar éxitos y fallas.
+
+==========================================================================================
+19. MODELO DE NEGOCIO, ADOPCIÓN Y ESCALAMIENTO (rúbrica: viabilidad 10%)
+==========================================================================================
+
+B2C gratuito con utilidad independiente de la comunidad (rutas, fichas, diario privado). B2B: piloto con la Secretaría y, en su caso, servicio de tablero, indicadores, integración, mantenimiento y capacitación mediante acuerdos futuros (la convocatoria indica que la continuidad requiere acuerdos posteriores y específicos). No vender datos individuales ni trayectorias. Prestadores: ficha verificable y corrección; analítica agregada como módulo posterior.
+Adopción: rutas piloto, QR voluntarios en sitios participantes, colaboración con prestadores y colectivos de personas con discapacidad, contenido curado, validación institucional.
+Escalamiento: el pipeline es replicable para cualquier municipio porque DENUE, Marco Geoestadístico, SIC, OSM y DataTur tienen cobertura nacional; escalar por corredores tras comprobar calidad y gobernanza.
+Costos: estimar en docs/viabilidad.md (mapas/tiles, almacenamiento, cómputo, moderación, verificación de accesibilidad en campo, soporte y seguridad) por escenario piloto y estatal, indicando supuestos.
+
+==========================================================================================
+20. RIESGOS Y MITIGACIONES
+==========================================================================================
+
+Arranque en frío → módulo Oferta–demanda con fuentes públicas da valor sin usuarios; no fingir comunidad. Sesgo de autoselección → mostrar cobertura y no extrapolar. GPS errático → confianza y confirmación. PWA suspendida → sesiones activas y check-ins. Accesibilidad desactualizada → fuente/fecha y corrección moderada. Contenido abusivo → moderación y denuncia. Reidentificación → k mínimo, supresión y control de consultas. Saturación de sitios → término de diversidad y límites de capacidad. Falta de series para pronóstico → analítica descriptiva. Propiedad intelectual → benchmarking sin copia. Riesgo institucional → no prometer contratos ni acceso gubernamental. Tiempo insuficiente → priorización P0 estricta y documentación honesta de lo pendiente. Fuente caída o bloqueada → copia local con fecha de descarga y alternativa documentada.
+
+==========================================================================================
+21. ALINEACIÓN CON CONVOCATORIA, RÚBRICA Y ESTRATEGIA COMPETITIVA
+==========================================================================================
+
+Reto central: usar datos abiertos, IA y ciencia de datos para mejorar la experiencia del visitante, optimizar flujos y generar impacto económico y social.
+Reglas del concurso relevantes para el agente:
+- Equipo de exactamente tres estudiantes más un profesor tutor; la solución, el desarrollo tecnológico y la presentación deben ser realizados primordialmente por los estudiantes. El equipo debe poder explicar cada componente del código y de los datos; documentar honestamente el uso de herramientas de IA en el desarrollo.
+- No se proporciona dataset: identificar, obtener, documentar y justificar los datos ES parte de la calificación.
+- La IA debe justificarse; su incorporación superficial no es suficiente.
+- Respeto de licencias, términos de uso, privacidad y protección de datos.
+- Propiedad intelectual permanece en los autores; se otorga a los organizadores autorización no exclusiva y no comercial de difusión. Elegir licencia del repositorio con el equipo (recomendación: definirla antes de publicar; no asumir).
+
+Rúbrica y cómo la atiende el proyecto:
+- Problema 15%: sección 02 con evidencia oficial y análisis propio.
+- Datos 20% (el mayor peso): catálogo multi-fuente con enlaces, licencias, limpieza, integración DENUE–OSM–SIC, linaje, reporte de calidad y conversión a indicadores accionables.
+- Innovación 15%: circuito cerrado accesibilidad→recomendación→brecha→intervención; ruta con pendiente y atributos verificados; señal de intención (guardados) → visita → reseña a lo largo de todo el viaje (antes, durante y después, como pide el objetivo 3 de la convocatoria).
+- Prototipo 15%: vertical slice funcionando con arquitectura documentada y pruebas.
+- Impacto 15%: visitantes con necesidades diversas, prestadores fuera de polos, Secretaría.
+- Viabilidad 10%: fuentes nacionales replicables, costos, monolito simple, gobernanza.
+- UX 5%: accesibilidad WCAG y lista alternativa al mapa.
+- Pitch 5%: demo de 7 escenas con datos reales y respaldo offline.
+
+Categorías: Gran Premio + una sola categoría especial como máximo (la convocatoria no permite acumular más de una especial). Categoría especial objetivo principal: «Mejor solución basada en datos» (calidad y diversidad de fuentes, metodología, reproducibilidad). Narrativa secundaria compatible: «Turismo sostenible» (desconcentración de flujos, inclusión, desarrollo local). No se garantiza premio.
+
+==========================================================================================
+22. ENTREGABLES DE LA CONVOCATORIA → ARCHIVO QUE LOS CUMPLE
+==========================================================================================
+
+1) Descripción ejecutiva → docs/entregables/01_descripcion_ejecutiva.md (1 página)
+2) Definición del problema y beneficiarios → docs/entregables/02_problema.md (con gráficas de 02.3)
+3) Descripción de la solución → docs/entregables/03_solucion.md
+4) Inventario y documentación de fuentes → data/catalog/data_catalog.csv + docs/source_cards.md
+5) Justificación de selección de datos → docs/entregables/05_justificacion_datos.md
+6) Obtención, limpieza, integración, transformación y análisis → docs/entregables/06_pipeline_datos.md + data/pipelines/ + reports/calidad_datos.md
+7) Arquitectura o metodología → docs/entregables/07_arquitectura.md (diagrama) + docs/adr/
+8) Prototipo funcional → código + README + make demo
+9) Evidencia de análisis y resultados → analysis/ + reports/ + docs/entregables/09_resultados.md (incluye lo que NO funcionó)
+10) Presentación ejecutiva y demostración → docs/pitch/ (guion, diapositivas, video de respaldo)
+11) Documentación de IA → docs/ia/model_card_recomendador.md, docs/ia/model_card_temas.md (configuración, variables, resultados, limitaciones)
+
+Exportar todo a PDF al final si el comité lo requiere.
+
+==========================================================================================
+23. HISTORIA EJECUTIVA Y PITCH
+==========================================================================================
+
+«Hoy la visita turística en Puebla se concentra en pocos polos y quien tiene una necesidad de movilidad, viaja con personas mayores o con poco presupuesto planea a ciegas: los datos de accesibilidad casi no existen o no son confiables. Puebla Viva 360 conecta a las personas con los lugares mediante rutas que respetan sus necesidades y explican por qué recomiendan cada sitio y qué no saben. Con su autorización, cada visita, reseña o barrera reportada se convierte en una señal que se procesa junto con datos públicos de INEGI, Cultura, DataTur y OpenStreetMap. La Secretaría no ve personas: ve indicadores agregados de visitas, permanencia, satisfacción y accesibilidad, con fuente y nivel de confianza, para decidir dónde mejorar accesos, señalización y servicios y qué destinos alternativos promover. Nuestro prototipo demuestra el ciclo completo: experiencia inclusiva, dato confiable y decisión accionable».
+Guion de 3 minutos en docs/pitch/guion.md: problema con cifra oficial (30 s) → usuario y escena (30 s) → demo (90 s) → datos e IA con limitaciones (30 s) → impacto, viabilidad y siguiente paso (30 s). Preparar respuestas a preguntas previsibles en docs/pitch/qa.md (representatividad de la muestra, privacidad, costo, por qué IA, de dónde salen los datos de accesibilidad, cómo se escala).
+
+==========================================================================================
+24. REGLAS DE TRABAJO PARA EL AGENTE
+==========================================================================================
+
+Tratar este archivo como definición del producto y la convocatoria como autoridad. No reinterpretar hipótesis como hechos. Entregables incrementales y verificables. Antes de programar, producir la matriz de funcionalidades (MVP/futuro), criterios de aceptación y riesgos (rápido, ≤ 30 min). Elegir tecnología por adecuación y mantenimiento. Documentar fuentes, permisos y decisiones. No construir seguimiento oculto, ubicación pública en vivo ni panel con personas identificables. No inventar resultados. Mantener documentación sincronizada con código y pruebas. Cuando falten datos, degradar con honestidad y registrar el pendiente. Separar estrictamente producto objetivo, MVP implementado, demo sintética y resultados medidos. Ante una decisión irreversible o ambigua de alto costo (licencia del repo, publicación de datos de terceros, despliegue público), preparar las opciones y detenerse a pedir confirmación al equipo.
+
+==========================================================================================
+25. DEFINICIÓN DE TERMINADO (MVP)
+==========================================================================================
+
+(1) Explorar una ruta inclusiva sin ceder GPS; (2) iniciar voluntariamente un recorrido o hacer check-in; (3) procesar una visita confirmada con trazabilidad; (4) registrar una reseña o reporte de barrera con controles; (5) el tablero muestra al menos un indicador agregado con fuente, denominador y privacidad, y el módulo Oferta–demanda con datos públicos reales; (6) (P1) una herramienta MCP consulta ese indicador sin acceso a datos personales; (7) el recomendador explica la propuesta, respeta restricciones indispensables y supera a los baselines en las métricas definidas o se reporta honestamente que no; (8) demo y análisis reproducibles con make demo y make data; (9) pruebas básicas de seguridad y accesibilidad pasadas y documentadas; (10) pitch que distingue lo demostrado de lo proyectado; (11) docs/ENTREGABLES.md completo.
+
+==========================================================================================
+26. REFERENCIAS Y LÍMITES DE CERTEZA
+==========================================================================================
+
+- Convocatoria Hackathon Puebla Turística 360°: Datos que transforman experiencias, Tech Capital Puebla 2026 (documento PDF del equipo).
+- Boletín de turismo 1er trimestre 2026, SEI/CEIGEP Puebla: https://sei.puebla.gob.mx/docs/boletines/turismo-2026-1.pdf
+- Observatorio Turístico del Estado de Puebla: https://sectur.puebla.gob.mx/observatorioturistico/
+- DataTur: https://www.datatur.sectur.gob.mx/
+- INEGI DENUE API (token): https://www.inegi.org.mx/app/api/denue/v1/tokenVerify.aspx
+- INEGI Marco Geoestadístico: https://www.inegi.org.mx/temas/mg/
+- INEGI Censo 2020 AGEB y manzana (descriptor): https://www.inegi.org.mx/contenidos/programas/ccpv/2020/doc/fd_agebmza_urbana_cpv2020.pdf
+- SIC Secretaría de Cultura, datos abiertos: https://sic.cultura.gob.mx/datos.php
+- OpenStreetMap / Geofabrik México: https://download.geofabrik.de/north-america/mexico.html ; etiqueta wheelchair: https://wiki.openstreetmap.org/wiki/Key:wheelchair
+- WCAG 2.2: https://www.w3.org/TR/WCAG22/
+- Model Context Protocol: https://modelcontextprotocol.io/
+- Open-Meteo: https://open-meteo.com/
+- Referente Latera: https://play.google.com/store/apps/details?id=com.popenstudio.latera (funcionalidades declaradas por el equipo a partir de su descripción pública; confirmar en la ficha)
+- Web Share Target API (para recibir enlaces del menú Compartir en la PWA): https://developer.mozilla.org/en-US/docs/Web/Manifest/share_target [VERIFICAR soporte por navegador]
+Las marcas [VERIFICAR] indican que la URL o el dato se identificó en búsqueda pero debe confirmarse al abrirlo. WCAG 2.2 AA es un objetivo técnico propuesto, no una exigencia literal de la convocatoria. Este documento no certifica cumplimiento legal, calidad de datos, impacto real ni resultados de piloto.
+
+FIN DEL DOCUMENTO
