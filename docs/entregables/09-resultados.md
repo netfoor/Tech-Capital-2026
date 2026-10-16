@@ -91,3 +91,7 @@ Las cifras de cada hallazgo están en las tablas generadas al inicio de este arc
 ## Prueba exploratoria de video corto
 
 Se hizo una prueba de búsqueda en TikTok para los 12 destinos (16 de octubre de 2026, una cuenta, una búsqueda por destino). No entra al radar. El detalle y sus límites están en `docs/evidencia/tiktok-pruebas/README.md`. Un resultado a seguir: en Teziutlán, 5 de 12 resultados son noticias o sucesos y solo 3 son de visita.
+
+## Opinión en comentarios de YouTube (no validada)
+
+Se clasificaron 2,575 comentarios públicos de 13 destinos con un modelo. La validación parcial (64 comentarios, una persona) dio κ = 0.31, por debajo del umbral de 0.6 que fijamos, así que estas proporciones no se usan en el radar ni se presentan como resultado. Detalle en `docs/ia-responsable.md` §3 y `data/curado/validacion_clasificador.json`.

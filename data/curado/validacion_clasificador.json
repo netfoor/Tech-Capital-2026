@@ -1,0 +1,39 @@
+{
+  "n": 64,
+  "anotadores": 1,
+  "nota": "Validación parcial: una sola persona etiquetó 64 de 117 comentarios; falta la segunda etiqueta y el consenso.",
+  "kappa_clasificador_vs_anotador": 0.306,
+  "acuerdo_simple": 0.547,
+  "cumple_umbral": false,
+  "umbral": 0.6,
+  "patron": "El clasificador asigna 'otro' a comentarios que la persona marcó como experiencia positiva (11 de 16) o intención (7 de 10).",
+  "matriz_confusion": {
+    "otro": {
+      "otro": 26
+    },
+    "experiencia_positiva": {
+      "intencion": 1,
+      "otro": 11,
+      "friccion": 1,
+      "experiencia_positiva": 2
+    },
+    "intencion": {
+      "otro": 7,
+      "intencion": 2,
+      "experiencia_positiva": 1
+    },
+    "pregunta": {
+      "pregunta": 4,
+      "intencion": 1,
+      "otro": 2
+    },
+    "friccion": {
+      "otro": 2
+    },
+    "experiencia_negativa": {
+      "otro": 2,
+      "experiencia_negativa": 1,
+      "friccion": 1
+    }
+  }
+}

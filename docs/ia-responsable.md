@@ -45,12 +45,12 @@ Un chatbot no es parte de la solución. Ningún componente decide por la Secreta
 | Campo | Valor |
 |---|---|
 | Función | Asignar a cada comentario una categoría (`intencion`, `experiencia_positiva`, `experiencia_negativa`, `friccion`, `pregunta`, `otro`) y, si aplica, una subcategoría de fricción (`precio`, `acceso`, `seguridad`, `saturacion`, `servicios`, `clima`, `otro`) |
-| Modelo | OpenAI con salida estructurada. Prompt versionado en `pipelines/src/radar/comentarios/prompt_v1.md` |
+| Modelo | Gemini (el mismo proveedor del extractor), salida JSON validada con esquema. Prompt versionado en `pipelines/src/radar/comentarios/prompt_v1.md` |
 | Entradas | Texto del comentario sin nombres de usuario ni menciones `@`, y el nombre del destino |
 | Validación | Muestra de 120 comentarios estratificada por destino. Dos personas la etiquetan de forma independiente. Se reporta κ entre personas y κ del clasificador contra el consenso. **Umbral para usarlo: κ ≥ 0.6** |
-| Resultados | Se publican solo agregados por destino con n ≥ 5 |
+| Resultados | Se publican solo agregados por destino con n ≥ 5. **Estado: no validado.** Validación parcial del 16 de octubre de 2026: una persona etiquetó 64 de 117 comentarios; κ del clasificador 0.31 (acuerdo 55 %), por debajo del umbral. El clasificador tiende a poner «otro» en comentarios con experiencia o intención. Por eso las proporciones de opinión no se presentan como hallazgo; se reabre tras simplificar la taxonomía y validar con dos personas |
 | Limitaciones | Ironía, regionalismos, comentarios que mezclan idiomas, y sesgo de quien comenta (no representa a todos los visitantes) |
-| Datos personales | Los comentarios se guardan en `data/privado/` y no se publican. Antes de enviarlos a la API se eliminan nombres de usuario y menciones. Se usa la API comercial, cuyos términos excluyen el entrenamiento con los datos enviados; hay que verificarlo en la consola del proveedor antes de la primera corrida |
+| Datos personales | Los comentarios se guardan en `data/privado/` y no se publican. Antes de enviarlos a la API se eliminan nombres de usuario y menciones. Se usa la API comercial; los términos sobre entrenamiento con los datos enviados no están verificados en la consola del proveedor |
 
 ## 4. Lector de capturas del panel
 
