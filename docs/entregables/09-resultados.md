@@ -92,6 +92,12 @@ Las cifras de cada hallazgo están en las tablas generadas al inicio de este arc
 
 Se hizo una prueba de búsqueda en TikTok para los 12 destinos (16 de octubre de 2026, una cuenta, una búsqueda por destino). No entra al radar. El detalle y sus límites están en `docs/evidencia/tiktok-pruebas/README.md`. Un resultado a seguir: en Teziutlán, 5 de 12 resultados son noticias o sucesos y solo 3 son de visita.
 
+## Implicación para la promoción (propuesta de seguimiento)
+
+Los asistentes concentran sus recomendaciones: Cholula aparece en 82 % de las 440 respuestas y la ciudad de Puebla en 76 %, mientras que Xicotepec (13 %), Huauchinango (13 %) y Teziutlán (8 %) casi no aparecen. Las fuentes que citan son sobre todo sitios de gobierno (656 de 1,798 citas: visitpuebla.mx, sectur.gob.mx, gob.mx), enciclopedias y medios.
+
+De ahí sale una línea de trabajo para la Secretaría: producir contenido propio y con creadores sobre los destinos con poca visibilidad (empezando por los de `demanda_poco_visible` y `por_posicionar`) y publicarlo también en las páginas oficiales que los asistentes ya citan. **Es una hipótesis, no un resultado**: no medimos que más contenido cambie lo que recomiendan los asistentes. Se puede comprobar con el mismo método: repetir la auditoría antes y después de una campaña y comparar la visibilidad de los destinos con y sin contenido nuevo (`modelo-de-operacion.md`, grupos con y sin campaña).
+
 ## Opinión en comentarios de YouTube (no validada)
 
 Se clasificaron 2,575 comentarios públicos de 13 destinos con un modelo. La validación parcial (64 comentarios, una persona) dio κ = 0.31, por debajo del umbral de 0.6 que fijamos, así que estas proporciones no se usan en el radar ni se presentan como resultado. Detalle en `docs/ia-responsable.md` §3 y `data/curado/validacion_clasificador.json`.
