@@ -1,7 +1,8 @@
-"""Taxonomía fija de la spec 007 y esquema de la salida del clasificador."""
+"""Taxonomía de la spec 007 (v2 agrega `imagen_destino`) y esquema de la salida."""
 
 CATEGORIAS = [
     "intencion",
+    "imagen_destino",
     "experiencia_positiva",
     "experiencia_negativa",
     "friccion",

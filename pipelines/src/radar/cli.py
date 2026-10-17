@@ -394,13 +394,14 @@ def comentarios_clasificar(
 
 @comentarios.command("validar")
 def comentarios_validar() -> None:
-    """Calcula κ entre personas y del clasificador contra el consenso."""
+    """κ entre personas, de la tercera etiqueta y del clasificador contra el consenso final."""
     import json
 
     from radar.comentarios import clasificar, validar
 
     df = pd.read_csv(config.ruta(config.PRIVADO, "comentarios", "validacion.csv")).fillna("")
-    df = df[df["consenso"] != ""]
+    final = "consenso_final" if "consenso_final" in df.columns else "consenso"
+    df = df[df[final] != ""]
     if len(df) < 30:
         typer.secho(
             "Faltan etiquetas: se necesitan al menos 30 filas", fg=typer.colors.RED, err=True
@@ -409,10 +410,27 @@ def comentarios_validar() -> None:
     cache = clasificar.cargar_cache(
         config.ruta(config.PRIVADO, "comentarios", "clasificados.jsonl")
     )
-    pred = [cache[clasificar.clave(r)]["categoria"] for r in df.to_dict("records")]
-    informe = validar.informe(
-        list(df["etiqueta_a"]), list(df["etiqueta_b"]), list(df["consenso"]), pred
-    )
+    filas = df.to_dict("records")
+    faltan = [r for r in filas if clasificar.clave(r) not in cache]
+    if faltan:
+        typer.secho(
+            f"{len(faltan)} filas sin clasificar con {clasificar.VERSION}",
+            fg=typer.colors.RED,
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    pred = [cache[clasificar.clave(r)]["categoria"] for r in filas]
+    informe = validar.informe(list(df["etiqueta_a"]), list(df["etiqueta_b"]), list(df[final]), pred)
+    informe["version_prompt"] = clasificar.VERSION
+    informe["consenso_usado"] = final
+    if "etiqueta_c" in df.columns:
+        informe["kappa_etiqueta_c_vs_consenso_humano"] = round(
+            validar.kappa(list(df["etiqueta_c"]), list(df["consenso"])), 3
+        )
+        informe["cambios_consenso_final_vs_humano"] = int((df[final] != df["consenso"]).sum())
     ruta = config.ruta(config.CURADO, "validacion_clasificador.json")
     ruta.write_text(json.dumps(informe, ensure_ascii=False, indent=2), encoding="utf-8")
-    typer.echo(f"κ clasificador {informe['kappa_clasificador']} (umbral 0.6)")
+    typer.echo(
+        f"κ personas {informe['kappa_entre_personas']} · "
+        f"κ clasificador {informe['kappa_clasificador']} (umbral 0.6)"
+    )

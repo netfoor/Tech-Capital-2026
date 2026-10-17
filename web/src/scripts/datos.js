@@ -78,10 +78,13 @@ export async function montarVerificacion(elemento, { compacto = false } = {}) {
     elemento.hidden = false;
     if (fallas.length) {
       elemento.dataset.estado = 'falla';
-      elemento.textContent = `Aviso: ${fallas.length} de ${total} archivos de datos no coinciden con su huella (${fallas
+      const detalle = `Aviso: ${fallas.length} de ${total} archivos de datos no coinciden con su huella (${fallas
         .slice(0, 3)
         .map((f) => f.ruta)
         .join(', ')}). No uses estas cifras.`;
+      // En la barra, texto corto para no desplazar la navegación; el detalle queda en el título.
+      elemento.textContent = compacto ? `Datos sin verificar (${fallas.length} de ${total})` : detalle;
+      elemento.title = detalle;
     } else {
       elemento.dataset.estado = 'ok';
       elemento.textContent = compacto

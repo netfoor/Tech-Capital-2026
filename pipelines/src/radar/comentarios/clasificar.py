@@ -13,8 +13,8 @@ import jsonschema
 
 from radar.comentarios import limpieza, taxonomia
 
-PROMPT = (Path(__file__).parent / "prompt_v1.md").read_text(encoding="utf-8")
-VERSION = "v1"
+PROMPT = (Path(__file__).parent / "prompt_v2.md").read_text(encoding="utf-8")
+VERSION = "v2"
 
 
 def clave(c: dict) -> str:
