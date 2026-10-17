@@ -121,7 +121,7 @@ Se clasificaron 2,575 comentarios públicos de los 3 videos más vistos de cada 
 Lo que sugiere, con cautela:
 
 - **Gusta lo que se ve, aunque los asistentes no lo recomienden.** Teziutlán (35 %), Xicotepec (35 %) y Tetela de Ocampo (34 %) tienen la mayor proporción de comentarios que valoran el lugar. Son de los destinos que menos aparecen en los asistentes (Teziutlán 8 %, Xicotepec 13 %, Tetela 18 %). Esto apoya la propuesta de producir contenido sobre ellos (sección anterior).
-- **Las preguntas señalan huecos de información.** Zacatlán (22 %), Pahuatlán (20 %), Cuetzalan (18 %) y la capital (17 %) concentran preguntas sobre cómo llegar, cuándo ir y precios. Es contenido que la Secretaría puede responder en sus páginas oficiales.
+- **Las preguntas señalan huecos de información.** Zacatlán (22 %), Pahuatlán (20 %), Cuetzalan (18 %) y la capital (17 %) concentran preguntas (por ejemplo, cómo llegar o cuál es la mejor época). Es contenido que la Secretaría puede responder en sus páginas oficiales.
 - **La intención declarada es baja en todos (6 a 14 %).** Comentar que algo es bonito no significa que se vaya a viajar. Por eso `imagen_destino` se reporta aparte de `intencion`.
 - **Fricciones:** ninguna subcategoría llega a 5 comentarios en un mismo destino; no se reportan.
 
