@@ -2,6 +2,9 @@
 import Seccion from './Seccion.astro';
 import { seccion } from '../secciones';
 import { VISTAS } from '../vistas';
+
+// Sin Cognito (T010-09 pendiente) la plataforma se publica en modo local.
+const conCuentas = Boolean(import.meta.env.PUBLIC_COGNITO_DOMINIO);
 ---
 
 <Seccion seccion={seccion('plataforma')}>
@@ -29,7 +32,7 @@ import { VISTAS } from '../vistas';
   <p class="mt-10 text-center">
     <a class="boton boton-primario" href="/plataforma/">Entrar a la plataforma</a>
   </p>
-  <p class="nota mt-3 text-center">El acceso es con una cuenta que da de alta el equipo.</p>
+  <p class="nota mt-3 text-center">{conCuentas ? 'El acceso es con una cuenta que da de alta el equipo.' : 'Por ahora el acceso es abierto; las cuentas se activan en el piloto.'}</p>
 </Seccion>
 
 <style>

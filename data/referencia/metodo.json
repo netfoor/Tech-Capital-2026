@@ -20,27 +20,98 @@
     }
   ],
   "procesos": [
-    {"etapa": "Catálogo", "descripcion": "Destinos, municipios y términos de búsqueda en cinco idiomas, con su origen.", "spec": "001"},
-    {"etapa": "Indicadores oficiales", "descripcion": "Serie mensual 2017–2026 del Observatorio Turístico, con huella de cada documento.", "spec": "002"},
-    {"etapa": "Búsqueda", "descripcion": "Interés mensual en Google Trends por destino, unido entre tandas con un destino ancla.", "spec": "003"},
-    {"etapa": "Asistentes", "descripcion": "Corridas repetidas de un corpus de prompts en varios idiomas, detección de menciones y de dominios citados.", "spec": "006"},
-    {"etapa": "Radar", "descripcion": "Percentiles por componente, índices de atención y desempeño, brecha y cuadrante.", "spec": "008"},
-    {"etapa": "Publicación", "descripcion": "Paquete de datos validado contra contratos y firmado con huellas SHA-256 que el navegador verifica.", "spec": "009"}
+    {
+      "etapa": "Catálogo",
+      "descripcion": "Destinos, municipios y términos de búsqueda en cinco idiomas, con su origen.",
+      "spec": "001"
+    },
+    {
+      "etapa": "Indicadores oficiales",
+      "descripcion": "Serie mensual 2017–2026 del Observatorio Turístico, con huella de cada documento.",
+      "spec": "002"
+    },
+    {
+      "etapa": "Búsqueda",
+      "descripcion": "Interés mensual en Google Trends por destino, unido entre tandas con un destino ancla.",
+      "spec": "003"
+    },
+    {
+      "etapa": "Video",
+      "descripcion": "Presencia en resultados de YouTube por destino y comentarios de los videos más vistos, sin datos de autor.",
+      "spec": "004"
+    },
+    {
+      "etapa": "Asistentes",
+      "descripcion": "Corridas repetidas de un corpus de prompts en varios idiomas, detección de menciones y de dominios citados.",
+      "spec": "006"
+    },
+    {
+      "etapa": "Radar",
+      "descripcion": "Percentiles por componente, índices de atención y desempeño, brecha y cuadrante.",
+      "spec": "008"
+    },
+    {
+      "etapa": "Publicación",
+      "descripcion": "Paquete de datos validado contra contratos y firmado con huellas SHA-256 que el navegador verifica.",
+      "spec": "009"
+    }
   ],
   "formulas": [
-    {"nombre": "Percentil", "expresion": "(posición − 1) / (n − 1) × 100", "descripcion": "Posición del destino entre los Pueblos Mágicos; los empates promedian su posición."},
-    {"nombre": "Índice de atención", "expresion": "promedio de los percentiles de los componentes disponibles", "descripcion": "Se requieren al menos dos componentes; cada componente pesa lo mismo."},
-    {"nombre": "Brecha", "expresion": "índice de atención − índice de desempeño", "descripcion": "Positiva: más atención que desempeño. Negativa: más desempeño que atención."},
-    {"nombre": "Interés ajustado", "expresion": "interés × factor, con factor = promedio del ancla en la tanda de referencia / promedio del ancla en la tanda", "descripcion": "Hace comparables los valores de tandas distintas de Google Trends."},
-    {"nombre": "Visibilidad en asistentes", "expresion": "k / n, con intervalo de Wilson al 95 %", "descripcion": "Proporción de corridas en que el destino aparece mencionado."}
+    {
+      "nombre": "Percentil",
+      "expresion": "(posición − 1) / (n − 1) × 100",
+      "descripcion": "Posición del destino entre los Pueblos Mágicos; los empates promedian su posición."
+    },
+    {
+      "nombre": "Índice de atención",
+      "expresion": "promedio de los percentiles de los componentes disponibles",
+      "descripcion": "Se requieren al menos dos componentes; cada componente pesa lo mismo."
+    },
+    {
+      "nombre": "Brecha",
+      "expresion": "índice de atención − índice de desempeño",
+      "descripcion": "Positiva: más atención que desempeño. Negativa: más desempeño que atención."
+    },
+    {
+      "nombre": "Interés ajustado",
+      "expresion": "interés × factor, con factor = promedio del ancla en la tanda de referencia / promedio del ancla en la tanda",
+      "descripcion": "Hace comparables los valores de tandas distintas de Google Trends."
+    },
+    {
+      "nombre": "Visibilidad en asistentes",
+      "expresion": "k / n, con intervalo de Wilson al 95 %",
+      "descripcion": "Proporción de corridas en que el destino aparece mencionado."
+    }
   ],
   "componentes_ia": [
-    {"id": 1, "nombre": "Auditoría de asistentes", "funcion": "Objeto de estudio: se mide qué destinos recomiendan y qué fuentes citan.", "modelo": "OpenAI con búsqueda web y Google Gemini con Google Search", "validacion": "Revisión manual de 60 respuestas estratificadas por idioma", "resultado": null},
-    {"id": 2, "nombre": "Extractor de menciones en coreano y chino", "funcion": "Reconoce destinos del catálogo escritos con otros alfabetos.", "modelo": "Google Gemini con salida estructurada y lista cerrada de destinos", "validacion": "Revisión manual de las respuestas en coreano y chino", "resultado": null}
+    {
+      "id": 1,
+      "nombre": "Auditoría de asistentes",
+      "funcion": "Objeto de estudio: se mide qué destinos recomiendan y qué fuentes citan.",
+      "modelo": "OpenAI con búsqueda web y Google Gemini con Google Search",
+      "validacion": "Revisión manual de 60 respuestas estratificadas por idioma",
+      "resultado": "Validada el 17 de octubre de 2026 con el criterio «aparece como recomendación»: precisión 0.87 y exhaustividad 0.97 (sin la capital, 0.92 y 1.00)."
+    },
+    {
+      "id": 2,
+      "nombre": "Extractor de menciones en coreano y chino",
+      "funcion": "Reconoce destinos del catálogo escritos con otros alfabetos.",
+      "modelo": "Google Gemini con salida estructurada y lista cerrada de destinos",
+      "validacion": "Incluida en la revisión manual de 60 respuestas (12 en coreano y 12 en chino)",
+      "resultado": "Mismas cifras que la detección completa; sin errores propios del extractor en la muestra."
+    },
+    {
+      "id": 3,
+      "nombre": "Clasificador de comentarios de YouTube",
+      "funcion": "Clasifica comentarios públicos en intención, imagen del destino, experiencia, fricción, pregunta u otro; solo se publican agregados.",
+      "modelo": "OpenAI gpt-5-mini sin búsqueda, con salida JSON validada",
+      "validacion": "117 comentarios etiquetados por dos personas y una tercera etiqueta de IA; consenso final",
+      "resultado": "Preliminar: κ = 0.72 contra el consenso final (umbral 0.6); falta confirmarlo con una muestra nueva. No entra al índice."
+    }
   ],
   "limitaciones": [
     "La afluencia y la derrama oficiales se derivan de la llegada de turistas a hoteles; el visitante que no pernocta no se mide de forma directa.",
-    "El radar usa solo los componentes de atención disponibles; con menos de tres no se calcula la sensibilidad del cuadrante.",
+    "El índice de atención usa tres componentes (búsqueda, asistentes y presencia en YouTube); falta el panel de redes. Los cuadrantes que cambian al quitar un componente se marcan como sensibles.",
     "Los asistentes cambian de versión sin aviso y deciden si buscan en la web; por eso cada corrida se fecha y se mide un porcentaje sobre repeticiones.",
     "La API de un asistente no tiene la memoria ni la ubicación de una cuenta personal.",
     "El interés de Google Trends es relativo y se normaliza con un destino ancla; los destinos de poco volumen tienen más ruido.",
