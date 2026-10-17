@@ -261,6 +261,45 @@ def asistentes_extraer(
     typer.echo(f"{hechas} anotadas")
 
 
+@asistentes.command("muestra-menciones")
+def asistentes_muestra_menciones() -> None:
+    """Crea la muestra de 60 respuestas para validar a mano la detección de menciones (T006-11)."""
+    from radar.asistentes import procesar, validacion
+
+    corridas = procesar.leer_corridas()
+    menciones: dict[str, list[str]] = {}
+    tabla = pd.read_csv(config.ruta(config.CURADO, "asistentes_menciones.csv"))
+    for fila in tabla.sort_values(["corrida_id", "orden"]).itertuples():
+        menciones.setdefault(fila.corrida_id, []).append(fila.destino_id)
+    nombres = {d.destino_id: d.nombre for d in catalogo.cargar()}
+    filas = validacion.muestra(corridas, menciones, nombres)
+    ruta = config.ruta(config.PRIVADO, "asistentes", "validacion_menciones.csv")
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    if ruta.exists():
+        typer.secho(
+            f"Ya existe {ruta.relative_to(config.raiz())}; no se sobrescribe",
+            fg=typer.colors.YELLOW,
+        )
+        raise typer.Exit(code=1)
+    pd.DataFrame(filas, columns=validacion.COLUMNAS).to_csv(ruta, index=False)
+    typer.echo(f"{len(filas)} respuestas en {ruta.relative_to(config.raiz())}")
+
+
+@asistentes.command("validar-menciones")
+def asistentes_validar_menciones() -> None:
+    """Calcula precisión y exhaustividad de la detección con la muestra revisada."""
+    import json
+
+    from radar.asistentes import validacion
+
+    ruta = config.ruta(config.PRIVADO, "asistentes", "validacion_menciones.csv")
+    filas = pd.read_csv(ruta).fillna("").to_dict("records")
+    r = validacion.metricas(filas)
+    salida = config.ruta(config.CURADO, "validacion_menciones.json")
+    salida.write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+    typer.echo(f"Precisión {r['precision']} · exhaustividad {r['exhaustividad']}")
+
+
 @asistentes.command("procesar")
 def asistentes_procesar() -> None:
     """Escribe las cinco tablas curadas de asistentes a partir de lo crudo."""
