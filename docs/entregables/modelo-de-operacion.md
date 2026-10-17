@@ -41,6 +41,14 @@ El radar no prueba causalidad por sí solo; ofrece una comparación estructurada
 4. **Diferencia de diferencias:** el cambio de los destinos promovidos menos el cambio de los no promovidos, con intervalos de incertidumbre.
 5. **Cautelas:** el volumen es pequeño (pocos destinos), por lo que se reporta como evidencia indicativa y se acumula mes a mes. El modelo con rezago (spec 008, P1) prueba si el interés de búsqueda anticipa las llegadas.
 
+### Primera línea de acción propuesta: que los asistentes recomienden más destinos
+
+Los asistentes recomiendan sobre todo Cholula (82 % de las respuestas) y la capital (76 %). En cambio, Teziutlán, Xicotepec y Tetela de Ocampo, que casi no aparecen (8 a 18 %), reciben la mayor proporción de comentarios que valoran el lugar cuando alguien ve un video sobre ellos (34 a 35 %, `09-resultados.md`). La propuesta para el piloto es la siguiente:
+
+1. Producir contenido de esos destinos con creadores y con el equipo de la Secretaría: videos, guías de cómo llegar y de cuándo ir. Las preguntas de los comentarios dicen qué falta.
+2. Publicarlo también en las páginas que los asistentes ya citan (visitpuebla.mx y sectur.gob.mx concentran buena parte de las citas de gobierno).
+3. Medir con la auditoría de asistentes antes y después, en el esquema de esta sección. Es una hipótesis por comprobar, no un efecto demostrado.
+
 ## Costos
 
 Cada cifra lleva su fuente y fecha. Lo que no está verificado se marca como pendiente y no se estima.

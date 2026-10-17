@@ -157,7 +157,14 @@ def senales_trends(
         raise typer.Exit(code=1)
     salida = config.ruta(config.CURADO)
     salida.mkdir(parents=True, exist_ok=True)
-    tabla.to_csv(salida / "interes_busqueda_mensual.csv", index=False, float_format="%.4f")
+    ruta = salida / "interes_busqueda_mensual.csv"
+    if ruta.exists():  # conserva las otras regiones (MX alimenta el radar; US es complementaria)
+        previa = pd.read_csv(ruta, dtype={"periodo": str})
+        if "geo" in previa.columns:
+            otras = previa[previa["geo"] != geo]
+            tabla = pd.concat([otras, tabla], ignore_index=True)
+    tabla = tabla.sort_values(["geo", "destino_id", "periodo"]).reset_index(drop=True)
+    tabla.to_csv(ruta, index=False, float_format="%.4f")
     typer.echo(
         f"{tabla['destino_id'].nunique()} destinos; periodos {tabla['periodo'].min()} "
         f"a {tabla['periodo'].max()}; {len(tabla):,} filas"

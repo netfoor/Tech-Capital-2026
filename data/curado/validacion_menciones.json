@@ -1,0 +1,8 @@
+{
+  "respuestas": 60,
+  "verdaderos_positivos": 247,
+  "falsos_positivos": 38,
+  "falsos_negativos": 9,
+  "precision": 0.867,
+  "exhaustividad": 0.965
+}

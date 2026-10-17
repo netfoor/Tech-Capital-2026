@@ -27,4 +27,4 @@ El acceso se hace con **Amazon Cognito y su Hosted UI** (inicio de sesión aloja
 
 ## Actualización · 2026-10-17
 
-Para las demostraciones del hackathon y las primeras pláticas con la Secretaría se publicó la plataforma **sin inicio de sesión** (modo local): explicarla fue más rápido sin cuentas. La excepción es explícita y temporal: `PERMITIR_SIN_ACCESO=1 make desplegar`. Queda pendiente aplicar Cognito (T010-09) y retirar la excepción (T010-10) antes de compartir el enlace de forma abierta o de servir datos que no sean públicos.
+Para las demostraciones del hackathon y las primeras pláticas con la Secretaría se publicó la plataforma **sin inicio de sesión** (modo local): explicarla fue más rápido sin cuentas. Mientras tanto, `infra/desplegar.sh` publica en modo local con un aviso; el bloqueo original quedó comentado en el mismo archivo. Queda pendiente aplicar Cognito (T010-09) y retirar la excepción (T010-10) antes de compartir el enlace de forma abierta o de servir datos que no sean públicos.

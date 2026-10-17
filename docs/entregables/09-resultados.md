@@ -11,18 +11,18 @@ Periodo de referencia: 2025-07 a 2026-06.
 
 | Destino | Cuadrante | Atención | Desempeño | Brecha | Ocupación 12 m (%) |
 |---|---|---|---|---|---|
-| Cuetzalan | Atención sin estancia | 68.2 | 27.3 | 40.9 | 42.7 |
-| Tlatlauquitepec | Por posicionar | 31.8 | 18.2 | 13.6 | 36.8 |
-| Pahuatlán | Por posicionar | 13.6 | 0.0 | 13.6 | 32.2 |
-| Tetela de Ocampo | Por posicionar | 22.7 | 9.1 | 13.6 | 33.8 |
-| Chignahuapan | Consolidado | 72.7 | 63.6 | 9.1 | 44.5 |
-| Huejotzingo | Atención sin estancia | 45.5 | 36.4 | 9.1 | 43.6 |
-| Atlixco | Consolidado | 86.4 | 81.8 | 4.5 | 44.8 |
+| Cuetzalan | Atención sin estancia | 71.2 | 27.3 | 43.9 | 42.7 |
+| Tlatlauquitepec | Atención sin estancia | 42.4 | 18.2 | 24.2 | 36.8 |
+| Pahuatlán | Por posicionar | 16.7 | 0.0 | 16.7 | 32.2 |
+| Tetela de Ocampo | Por posicionar | 15.2 | 9.1 | 6.1 | 33.8 |
+| Atlixco | Consolidado | 83.3 | 81.8 | 1.5 | 44.8 |
+| Chignahuapan | Consolidado | 65.2 | 63.6 | 1.5 | 44.5 |
+| Huejotzingo | Por posicionar | 37.9 | 36.4 | 1.5 | 43.6 |
 | Cholula | Consolidado | 100.0 | 100.0 | 0.0 | 57.8 |
-| Huauchinango | Consolidado | 45.5 | 54.5 | -9.1 | 44.4 |
-| Xicotepec | Por posicionar | 31.8 | 45.5 | -13.6 | 43.8 |
-| Zacatlán | Consolidado | 59.1 | 90.9 | -31.8 | 53.0 |
-| Teziutlán | Demanda poco visible | 22.7 | 72.7 | -50.0 | 44.5 |
+| Huauchinango | Demanda poco visible | 37.9 | 54.5 | -16.7 | 44.4 |
+| Xicotepec | Por posicionar | 28.8 | 45.5 | -16.7 | 43.8 |
+| Zacatlán | Consolidado | 69.7 | 90.9 | -21.2 | 53.0 |
+| Teziutlán | Demanda poco visible | 31.8 | 72.7 | -40.9 | 44.5 |
 
 **Visibilidad promedio de los Pueblos Mágicos en asistentes, por idioma**
 
@@ -61,13 +61,13 @@ Datos: `asistentes_corridas.csv` (440 corridas al 2026-10-16: 220 de OpenAI con 
 
 ## Revisión de sentido común del radar (T008-06)
 
-Con dos componentes de atención (búsqueda y asistentes), cortes en 45.5 (atención) y 50.0 (desempeño):
+Desde el 17 de octubre de 2026 el índice de atención usa **tres componentes**: búsqueda en Google, asistentes y presencia en YouTube (spec 004). Los cortes son 40.2 (atención) y 50.0 (desempeño). Las cifras que se presentaron en el hackathon el 16 de octubre usaban solo búsqueda y asistentes; por ejemplo, Teziutlán tenía brecha −50 y Cuetzalan +41.
 
-- **Cuetzalan** queda en `atencion_sin_estancia` (brecha +41): es de los destinos más buscados y citados por los asistentes, pero su ocupación (42.7 %) está por debajo de la mediana. Es coherente con un destino de visita de un día o de fin de semana corto.
-- **Teziutlán** queda en `demanda_poco_visible` (brecha −50): casi no aparece en asistentes (8 % de las respuestas) y tiene una ocupación por encima de la mediana de los Pueblos Mágicos con crecimiento de llegadas de 21.6 %. Es el caso más sorprendente; la explicación probable es demanda de negocios y de servicios, no turística, que no depende de contenido digital. Se confirma con el panel y con la ficha del destino.
-- **Zacatlán** es `consolidado` con brecha −32: alta ocupación y alta visibilidad en asistentes, con búsqueda media.
-- **Pahuatlán, Tetela de Ocampo y Tlatlauquitepec** quedan `por_posicionar`, de acuerdo con las cifras de ocupación más bajas del oficial (32 a 37 %).
-- Con solo dos componentes no se puede medir la sensibilidad del cuadrante; se activa al sumar el panel o YouTube.
+- **Cuetzalan** sigue en `atencion_sin_estancia` (brecha +44): es de los destinos más buscados, citados por los asistentes y con videos, pero su ocupación (42.7 %) está por debajo de la mediana. Es coherente con un destino de visita de un día o de fin de semana corto.
+- **Teziutlán** sigue en `demanda_poco_visible` (brecha −41): casi no aparece en asistentes (8 % de las respuestas) y tiene una ocupación por encima de la mediana de los Pueblos Mágicos, con crecimiento de llegadas de 21.6 %. La explicación probable es demanda de negocios y de servicios, que no depende de contenido digital. Se confirma con el panel y con la ficha del destino.
+- **Huauchinango** pasa a `demanda_poco_visible` (brecha −17) y **Tlatlauquitepec** a `atencion_sin_estancia` (brecha +24); **Huejotzingo** pasa a `por_posicionar`. Los tres están marcados como **sensibles**: su cuadrante cambia si se quita un componente, así que se leen con cautela.
+- **Zacatlán** es `consolidado` con brecha −21: alta ocupación y alta visibilidad en asistentes y video, con búsqueda media.
+- **Pahuatlán, Tetela de Ocampo y Xicotepec** quedan `por_posicionar`, con las ocupaciones más bajas del oficial o poca atención en los tres componentes.
 
 ## Hallazgos
 
@@ -81,8 +81,8 @@ Las cifras de cada hallazgo están en las tablas generadas al inicio de este arc
 
 ## Limitaciones
 
-- El radar usa dos componentes de atención; la sensibilidad del cuadrante y el índice completo requieren el panel y YouTube.
-- La detección de menciones aún no tiene la validación manual de 60 respuestas (T006-11); sus resultados son provisionales.
+- El radar usa tres de los cuatro componentes de atención; falta el panel de redes sociales (spec 005).
+- La detección de menciones se validó con 60 respuestas (precisión 0.87, exhaustividad 0.97); sobrecuenta la capital como punto de salida y a Tehuacán por la reserva Tehuacán-Cuicatlán (T006-16, T006-17).
 - La primera auditoría tiene 440 corridas en un solo día y dos proveedores; la variación entre fechas se mide al repetirla.
 - Los idiomas francés, coreano y chino tienen menos corridas que español e inglés porque el crédito de OpenAI se agotó antes de completarlas.
 - La afluencia y la derrama oficiales se derivan de las llegadas a hotel.

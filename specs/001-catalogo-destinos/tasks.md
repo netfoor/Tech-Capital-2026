@@ -17,3 +17,4 @@ Formato: `[ ]` pendiente, `[~]` en curso, `[x]` hecha. `[P]` = paralelizable con
 ## Trends (P1)
 
 - [ ] T001-07 [P] `data/referencia/trends_temas.csv`: para cada destino, buscar el tema con `pytrends.suggestions()` desde una red residencial y verificar que la etiqueta corresponda al municipio. Verificación: 13 filas; las que no tienen tema llevan `verificado=false` y la nota «texto libre».
+- [ ] T001-08 (P2) Evaluar si se agregan al catálogo atractivos que los asistentes citan seguido y hoy quedan fuera: Africam Safari, Santa María Tonantzintla, Cantona y Huaquechula (T006-11). Verificación: decisión anotada en la spec 001.

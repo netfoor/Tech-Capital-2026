@@ -37,8 +37,8 @@ Un chatbot no es parte de la solución. Ningún componente decide por la Secreta
 | Función | Para respuestas en coreano y chino, devolver la lista de destinos del catálogo mencionados, con su orden |
 | Modelo | Google Gemini, con salida estructurada en JSON Schema y una lista cerrada de `destino_id`. Se usó Gemini y no OpenAI porque el crédito de OpenAI se agotó durante la primera auditoría (decisión del 16 de octubre de 2026) |
 | Entradas | Texto de la respuesta y lista de destinos con sus nombres |
-| Validación | Revisión manual de todas las respuestas en coreano y chino de la primera tanda. Se reportan precisión y exhaustividad |
-| Limitaciones | Puede confundir destinos con nombres parecidos. Una mención ambigua se marca como `revisar` y no se cuenta |
+| Validación | Revisión manual de 60 respuestas (12 por idioma) el 17 de octubre de 2026, con el criterio «aparece como recomendación». Detección completa (términos y extractor): precisión 0.87 y exhaustividad 0.97; sin la Ciudad de Puebla, 0.92 y 1.00. Detalle en `docs/evidencia/asistentes/validacion-menciones.md` |
+| Limitaciones | Puede confundir destinos con nombres parecidos. Cuenta a la Ciudad de Puebla cuando solo es punto de salida y la pierde cuando es el destino principal; confunde Tehuacán con la Reserva Tehuacán-Cuicatlán; no distingue recomendar de mencionar |
 
 ## 3. Clasificador de comentarios
 
