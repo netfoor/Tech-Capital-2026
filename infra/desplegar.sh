@@ -13,9 +13,15 @@ if [[ ! -f "$DIST/index.html" ]]; then
 fi
 
 # La plataforma no se publica sin acceso: una compilación sin Cognito queda en modo local (ADR-0009).
+# Excepción temporal y explícita (T010-09 pendiente): PERMITIR_SIN_ACCESO=1 make desplegar
 if ! grep -rqs "amazoncognito.com" "$DIST/_astro"; then
-  echo "web/dist se compiló en modo local, sin Cognito. Corre: make web-config && make web" >&2
-  exit 1
+  if [[ "${PERMITIR_SIN_ACCESO:-0}" == "1" ]]; then
+    echo "Aviso: se publica en modo local, sin inicio de sesión (PERMITIR_SIN_ACCESO=1)." >&2
+  else
+    echo "web/dist se compiló en modo local, sin Cognito. Corre: make web-config && make web" >&2
+    echo "Para publicar sin inicio de sesión de forma temporal: PERMITIR_SIN_ACCESO=1 make desplegar" >&2
+    exit 1
+  fi
 fi
 
 cd "$RAIZ/infra"

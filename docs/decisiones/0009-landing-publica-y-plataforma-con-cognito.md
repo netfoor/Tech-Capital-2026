@@ -24,3 +24,7 @@ El acceso se hace con **Amazon Cognito y su Hosted UI** (inicio de sesión aloja
 - La protección es de experiencia, no de datos: los JSON del sitio y `data/curado/` son públicos por diseño (constitución III, datos verificables). Si el piloto necesita datos restringidos, se valida el token en CloudFront (Lambda@Edge o cookies firmadas) y los datos privados se sirven desde otro prefijo.
 - La política de contenido de CloudFront agrega el dominio de Cognito en `connect-src`.
 - Sin configuración de Cognito (`web/.env` vacío), la plataforma corre en **modo local** con un aviso visible. Así el equipo puede desarrollar antes de aplicar la infraestructura. `infra/desplegar.sh` se niega a publicar una compilación en modo local.
+
+## Actualización · 2026-10-17
+
+Para las demostraciones del hackathon y las primeras pláticas con la Secretaría se publicó la plataforma **sin inicio de sesión** (modo local): explicarla fue más rápido sin cuentas. La excepción es explícita y temporal: `PERMITIR_SIN_ACCESO=1 make desplegar`. Queda pendiente aplicar Cognito (T010-09) y retirar la excepción (T010-10) antes de compartir el enlace de forma abierta o de servir datos que no sean públicos.
