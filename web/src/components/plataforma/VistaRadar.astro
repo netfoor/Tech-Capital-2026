@@ -45,7 +45,14 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
   }
 
   .con-panel .rejilla-radar {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 1399px) {
+    .con-panel .rejilla-radar {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   @media (max-width: 1079px) {
