@@ -1,39 +1,45 @@
 {
-  "n": 64,
-  "anotadores": 1,
-  "nota": "Validación parcial: una sola persona etiquetó 64 de 117 comentarios; falta la segunda etiqueta y el consenso.",
-  "kappa_clasificador_vs_anotador": 0.306,
-  "acuerdo_simple": 0.547,
-  "cumple_umbral": false,
-  "umbral": 0.6,
-  "patron": "El clasificador asigna 'otro' a comentarios que la persona marcó como experiencia positiva (11 de 16) o intención (7 de 10).",
+  "n": 117,
+  "kappa_entre_personas": 0.586,
+  "kappa_clasificador": 0.718,
+  "cumple_umbral": true,
   "matriz_confusion": {
+    "imagen_destino": {
+      "imagen_destino": 16,
+      "experiencia_positiva": 2,
+      "otro": 1
+    },
     "otro": {
-      "otro": 26
-    },
-    "experiencia_positiva": {
-      "intencion": 1,
-      "otro": 11,
-      "friccion": 1,
-      "experiencia_positiva": 2
-    },
-    "intencion": {
-      "otro": 7,
-      "intencion": 2,
+      "otro": 41,
+      "imagen_destino": 6,
       "experiencia_positiva": 1
     },
+    "intencion": {
+      "intencion": 15,
+      "imagen_destino": 1,
+      "experiencia_positiva": 1,
+      "otro": 1
+    },
+    "experiencia_positiva": {
+      "experiencia_positiva": 7,
+      "imagen_destino": 6,
+      "otro": 3
+    },
     "pregunta": {
-      "pregunta": 4,
-      "intencion": 1,
-      "otro": 2
+      "pregunta": 8,
+      "intencion": 1
     },
     "friccion": {
-      "otro": 2
+      "friccion": 3,
+      "experiencia_negativa": 1
     },
     "experiencia_negativa": {
-      "otro": 2,
-      "experiencia_negativa": 1,
-      "friccion": 1
+      "imagen_destino": 1,
+      "experiencia_negativa": 2
     }
-  }
+  },
+  "version_prompt": "v2",
+  "consenso_usado": "consenso_final",
+  "kappa_etiqueta_c_vs_consenso_humano": 0.633,
+  "cambios_consenso_final_vs_humano": 31
 }

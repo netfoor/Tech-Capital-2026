@@ -45,12 +45,22 @@ Un chatbot no es parte de la solución. Ningún componente decide por la Secreta
 | Campo | Valor |
 |---|---|
 | Función | Asignar a cada comentario una categoría (`intencion`, `experiencia_positiva`, `experiencia_negativa`, `friccion`, `pregunta`, `otro`) y, si aplica, una subcategoría de fricción (`precio`, `acceso`, `seguridad`, `saturacion`, `servicios`, `clima`, `otro`) |
-| Modelo | Gemini (el mismo proveedor del extractor), salida JSON validada con esquema. Prompt versionado en `pipelines/src/radar/comentarios/prompt_v1.md` |
+| Modelo | v2: OpenAI `gpt-5-mini` sin búsqueda (el crédito de Gemini se agotó); v1: Gemini. Salida JSON validada con esquema. Prompt versionado en `pipelines/src/radar/comentarios/prompt_v2.md` (v1 se conserva) |
 | Entradas | Texto del comentario sin nombres de usuario ni menciones `@`, y el nombre del destino |
 | Validación | Muestra de 120 comentarios estratificada por destino. Dos personas la etiquetan de forma independiente. Se reporta κ entre personas y κ del clasificador contra el consenso. **Umbral para usarlo: κ ≥ 0.6** |
-| Resultados | Se publican solo agregados por destino con n ≥ 5. **Estado: no validado.** Validación parcial del 16 de octubre de 2026: una persona etiquetó 64 de 117 comentarios; κ del clasificador 0.31 (acuerdo 55 %), por debajo del umbral. El clasificador tiende a poner «otro» en comentarios con experiencia o intención. Por eso las proporciones de opinión no se presentan como hallazgo; se reabre tras simplificar la taxonomía y validar con dos personas |
+| Resultados | Solo agregados por destino con n ≥ 5. **Estado: validación preliminar (17 de octubre de 2026).** Ver el detalle abajo |
 | Limitaciones | Ironía, regionalismos, comentarios que mezclan idiomas, y sesgo de quien comenta (no representa a todos los visitantes) |
 | Datos personales | Los comentarios se guardan en `data/privado/` y no se publican. Antes de enviarlos a la API se eliminan nombres de usuario y menciones. Se usa la API comercial; los términos sobre entrenamiento con los datos enviados no están verificados en la consola del proveedor |
+
+**Validación del clasificador de comentarios (T007-03 y T007-05).**
+
+1. **v1 (16 de octubre).** Con 64 etiquetas de una persona, κ = 0.31. El clasificador mandaba a `otro` los comentarios que valoran el lugar sin decir si fueron o quieren ir.
+2. **Etiquetas humanas (17 de octubre).** Dos etiquetas humanas (`etiqueta_a`, `etiqueta_b`) y su consenso sobre 117 comentarios estratificados por destino. Acuerdo entre personas: κ = 0.59.
+3. **Taxonomía v2.** Al revisar se vio que muchos comentarios elogian el paisaje o el pueblo sin hablar de una visita. Se agregó la categoría `imagen_destino` (valora el lugar sin decir que fue ni que quiere ir; el término viene de la literatura de «imagen de destino»).
+4. **Tercera etiqueta y consenso final.** Una tercera etiqueta (`etiqueta_c`) la puso un modelo de IA (Claude) con la taxonomía v2, a petición del equipo. El consenso final parte del humano y solo lo cambia con dos reglas: (a) valora el lugar sin visita ni intención → `imagen_destino`; (b) habla del video, del creador o de otro lugar → `otro`. Cambió 31 de 117 etiquetas. La tercera etiqueta coincide con el consenso humano en κ = 0.63.
+5. **Resultado v2.** κ del clasificador contra el consenso final = **0.72** (umbral 0.6). Contra el consenso solo humano, contando `imagen_destino` como `otro`, κ = 0.53.
+
+**Límites de esta validación.** El prompt v2 y la nueva categoría se definieron después de ver esta misma muestra, y el consenso final incluye una etiqueta de IA. Por eso el 0.72 es optimista. Para darlo por validado falta etiquetar una muestra nueva, que nadie haya visto, con dos personas (T007-08). Mientras tanto, las proporciones se presentan como exploratorias.
 
 ## 4. Lector de capturas del panel
 

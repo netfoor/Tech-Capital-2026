@@ -98,6 +98,31 @@ Los asistentes concentran sus recomendaciones: Cholula aparece en 82 % de las 44
 
 De ahí sale una línea de trabajo para la Secretaría: producir contenido propio y con creadores sobre los destinos con poca visibilidad (empezando por los de `demanda_poco_visible` y `por_posicionar`) y publicarlo también en las páginas oficiales que los asistentes ya citan. **Es una hipótesis, no un resultado**: no medimos que más contenido cambie lo que recomiendan los asistentes. Se puede comprobar con el mismo método: repetir la auditoría antes y después de una campaña y comparar la visibilidad de los destinos con y sin contenido nuevo (`modelo-de-operacion.md`, grupos con y sin campaña).
 
-## Opinión en comentarios de YouTube (no validada)
+## Opinión en comentarios de YouTube (exploratoria)
 
-Se clasificaron 2,575 comentarios públicos de 13 destinos con un modelo. La validación parcial (64 comentarios, una persona) dio κ = 0.31, por debajo del umbral de 0.6 que fijamos, así que estas proporciones no se usan en el radar ni se presentan como resultado. Detalle en `docs/ia-responsable.md` §3 y `data/curado/validacion_clasificador.json`.
+Se clasificaron 2,575 comentarios públicos de los 3 videos más vistos de cada destino que lo mencionan (13 destinos, 39 videos, consulta del 16 de octubre de 2026) con la taxonomía v2. La validación es preliminar (κ = 0.72 contra el consenso final; ver `docs/ia-responsable.md` §3), así que las cifras son exploratorias y no entran al índice.
+
+| Destino | Intención | Imagen del destino | Experiencia positiva | Pregunta |
+|---|---|---|---|---|
+| Teziutlán | 6.5 % | 34.8 % | 24.5 % | n < 5 |
+| Xicotepec | 10.0 % | 34.7 % | 13.8 % | 4.2 % |
+| Tetela de Ocampo | 10.3 % | 33.8 % | 15.4 % | 7.3 % |
+| Tlatlauquitepec | 14.3 % | 30.6 % | 12.2 % | 9.2 % |
+| Huauchinango | 11.7 % | 30.1 % | 16.0 % | 4.3 % |
+| Huejotzingo | 6.6 % | 27.5 % | 16.5 % | 5.5 % |
+| Atlixco | 6.2 % | 27.2 % | 13.6 % | 2.1 % |
+| Cuetzalan | 13.5 % | 24.6 % | 13.5 % | 18.1 % |
+| Chignahuapan | 8.7 % | 23.8 % | 9.7 % | 12.1 % |
+| Zacatlán | 8.1 % | 23.2 % | 11.4 % | 21.5 % |
+| Cholula | 8.6 % | 21.0 % | 14.8 % | 7.2 % |
+| Ciudad de Puebla (referencia) | 13.2 % | 20.8 % | 10.7 % | 17.3 % |
+| Pahuatlán | 5.6 % | 13.6 % | 21.6 % | 20.0 % |
+
+Lo que sugiere, con cautela:
+
+- **Gusta lo que se ve, aunque los asistentes no lo recomienden.** Teziutlán (35 %), Xicotepec (35 %) y Tetela de Ocampo (34 %) tienen la mayor proporción de comentarios que valoran el lugar. Son de los destinos que menos aparecen en los asistentes (Teziutlán 8 %, Xicotepec 13 %, Tetela 18 %). Esto apoya la propuesta de producir contenido sobre ellos (sección anterior).
+- **Las preguntas señalan huecos de información.** Zacatlán (22 %), Pahuatlán (20 %), Cuetzalan (18 %) y la capital (17 %) concentran preguntas sobre cómo llegar, cuándo ir y precios. Es contenido que la Secretaría puede responder en sus páginas oficiales.
+- **La intención declarada es baja en todos (6 a 14 %).** Comentar que algo es bonito no significa que se vaya a viajar. Por eso `imagen_destino` se reporta aparte de `intencion`.
+- **Fricciones:** ninguna subcategoría llega a 5 comentarios en un mismo destino; no se reportan.
+
+Límites: son 3 videos por destino, a menudo de los mismos creadores, así que la opinión refleja también a su público; quien comenta en YouTube no representa a todos los visitantes, y los videos los eligió el algoritmo de búsqueda.
