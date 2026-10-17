@@ -24,8 +24,8 @@ export async function montarRadar(contenedor) {
     </p>
     <div class="rejilla-radar">
       <figure class="mapa-brecha" id="radar-mapa" aria-label="Mapa de brecha por destino"></figure>
-      <figure class="brechas" id="radar-brechas" aria-label="Atención y desempeño por destino, ordenados por brecha"></figure>
     </div>
+    <figure class="brechas" id="radar-brechas" aria-label="Atención y desempeño por destino, ordenados por brecha"></figure>
     <figure class="cuadrantes" id="radar-cuadrantes" aria-label="Gráfica de cuadrantes"></figure>
   `;
 
