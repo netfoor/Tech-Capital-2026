@@ -85,3 +85,18 @@ def clasificar(
     with ThreadPoolExecutor(max_workers=concurrencia) as pool:
         list(pool.map(procesar, bloques))
     return cache
+
+
+def llamar_openai() -> Callable[[str], str]:  # pragma: no cover - requiere llave y red
+    """Modelo de OpenAI sin búsqueda web, para clasificar texto (alternativa a Gemini)."""
+    import os
+
+    from openai import OpenAI
+
+    cliente = OpenAI()
+    modelo = os.environ.get("OPENAI_MODEL") or "gpt-5-mini"
+
+    def llamar(instruccion: str) -> str:
+        return cliente.responses.create(model=modelo, input=instruccion).output_text or ""
+
+    return llamar

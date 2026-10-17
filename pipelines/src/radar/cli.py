@@ -405,8 +405,9 @@ def comentarios_muestra(
 @comentarios.command("clasificar")
 def comentarios_clasificar(
     solo_muestra: bool = typer.Option(False, help="Solo la muestra de validación"),
+    proveedor: str = typer.Option("gemini", help="gemini u openai"),
 ) -> None:
-    """Clasifica con Gemini (reanudable) y escribe `opinion_agregada.csv` (n ≥ 5 por celda)."""
+    """Clasifica (reanudable) y escribe `opinion_agregada.csv` (n ≥ 5 por celda)."""
     from radar.asistentes import extractor
     from radar.comentarios import agregar, clasificar
 
@@ -416,10 +417,12 @@ def comentarios_clasificar(
         ruta_v = config.ruta(config.PRIVADO, "comentarios", "validacion.csv")
         claves = set(pd.read_csv(ruta_v)["texto"])
         todos = [c for c in todos if c["texto"] in claves]
+    llamar = clasificar.llamar_openai() if proveedor == "openai" else extractor.llamar_gemini()
     cache = clasificar.clasificar(
         todos,
-        extractor.llamar_gemini(),
+        llamar,
         config.ruta(config.PRIVADO, "comentarios", "clasificados.jsonl"),
+        modelo=proveedor,
     )
     hechos = [cache[clasificar.clave(c)] for c in todos if clasificar.clave(c) in cache]
     typer.echo(f"{len(hechos)} de {len(todos)} comentarios clasificados")
