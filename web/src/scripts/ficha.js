@@ -19,7 +19,7 @@ const esc = (t) =>
   String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 const marca = (origen) =>
-  `<span class="marca-origen" style="color:${ORIGEN[origen].color}" aria-label="${ORIGEN[origen].nombre}" title="${ORIGEN[origen].nombre}">${ORIGEN[origen].forma}</span>`;
+  `<span class="marca-origen" data-estilo="color:${ORIGEN[origen].color}" aria-label="${ORIGEN[origen].nombre}" title="${ORIGEN[origen].nombre}">${ORIGEN[origen].forma}</span>`;
 
 function sparkline(serie) {
   const valores = serie.map((s) => s.ocupacion_pct).filter((v) => v !== null);
@@ -39,7 +39,7 @@ function barraVisibilidad(i) {
   const alto = i.ic95_alto ?? i.pct;
   return `<li class="vis-fila" title="n = ${i.n}, k = ${i.k}">
     <span class="vis-idioma">${esc(IDIOMAS[i.idioma]?.nombre ?? i.idioma)}</span>
-    <span class="vis-barra" aria-hidden="true"><span class="vis-valor" style="width:${i.pct}%"></span><span class="vis-ic" style="left:${bajo}%;width:${Math.max(alto - bajo, 0.5)}%"></span></span>
+    <span class="vis-barra" aria-hidden="true"><span class="vis-valor" data-estilo="width:${i.pct}%"></span><span class="vis-ic" data-estilo="left:${bajo}%;width:${Math.max(alto - bajo, 0.5)}%"></span></span>
     <span class="vis-texto">${formato.porcentaje(i.pct)} <span class="vis-n">(${i.k} de ${i.n})</span></span>
   </li>`;
 }
@@ -55,13 +55,13 @@ export function htmlFicha(f, { titulo = true } = {}) {
     .map(([id, c]) => {
       const def = COMPONENTES[id] ?? { nombre: id, origen: 'senal' };
       return `<li class="comp-fila">${marca(def.origen)}<span class="comp-nombre">${esc(def.nombre)}</span>
-        <span class="comp-barra" aria-hidden="true"><span style="width:${c.pctl}%"></span></span>
+        <span class="comp-barra" aria-hidden="true"><span data-estilo="width:${c.pctl}%"></span></span>
         <span class="comp-valor">${formato.decimal(c.pctl)}</span></li>`;
     })
     .join('');
   return `<article class="ficha" data-destino="${esc(f.destino.destino_id)}">
     ${titulo ? `<header><h2 class="ficha-nombre">${esc(f.destino.nombre)}</h2><p class="ficha-zona">${esc(f.destino.zona)}</p></header>` : ''}
-    ${cuadrante ? `<p class="ficha-cuadrante" style="color:${cuadrante.color}">${esc(cuadrante.nombre)}</p>` : '<p class="ficha-cuadrante">Referencia: no entra en el radar</p>'}
+    ${cuadrante ? `<p class="ficha-cuadrante" data-estilo="color:${cuadrante.color}">${esc(cuadrante.nombre)}</p>` : '<p class="ficha-cuadrante">Referencia: no entra en el radar</p>'}
     ${r.recomendacion ? `<p class="ficha-reco">${esc(r.recomendacion)}</p>` : ''}
     <dl class="cifras">
       <div><dt>${marca('oficial')} Ocupación, 12 meses</dt><dd>${formato.porcentaje(d.ocupacion_12m)}</dd><dd class="cifra-nota">Mediana de los Pueblos Mágicos: ${formato.porcentaje(d.mediana_pm_ocupacion_12m)}</dd></div>
@@ -128,7 +128,7 @@ export async function montarFichas(contenedor) {
       return `<li class="tarjeta-ficha">
         <h2 class="text-[19px]">${esc(d.nombre)}</h2>
         <p class="ficha-zona">${esc(d.zona)}</p>
-        <p class="ficha-cuadrante" style="color:${c ? c.color : '#6b7280'}">${esc(c ? c.nombre : 'Referencia')}</p>
+        <p class="ficha-cuadrante" data-estilo="color:${c ? c.color : '#6b7280'}">${esc(c ? c.nombre : 'Referencia')}</p>
         <p class="cifra-nota">Ocupación ${formato.porcentaje(r.ocupacion_12m)} · Atención ${formato.decimal(r.indice_atencion)}</p>
         <div class="ficha-acciones">
           <button type="button" class="boton boton-secundario" data-ver="${esc(d.destino_id)}">Ver ficha</button>

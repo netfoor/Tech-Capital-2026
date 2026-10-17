@@ -42,7 +42,7 @@ export function montarProblema() {
 function serieBarras(serie) {
   const max = Math.max(...serie.map((s) => s.valor), 1);
   return `<ul class="mini-barras" aria-label="Cuartos libres por día, por destino">${serie
-    .map((s) => `<li><span class="mb-nombre">${esc(s.etiqueta)}</span><span class="mb-pista" aria-hidden="true"><span style="width:${(s.valor / max) * 100}%"></span></span><span class="mb-valor">${formato.entero(s.valor)}</span></li>`)
+    .map((s) => `<li><span class="mb-nombre">${esc(s.etiqueta)}</span><span class="mb-pista" aria-hidden="true"><span data-estilo="width:${(s.valor / max) * 100}%"></span></span><span class="mb-valor">${formato.entero(s.valor)}</span></li>`)
     .join('')}</ul>`;
 }
 
@@ -71,7 +71,7 @@ export function montarTianguis() {
           <h3 class="mt-6 text-[19px]">La visibilidad cambia con el idioma</h3>
           <p class="mt-1 text-[14.5px] text-gris">Promedio simple de la visibilidad de los Pueblos Mágicos, por idioma del comprador.</p>
           <ul class="mini-barras" aria-label="Visibilidad promedio por idioma">${filas
-            .map((f) => `<li><span class="mb-nombre">${esc(nombresIdioma[f.idioma])}</span><span class="mb-pista" aria-hidden="true"><span style="width:${f.promedio ?? 0}%"></span></span><span class="mb-valor">${formato.porcentaje(f.promedio)}</span></li>`)
+            .map((f) => `<li><span class="mb-nombre">${esc(nombresIdioma[f.idioma])}</span><span class="mb-pista" aria-hidden="true"><span data-estilo="width:${f.promedio ?? 0}%"></span></span><span class="mb-valor">${formato.porcentaje(f.promedio)}</span></li>`)
             .join('')}</ul>
           <h3 class="mt-6 text-[19px]">Medir antes y después</h3>
           <p class="mt-2 text-tinta-2">El radar se vuelve a calcular con los mismos prompts y las mismas fuentes después de cada campaña. La diferencia de visibilidad, de búsquedas y de ocupación entre una fecha y otra muestra el efecto de la promoción.</p>

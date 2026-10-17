@@ -94,3 +94,24 @@ export function seleccionado() {
 export function movimientoReducido() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
+
+// La CSP del sitio (style-src 'self') bloquea los atributos style escritos en HTML.
+// Las plantillas usan data-estilo="propiedad:valor;..." y aquí se aplican por CSSOM, que sí está permitido.
+function aplicarEstilos(raiz) {
+  const nodos = raiz.matches?.('[data-estilo]') ? [raiz] : [];
+  raiz.querySelectorAll?.('[data-estilo]').forEach((n) => nodos.push(n));
+  for (const el of nodos) {
+    for (const par of el.dataset.estilo.split(';')) {
+      const i = par.indexOf(':');
+      if (i > 0) el.style.setProperty(par.slice(0, i).trim(), par.slice(i + 1).trim());
+    }
+    el.removeAttribute('data-estilo');
+  }
+}
+
+if (typeof document !== 'undefined') {
+  new MutationObserver((cambios) => {
+    for (const c of cambios) c.addedNodes.forEach((n) => n.nodeType === 1 && aplicarEstilos(n));
+  }).observe(document.documentElement, { childList: true, subtree: true });
+  aplicarEstilos(document);
+}

@@ -24,7 +24,11 @@ function servir() {
         res.writeHead(404).end('no encontrado');
         return;
       }
-      res.writeHead(200, { 'content-type': TIPOS[extname(archivo)] ?? 'application/octet-stream' }).end(readFileSync(archivo));
+      // Misma CSP que CloudFront (infra/sitio.tf) para detectar estilos en línea bloqueados.
+      res.writeHead(200, {
+        'content-type': TIPOS[extname(archivo)] ?? 'application/octet-stream',
+        'content-security-policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'",
+      }).end(readFileSync(archivo));
     });
     s.listen(0, '127.0.0.1', () => resolver({ s, url: `http://127.0.0.1:${s.address().port}` }));
   });

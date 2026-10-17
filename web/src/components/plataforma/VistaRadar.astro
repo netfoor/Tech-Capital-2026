@@ -1,5 +1,5 @@
 ---
-// T009-06: mapa por brecha y gráfica de cuadrantes, desde radar.json.
+// T009-06: mapa por brecha, atención contra desempeño y gráfica de cuadrantes, desde radar.json.
 import MarcoVista from './MarcoVista.astro';
 import PanelFicha from './PanelFicha.astro';
 import { VISTAS } from '../../vistas';
@@ -39,8 +39,13 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
     display: grid;
     gap: 24px;
     margin-top: 16px;
-    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
+    gap: 40px;
     align-items: start;
+  }
+
+  .con-panel .rejilla-radar {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   @media (max-width: 1079px) {
@@ -52,7 +57,7 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
   .mapa-brecha .lienzo-mapa {
     display: block;
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     height: auto;
     margin: 0 auto;
   }
@@ -95,7 +100,66 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
   }
 
   .cuadrantes {
+    margin-top: 40px;
+  }
+
+  .brechas {
+    position: relative;
     margin: 0;
+  }
+
+  .brechas text {
+    font-size: 13px;
+    fill: var(--color-tinta);
+  }
+
+  .brechas .eje,
+  .brechas .leyenda-brechas text {
+    fill: var(--color-gris);
+    font-size: 12.5px;
+  }
+
+  .brechas .valor-brecha {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+
+  .fila-brecha {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .fila-brecha:hover .fondo-fila,
+  .fila-brecha:focus-visible .fondo-fila {
+    fill: var(--color-banda);
+  }
+
+  .fila-brecha.seleccionado .fondo-fila {
+    fill: var(--color-fila-sel);
+  }
+
+  .fila-brecha.seleccionado .nombre-fila {
+    font-weight: 700;
+  }
+
+  .tip-brecha {
+    position: absolute;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 220px;
+    padding: 8px 10px;
+    background: #fff;
+    border: 1px solid var(--color-linea);
+    box-shadow: 0 4px 12px rgb(17 24 39 / 0.08);
+    font-size: 13px;
+    color: var(--color-tinta);
+    pointer-events: none;
+  }
+
+  .tip-brecha span {
+    color: var(--color-tinta-2);
   }
 
   .cuadrantes .eje {
@@ -129,5 +193,13 @@ const vista = VISTAS.find((v) => v.id === 'radar')!;
     border-left: 4px solid var(--color-error);
     padding: 12px 16px;
     background: #fff;
+  }
+</style>
+
+<style is:global>
+  @media (max-width: 479px) {
+    .brechas .nombre-fila {
+      font-size: 12px;
+    }
   }
 </style>

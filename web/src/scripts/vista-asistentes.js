@@ -66,7 +66,7 @@ export async function montarAsistentes(contenedor, filtros) {
         .map(
           (d) => `<li class="barra-vis" data-destino="${esc(d.destino_id)}" tabindex="0" role="button" title="n = ${d.n}, k = ${d.k}" aria-label="${esc(nombres.get(d.destino_id))}: ${formato.porcentaje(d.pct)}, ${d.k} de ${d.n} corridas">
             <span class="bv-nombre">${esc(nombres.get(d.destino_id) ?? d.destino_id)}</span>
-            <span class="bv-pista" aria-hidden="true"><span class="bv-valor" style="width:${d.pct}%"></span><span class="bv-ic" style="left:${d.ic95_bajo}%;width:${Math.max(d.ic95_alto - d.ic95_bajo, 0.4)}%"></span></span>
+            <span class="bv-pista" aria-hidden="true"><span class="bv-valor" data-estilo="width:${d.pct}%"></span><span class="bv-ic" data-estilo="left:${d.ic95_bajo}%;width:${Math.max(d.ic95_alto - d.ic95_bajo, 0.4)}%"></span></span>
             <span class="bv-texto">${formato.porcentaje(d.pct)} <span class="vis-n">(${d.k} de ${d.n})</span></span></li>`,
         )
         .join('');

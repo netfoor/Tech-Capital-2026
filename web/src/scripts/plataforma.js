@@ -23,6 +23,8 @@ function mostrarRuta() {
   const panel = document.getElementById('panel-ficha');
   const abierto = vista === 'radar' && destino !== null;
   panel.hidden = !abierto;
+  document.documentElement.classList.toggle('ficha-abierta', abierto);
+  if (abierto) panel.scrollTop = 0;
   document.querySelector('[data-vista="radar"]')?.classList.toggle('con-panel', abierto);
   if (abierto) {
     panel.dataset.destino = destino;
