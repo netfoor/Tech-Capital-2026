@@ -2,6 +2,8 @@
 
 Herramienta de datos para la Secretaría de Desarrollo Turístico del Estado de Puebla. Mide cómo aparecen los destinos poblanos en los lugares donde hoy se decide un viaje y cruza esa atención con lo que pasa en cada destino. Los lugares son TikTok, YouTube, el buscador de Google y los asistentes conversacionales. Lo que pasa en el destino se mide con ocupación hotelera, llegadas de turistas y derrama.
 
+**Pruébalo:** https://techcapital.foor.dev/
+
 Proyecto del equipo DreamHack para el Hackathon «Puebla Turística 360°: datos que transforman experiencias», de Tech Capital 2026. Lo organizan SECIHTI Puebla y la Secretaría de Desarrollo Turístico, con la Red Intelligentia.
 
 ---
@@ -20,12 +22,12 @@ El detalle y las fuentes están en [`docs/producto/evidencia.md`](docs/producto/
 
 ## La propuesta
 
-| | |
-|---|---|
-| **Qué** | Un radar que muestra, por destino, cuánta atención digital recibe y cómo se compara con su desempeño real. Detecta qué destinos tienen capacidad disponible y poca visibilidad, y qué destinos atraen miradas pero no estancias. |
-| **Cómo** | Genera una fuente de datos que hoy no existe y la une con datos oficiales. Se recoge qué aparece en TikTok mediante un panel de personas reales con consentimiento, qué responden los asistentes en cinco idiomas y qué citan, qué se busca en Google y qué se ve en YouTube, incluidos los comentarios. Todo se cruza con la serie mensual 2017–2026 del Observatorio Turístico. |
-| **Dónde** | Una plataforma web con cuentas para la Secretaría (radar, fichas por destino, asistentes y redes) y una página pública que explica el problema, el método y los datos. |
-| **Para qué** | Para que la Secretaría decida dónde y cómo invertir su promoción, llegue al Tianguis 2027 con fichas por destino respaldadas por datos y mida el efecto antes y después. |
+|                     |                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Qué**      | Un radar que muestra, por destino, cuánta atención digital recibe y cómo se compara con su desempeño real. Detecta qué destinos tienen capacidad disponible y poca visibilidad, y qué destinos atraen miradas pero no estancias.                                                                                                                                                   |
+| **Cómo**     | Genera una fuente de datos que hoy no existe y la une con datos oficiales. Se recoge qué aparece en TikTok mediante un panel de personas reales con consentimiento, qué responden los asistentes en cinco idiomas y qué citan, qué se busca en Google y qué se ve en YouTube, incluidos los comentarios. Todo se cruza con la serie mensual 2017–2026 del Observatorio Turístico. |
+| **Dónde**    | Una plataforma web con cuentas para la Secretaría (radar, fichas por destino, asistentes y redes) y una página pública que explica el problema, el método y los datos.                                                                                                                                                                                                               |
+| **Para qué** | Para que la Secretaría decida dónde y cómo invertir su promoción, llegue al Tianguis 2027 con fichas por destino respaldadas por datos y mida el efecto antes y después.                                                                                                                                                                                                            |
 
 Visión completa: [`docs/producto/vision.md`](docs/producto/vision.md).
 
@@ -45,19 +47,19 @@ El orden de ejecución, las dependencias y la ruta crítica están en [`docs/pla
 
 ## Especificaciones
 
-| Spec | Contexto | Prioridad | Estado |
-|---|---|---|---|
-| [001 Catálogo de destinos](specs/001-catalogo-destinos/spec.md) | Catálogo territorial | P0 | En curso: semilla lista |
-| [002 Indicadores oficiales](specs/002-indicadores-oficiales/spec.md) | Desempeño turístico | P0 | En curso: ingesta lista |
-| [003 Tendencias de búsqueda](specs/003-tendencias-busqueda/spec.md) | Atención digital | P0 | Pendiente |
-| [004 YouTube](specs/004-youtube/spec.md) | Atención digital | P1 | Pendiente |
-| [005 Panel y TikTok](specs/005-panel-tiktok/spec.md) | Panel ciudadano | P0 | Pendiente |
-| [006 Auditoría de asistentes](specs/006-auditoria-asistentes/spec.md) | Visibilidad en asistentes | P0 | Pendiente |
-| [007 Clasificación de comentarios](specs/007-comentarios/spec.md) | Atención digital | P1 | Pendiente |
-| [008 Radar](specs/008-radar/spec.md) | Análisis | P0 | Pendiente |
-| [009 Sitio: página pública y plataforma](specs/009-sitio/spec.md) | Publicación | P0 | En curso: andamiaje con acceso |
-| [010 Infraestructura](specs/010-infraestructura/spec.md) | Plataforma | P0 | En curso: Terraform con Cognito |
-| [011 Entregables y presentación](specs/011-entregables/spec.md) | Entregables | P0 | Pendiente |
+| Spec                                                                  | Contexto                  | Prioridad | Estado                          |
+| --------------------------------------------------------------------- | ------------------------- | --------- | ------------------------------- |
+| [001 Catálogo de destinos](specs/001-catalogo-destinos/spec.md)       | Catálogo territorial     | P0        | En curso: semilla lista         |
+| [002 Indicadores oficiales](specs/002-indicadores-oficiales/spec.md)   | Desempeño turístico     | P0        | En curso: ingesta lista         |
+| [003 Tendencias de búsqueda](specs/003-tendencias-busqueda/spec.md)   | Atención digital         | P0        | Pendiente                       |
+| [004 YouTube](specs/004-youtube/spec.md)                               | Atención digital         | P1        | Pendiente                       |
+| [005 Panel y TikTok](specs/005-panel-tiktok/spec.md)                   | Panel ciudadano           | P0        | Pendiente                       |
+| [006 Auditoría de asistentes](specs/006-auditoria-asistentes/spec.md) | Visibilidad en asistentes | P0        | Pendiente                       |
+| [007 Clasificación de comentarios](specs/007-comentarios/spec.md)     | Atención digital         | P1        | Pendiente                       |
+| [008 Radar](specs/008-radar/spec.md)                                   | Análisis                 | P0        | Pendiente                       |
+| [009 Sitio: página pública y plataforma](specs/009-sitio/spec.md)    | Publicación              | P0        | En curso: andamiaje con acceso  |
+| [010 Infraestructura](specs/010-infraestructura/spec.md)               | Plataforma                | P0        | En curso: Terraform con Cognito |
+| [011 Entregables y presentación](specs/011-entregables/spec.md)       | Entregables               | P0        | Pendiente                       |
 
 P0 = indispensable para la demostración, P1 = la fortalece, P2 = continuidad posterior.
 
@@ -110,7 +112,8 @@ Cada cifra que aparece en el sitio viene de un archivo en `data/curado/` generad
 
 ## Equipo
 
-Equipo de tres estudiantes con un profesor tutor, con perfiles en ciencia de datos e IA, nube y despliegue, y economía y derecho.
+- **María José De La Rosa Hernández** ([@majodelarous](https://github.com/majodelarous))
+- **Fortino Romero Mantilla** ([@netfoor](https://github.com/netfoor))
 
 ## Propiedad intelectual
 
