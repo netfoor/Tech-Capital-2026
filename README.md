@@ -63,3 +63,7 @@ make verificar    # pruebas, estilo y compilación
 ## Propiedad intelectual
 
 De acuerdo con la sección 14 de la convocatoria, la propiedad intelectual permanece con sus autores. Los organizadores reciben una autorización de uso no exclusiva, gratuita y no comercial, solo para difusión. La licencia del código está pendiente de decisión del equipo; mientras tanto, todos los derechos quedan reservados.
+
+## Licencia
+
+El código se distribuye bajo licencia MIT. Consulta el archivo `LICENSE`.
